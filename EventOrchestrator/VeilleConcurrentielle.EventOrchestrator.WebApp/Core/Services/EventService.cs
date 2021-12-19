@@ -23,7 +23,7 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Core.Services
             entity.Source = request.Source;
             entity.CreatedAt = DateTime.Now;
             await _eventRepository.InsertAsync(entity);
-            Event evt =  _mapper.Map<Event>(entity);
+            Event evt = _mapper.Map<Event>(entity);
             return new PushEventServerResponse() { Event = evt };
         }
     }

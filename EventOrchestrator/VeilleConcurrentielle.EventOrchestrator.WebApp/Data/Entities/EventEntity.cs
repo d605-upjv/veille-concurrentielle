@@ -8,7 +8,7 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Data.Entities
         [Required]
         public string Name { get; set; }
         [Required]
-        public string SerializedPayload { get; set; } 
+        public string SerializedPayload { get; set; }
         public DateTime CreatedAt { get; set; }
         public string Source { get; set; }
     }

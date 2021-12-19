@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace VeilleConcurrentielle.Infrastructure.TestLib
 {
-    public abstract class WebAppBase<TEntryPoint, TDbContext>: WebApplicationFactory<TEntryPoint> where TEntryPoint: class where TDbContext: DbContext
+    public abstract class WebAppBase<TEntryPoint, TDbContext> : WebApplicationFactory<TEntryPoint> where TEntryPoint : class where TDbContext : DbContext
     {
         private readonly string _environment;
         private readonly string _dbName;

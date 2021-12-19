@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Reflection;
-
-namespace VeilleConcurrentielle.Infrastructure.Framework
+﻿namespace VeilleConcurrentielle.Infrastructure.Framework
 {
     public static class EnumUtils
     {

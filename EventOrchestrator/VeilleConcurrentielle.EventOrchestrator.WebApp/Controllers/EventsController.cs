@@ -5,7 +5,7 @@ using VeilleConcurrentielle.Infrastructure.Web;
 
 namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Controllers
 {
-    public class EventsController: ApiControllerBase
+    public class EventsController : ApiControllerBase
     {
         private readonly IEventService _eventService;
         private readonly ILogger<EventsController> _logger;
@@ -31,7 +31,7 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Controllers
                 }
                 return Created($"/api/Events/{response.Event.Id}", response);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex, $"Failed to push event");
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);

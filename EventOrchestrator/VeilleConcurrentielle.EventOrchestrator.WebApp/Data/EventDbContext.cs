@@ -4,7 +4,7 @@ using VeilleConcurrentielle.Infrastructure.Data;
 
 namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Data
 {
-    public class EventDbContext: DbContextBase<EventDbContext>
+    public class EventDbContext : DbContextBase<EventDbContext>
     {
         public EventDbContext(DbContextOptions<EventDbContext> options) : base(options)
         {

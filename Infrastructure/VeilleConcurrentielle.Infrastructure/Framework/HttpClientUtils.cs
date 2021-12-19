@@ -1,5 +1,4 @@
-﻿using System.Net.Http.Headers;
-using System.Text;
+﻿using System.Text;
 using System.Text.Json;
 
 namespace VeilleConcurrentielle.Infrastructure.Framework
@@ -15,7 +14,7 @@ namespace VeilleConcurrentielle.Infrastructure.Framework
         public static async Task<T> ReadBody<T>(HttpResponseMessage response)
         {
             var body = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<T>(body, new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
+            return JsonSerializer.Deserialize<T>(body, new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
         }
     }
 }
