@@ -1,0 +1,74 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EventOrchestrator", "EventOrchestrator", "{640274C2-615C-4B72-8AE8-50252495AF32}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{FB9A2BF1-8427-4EF9-8ACD-3EBFB01972CD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeilleConcurrentielle.Infrastructure", "Infrastructure\VeilleConcurrentielle.Infrastructure\VeilleConcurrentielle.Infrastructure.csproj", "{C5E0AA36-E8C2-4DB1-B194-5308F11E4D7C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeilleConcurrentielle.EventOrchestrator.WebApp", "EventOrchestrator\VeilleConcurrentielle.EventOrchestrator.WebApp\VeilleConcurrentielle.EventOrchestrator.WebApp.csproj", "{4F25FD22-9E27-427D-AD94-CB700E2B07BE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeilleConcurrentielle.Infrastructure.Tests", "Infrastructure\VeilleConcurrentielle.Infrastructure.Tests\VeilleConcurrentielle.Infrastructure.Tests.csproj", "{3C6163F7-F2E8-42CF-8564-692BF96605A2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeilleConcurrentielle.EventOrchestrator.WebApp.Tests", "EventOrchestrator\VeilleConcurrentielle.EventOrchestrator.WebApp.Tests\VeilleConcurrentielle.EventOrchestrator.WebApp.Tests.csproj", "{EBAB206A-CBE0-4C46-8613-C8189DCA8AF7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeilleConcurrentielle.Infrastructure.TestLib", "Infrastructure\VeilleConcurrentielle.Infrastructure.TestLib\VeilleConcurrentielle.Infrastructure.TestLib.csproj", "{7C584F30-CBE2-4819-B8E3-F41BD9643F6A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeilleConcurrentielle.EventOrchestrator.Lib", "EventOrchestrator\VeilleConcurrentielle.EventOrchestrator.Lib\VeilleConcurrentielle.EventOrchestrator.Lib.csproj", "{9564ACB9-6398-4748-9010-00747EAF38CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VeilleConcurrentielle.EventOrchestrator.Lib.Tests", "EventOrchestrator\VeilleConcurrentielle.EventOrchestrator.Lib.Tests\VeilleConcurrentielle.EventOrchestrator.Lib.Tests.csproj", "{DFF69D54-3E07-4BF4-81F8-AD0DFE79A454}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C5E0AA36-E8C2-4DB1-B194-5308F11E4D7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5E0AA36-E8C2-4DB1-B194-5308F11E4D7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5E0AA36-E8C2-4DB1-B194-5308F11E4D7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5E0AA36-E8C2-4DB1-B194-5308F11E4D7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F25FD22-9E27-427D-AD94-CB700E2B07BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F25FD22-9E27-427D-AD94-CB700E2B07BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F25FD22-9E27-427D-AD94-CB700E2B07BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F25FD22-9E27-427D-AD94-CB700E2B07BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C6163F7-F2E8-42CF-8564-692BF96605A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C6163F7-F2E8-42CF-8564-692BF96605A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C6163F7-F2E8-42CF-8564-692BF96605A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C6163F7-F2E8-42CF-8564-692BF96605A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBAB206A-CBE0-4C46-8613-C8189DCA8AF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBAB206A-CBE0-4C46-8613-C8189DCA8AF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBAB206A-CBE0-4C46-8613-C8189DCA8AF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBAB206A-CBE0-4C46-8613-C8189DCA8AF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C584F30-CBE2-4819-B8E3-F41BD9643F6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C584F30-CBE2-4819-B8E3-F41BD9643F6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C584F30-CBE2-4819-B8E3-F41BD9643F6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C584F30-CBE2-4819-B8E3-F41BD9643F6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9564ACB9-6398-4748-9010-00747EAF38CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9564ACB9-6398-4748-9010-00747EAF38CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9564ACB9-6398-4748-9010-00747EAF38CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9564ACB9-6398-4748-9010-00747EAF38CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFF69D54-3E07-4BF4-81F8-AD0DFE79A454}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFF69D54-3E07-4BF4-81F8-AD0DFE79A454}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFF69D54-3E07-4BF4-81F8-AD0DFE79A454}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFF69D54-3E07-4BF4-81F8-AD0DFE79A454}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C5E0AA36-E8C2-4DB1-B194-5308F11E4D7C} = {FB9A2BF1-8427-4EF9-8ACD-3EBFB01972CD}
+		{4F25FD22-9E27-427D-AD94-CB700E2B07BE} = {640274C2-615C-4B72-8AE8-50252495AF32}
+		{3C6163F7-F2E8-42CF-8564-692BF96605A2} = {FB9A2BF1-8427-4EF9-8ACD-3EBFB01972CD}
+		{EBAB206A-CBE0-4C46-8613-C8189DCA8AF7} = {640274C2-615C-4B72-8AE8-50252495AF32}
+		{7C584F30-CBE2-4819-B8E3-F41BD9643F6A} = {FB9A2BF1-8427-4EF9-8ACD-3EBFB01972CD}
+		{9564ACB9-6398-4748-9010-00747EAF38CF} = {640274C2-615C-4B72-8AE8-50252495AF32}
+		{DFF69D54-3E07-4BF4-81F8-AD0DFE79A454} = {640274C2-615C-4B72-8AE8-50252495AF32}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {81B5CA07-E17E-4B18-B7E8-8B5880AAFBDD}
+	EndGlobalSection
+EndGlobal
