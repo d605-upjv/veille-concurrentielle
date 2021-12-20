@@ -25,9 +25,13 @@ namespace VeilleConcurrentielle.Infrastructure.Data
                    .Where(predicate)
                    .AsAsyncEnumerable();
         }
-        public async Task InsertAsync(T entity)
+        public virtual void ComputeNewIdBeforeInsert(T entity)
         {
             entity.Id = Guid.NewGuid().ToString();
+        }
+        public async Task InsertAsync(T entity)
+        {
+            ComputeNewIdBeforeInsert(entity);
             _dbContext.Set<T>().Add(entity);
             await _dbContext.SaveChangesAsync();
         }
