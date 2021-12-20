@@ -19,7 +19,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeilleConcurrentielle.Infra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeilleConcurrentielle.EventOrchestrator.Lib", "EventOrchestrator\VeilleConcurrentielle.EventOrchestrator.Lib\VeilleConcurrentielle.EventOrchestrator.Lib.csproj", "{9564ACB9-6398-4748-9010-00747EAF38CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VeilleConcurrentielle.EventOrchestrator.Lib.Tests", "EventOrchestrator\VeilleConcurrentielle.EventOrchestrator.Lib.Tests\VeilleConcurrentielle.EventOrchestrator.Lib.Tests.csproj", "{DFF69D54-3E07-4BF4-81F8-AD0DFE79A454}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeilleConcurrentielle.EventOrchestrator.Lib.Tests", "EventOrchestrator\VeilleConcurrentielle.EventOrchestrator.Lib.Tests\VeilleConcurrentielle.EventOrchestrator.Lib.Tests.csproj", "{DFF69D54-3E07-4BF4-81F8-AD0DFE79A454}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ProductService", "ProductService", "{413A70BB-BA21-400F-ACE5-EE8F180BC0C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VeilleConcurrentielle.ProductService.WebApp", "ProductService\VeilleConcurrentielle.ProductService.WebApp\VeilleConcurrentielle.ProductService.WebApp.csproj", "{684AC616-3A47-4439-8DE6-B21891160575}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +59,10 @@ Global
 		{DFF69D54-3E07-4BF4-81F8-AD0DFE79A454}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFF69D54-3E07-4BF4-81F8-AD0DFE79A454}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFF69D54-3E07-4BF4-81F8-AD0DFE79A454}.Release|Any CPU.Build.0 = Release|Any CPU
+		{684AC616-3A47-4439-8DE6-B21891160575}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{684AC616-3A47-4439-8DE6-B21891160575}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{684AC616-3A47-4439-8DE6-B21891160575}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{684AC616-3A47-4439-8DE6-B21891160575}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,6 +75,7 @@ Global
 		{7C584F30-CBE2-4819-B8E3-F41BD9643F6A} = {FB9A2BF1-8427-4EF9-8ACD-3EBFB01972CD}
 		{9564ACB9-6398-4748-9010-00747EAF38CF} = {640274C2-615C-4B72-8AE8-50252495AF32}
 		{DFF69D54-3E07-4BF4-81F8-AD0DFE79A454} = {640274C2-615C-4B72-8AE8-50252495AF32}
+		{684AC616-3A47-4439-8DE6-B21891160575} = {413A70BB-BA21-400F-ACE5-EE8F180BC0C0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81B5CA07-E17E-4B18-B7E8-8B5880AAFBDD}
