@@ -15,15 +15,16 @@ namespace VeilleConcurrentielle.Infrastructure.Data
         {
             return await _dbContext.Set<T>().FindAsync(id);
         }
-        public virtual IAsyncEnumerable<T> GetAllAsync()
+        public virtual async Task<List<T>> GetAllAsync()
         {
-            return _dbContext.Set<T>().AsAsyncEnumerable();
+
+            return await _dbContext.Set<T>().ToListAsync();
         }
-        public virtual IAsyncEnumerable<T> GetAllAsync(Expression<Func<T, bool>> predicate)
+        public virtual Task<List<T>> GetAllAsync(Expression<Func<T, bool>> predicate)
         {
             return _dbContext.Set<T>()
                    .Where(predicate)
-                   .AsAsyncEnumerable();
+                   .ToListAsync();
         }
         public virtual void ComputeNewIdBeforeInsert(T entity)
         {
