@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using VeilleConcurrentielle.EventOrchestrator.WebApp.Core.Services;
 using VeilleConcurrentielle.EventOrchestrator.WebApp.Data;
 using VeilleConcurrentielle.EventOrchestrator.WebApp.Data.Repositories;
@@ -14,7 +15,8 @@ builder.Services.AddSqlite<EventDbContext>(eventDbConnectionString)
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IEventService, EventService>();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+        .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

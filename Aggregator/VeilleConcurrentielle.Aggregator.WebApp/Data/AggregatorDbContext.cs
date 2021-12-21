@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using VeilleConcurrentielle.Aggregator.Lib.Contracts;
 using VeilleConcurrentielle.Aggregator.WebApp.Data.Entities;
+using VeilleConcurrentielle.EventOrchestrator.Lib.Clients.Models.Events;
 using VeilleConcurrentielle.Infrastructure.Data;
 
 namespace VeilleConcurrentielle.Aggregator.WebApp.Data

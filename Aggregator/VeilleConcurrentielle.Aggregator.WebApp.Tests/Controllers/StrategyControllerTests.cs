@@ -2,7 +2,7 @@
 using System.Net.Http.Json;
 using VeilleConcurrentielle.Aggregator.WebApp.Models;
 using System;
-using VeilleConcurrentielle.Aggregator.Lib.Contracts;
+using VeilleConcurrentielle.EventOrchestrator.Lib.Clients.Models.Events;
 
 namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers
 {

@@ -22,6 +22,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,6 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\EventOrchestrator\VeilleConcurrentielle.EventOrchestrator.Lib\VeilleConcurrentielle.EventOrchestrator.Lib.csproj" />
     <ProjectReference Include="..\..\Infrastructure\VeilleConcurrentielle.Infrastructure\VeilleConcurrentielle.Infrastructure.csproj" />
     <ProjectReference Include="..\VeilleConcurrentielle.Aggregator.Lib\VeilleConcurrentielle.Aggregator.Lib.csproj" />
   </ItemGroup>

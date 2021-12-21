@@ -3,7 +3,7 @@ using VeilleConcurrentielle.Infrastructure.TestLib;
 
 namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Tests
 {
-    public class WebApp : WebAppBase<Program, EventDbContext>
+    public class EventWebApp : WebAppBase<Program, EventDbContext>
     {
     }
 }

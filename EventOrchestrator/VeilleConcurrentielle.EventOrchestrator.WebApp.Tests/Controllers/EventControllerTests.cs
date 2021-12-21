@@ -12,7 +12,7 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Tests.Controllers
         [Fact]
         public async Task PushEventAsync_WithCorrectValues()
         {
-            await using var application = new WebApp();
+            await using var application = new EventWebApp();
 
             var request = new PushEventServerRequest()
             {
@@ -33,7 +33,7 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Tests.Controllers
         [Fact]
         public async Task PushEventAsync_WithIncorrectAttributes_ReturnsBadRequest()
         {
-            await using var application = new WebApp();
+            await using var application = new EventWebApp();
 
             dynamic request = new
             {

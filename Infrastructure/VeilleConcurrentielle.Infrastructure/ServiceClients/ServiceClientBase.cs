@@ -9,21 +9,14 @@ namespace VeilleConcurrentielle.Infrastructure.ServiceClients
     {
         private readonly HttpClient _httpClient;
         protected abstract string Controller { get; }
-        private readonly string _baseUrl = null;
-        protected string BaseUrl { get => _baseUrl; }
         public ServiceClientBase(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _baseUrl = ConfigurationManager.AppSettings[$"{Controller}.BaseUrl"];
         }
 
         public async Task<TResponse> PostAsync<TRequest, TResponse>(TRequest request, string url = null) where TRequest : class where TResponse : class
         {
             StringBuilder urlBuilder = new StringBuilder();
-            if (!string.IsNullOrWhiteSpace(_baseUrl))
-            {
-                urlBuilder.Append(_baseUrl);
-            }
             urlBuilder.Append($"/api/{Controller}");
             if (!string.IsNullOrWhiteSpace(url))
             {

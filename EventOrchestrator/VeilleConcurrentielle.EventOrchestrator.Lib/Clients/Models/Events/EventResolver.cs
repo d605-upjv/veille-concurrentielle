@@ -2,13 +2,14 @@
 {
     public static class EventResolver
     {
+        private static Dictionary<Type, Type> _registry = new Dictionary<Type, Type>()
+        {
+            {typeof(NewPriceSubmittedEventPayload), typeof(NewPriceSubmittedEvent) },
+            {typeof(AddOrUPdateProductRequestedEventPayload), typeof(AddOrUpdateProductRequestedEvent) }
+        };
         public static Type GetEventType<TEventPayload>() where TEventPayload : EventPayload
         {
-            if (typeof(TEventPayload) == typeof(NewPriceSubmittedEventPayload))
-            {
-                return typeof(NewPriceSubmittedEvent);
-            }
-            return null;
+            return _registry[typeof(TEventPayload)];
         }
     }
 }

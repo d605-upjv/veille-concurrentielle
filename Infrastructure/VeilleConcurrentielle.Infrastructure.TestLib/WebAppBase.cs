@@ -34,14 +34,5 @@ namespace VeilleConcurrentielle.Infrastructure.TestLib
             });
             return base.CreateHost(builder);
         }
-
-        protected override void ConfigureWebHost(Microsoft.AspNetCore.Hosting.IWebHostBuilder builder)
-        {
-            builder.ConfigureServices(services =>
-            {
-
-            });
-            base.ConfigureWebHost(builder);
-        }
     }
 }

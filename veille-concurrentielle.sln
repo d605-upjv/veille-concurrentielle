@@ -33,11 +33,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeilleConcurrentielle.Produ
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Aggregator", "Aggregator", "{2A364519-E877-4842-B168-811375D04EF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VeilleConcurrentielle.Aggregator.WebApp", "Aggregator\VeilleConcurrentielle.Aggregator.WebApp\VeilleConcurrentielle.Aggregator.WebApp.csproj", "{DBFD11A7-AC71-477C-8C2A-C9B94F38BD1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeilleConcurrentielle.Aggregator.WebApp", "Aggregator\VeilleConcurrentielle.Aggregator.WebApp\VeilleConcurrentielle.Aggregator.WebApp.csproj", "{DBFD11A7-AC71-477C-8C2A-C9B94F38BD1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VeilleConcurrentielle.Aggregator.WebApp.Tests", "Aggregator\VeilleConcurrentielle.Aggregator.WebApp.Tests\VeilleConcurrentielle.Aggregator.WebApp.Tests.csproj", "{7948C816-5C44-4805-A138-9FEC8046E7F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeilleConcurrentielle.Aggregator.WebApp.Tests", "Aggregator\VeilleConcurrentielle.Aggregator.WebApp.Tests\VeilleConcurrentielle.Aggregator.WebApp.Tests.csproj", "{7948C816-5C44-4805-A138-9FEC8046E7F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VeilleConcurrentielle.Aggregator.Lib", "Aggregator\VeilleConcurrentielle.Aggregator.Lib\VeilleConcurrentielle.Aggregator.Lib.csproj", "{108F69D4-D53D-4F46-87BD-40A7E79F6587}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeilleConcurrentielle.Aggregator.Lib", "Aggregator\VeilleConcurrentielle.Aggregator.Lib\VeilleConcurrentielle.Aggregator.Lib.csproj", "{108F69D4-D53D-4F46-87BD-40A7E79F6587}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
