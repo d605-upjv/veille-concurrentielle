@@ -22,9 +22,9 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Controllers
             try
             {
                 var items = (await _strategyyRepository.GetAllAsync())
-                                .Select(c => new StrategyDto(c.Id, c.Name))
+                                .Select(c => new GetAllStrategysModels.GetAllStrategysResponse.Strategy(c.Id, c.Name))
                                 .ToList();
-                return Ok(items);
+                return Ok(new GetAllStrategysModels.GetAllStrategysResponse(items));
             }catch(Exception ex)
             {
                 _logger.LogError(ex, $"Failed to get strategies");

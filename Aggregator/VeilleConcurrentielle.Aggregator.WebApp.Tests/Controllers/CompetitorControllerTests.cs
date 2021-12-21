@@ -14,10 +14,11 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers
         {
             await using var application = new WebApp();
             using var client = application.CreateClient();
-            var response = await client.GetFromJsonAsync<List<CompetitorDto>>("/api/Competitors");
+            var response = await client.GetFromJsonAsync<GetAllCompetitorsModels.GetAllCompetitorResponse>("/api/Competitors");
             Assert.NotNull(response);
+            Assert.NotNull(response.Competitors);
             var knownCompetitors = Enum.GetValues<CompetitorIds>();
-            Assert.True(knownCompetitors.Length == response.Count, $"Make sure that all competitors are seeded properly! (current: {response.Count}, expected: {knownCompetitors.Length})");
+            Assert.True(knownCompetitors.Length == response.Competitors.Count, $"Make sure that all competitors are seeded properly! (current: {response.Competitors.Count}, expected: {knownCompetitors.Length})");
         }
     }
 }
