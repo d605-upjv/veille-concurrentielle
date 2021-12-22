@@ -1,6 +1,7 @@
 ﻿using VeilleConcurrentielle.EventOrchestrator.Lib.Clients.Models;
-using VeilleConcurrentielle.EventOrchestrator.Lib.Clients.Models.Events;
 using VeilleConcurrentielle.EventOrchestrator.Lib.Servers.Models;
+using VeilleConcurrentielle.Infrastructure.Core.Framework;
+using VeilleConcurrentielle.Infrastructure.Core.Models;
 using VeilleConcurrentielle.Infrastructure.Framework;
 using VeilleConcurrentielle.Infrastructure.ServiceClients;
 

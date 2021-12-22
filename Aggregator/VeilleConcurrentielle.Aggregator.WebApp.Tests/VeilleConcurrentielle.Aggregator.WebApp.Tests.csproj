@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Infrastructure\VeilleConcurrentielle.Infrastructure.TestLib\VeilleConcurrentielle.Infrastructure.TestLib.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\VeilleConcurrentielle.Infrastructure.Tests\VeilleConcurrentielle.Infrastructure.Tests.csproj" />
     <ProjectReference Include="..\VeilleConcurrentielle.Aggregator.WebApp\VeilleConcurrentielle.Aggregator.WebApp.csproj" />
   </ItemGroup>
 

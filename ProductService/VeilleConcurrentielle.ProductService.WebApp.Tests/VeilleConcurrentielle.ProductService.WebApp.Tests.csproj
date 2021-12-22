@@ -20,4 +20,10 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\VeilleConcurrentielle.Infrastructure.TestLib\VeilleConcurrentielle.Infrastructure.TestLib.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\VeilleConcurrentielle.Infrastructure.Tests\VeilleConcurrentielle.Infrastructure.Tests.csproj" />
+    <ProjectReference Include="..\VeilleConcurrentielle.ProductService.WebApp\VeilleConcurrentielle.ProductService.WebApp.csproj" />
+  </ItemGroup>
+
 </Project>

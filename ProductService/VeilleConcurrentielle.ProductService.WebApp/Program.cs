@@ -1,27 +1,41 @@
+using System.Text.Json.Serialization;
+using VeilleConcurrentielle.EventOrchestrator.Lib.Servers;
+using VeilleConcurrentielle.Infrastructure.Web;
+using VeilleConcurrentielle.ProductService.WebApp.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+var productDbConnectionString = builder.Configuration.GetConnectionString("ProductDb") ?? "Data Source=product.db";
+builder.Services.AddSqlite<ProductDbContext>(productDbConnectionString)
+                    .AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddControllersWithViews();
+var eventServiceUrl = builder.Configuration["Services:EventUrl"];
+builder.Services.RegisterEventServiceClientDependencies(eventServiceUrl);
+builder.Services.RegisterReceivedEventServiceDependencies<ProductDbContext>();
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
-app.UseRouting();
 
+app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller}/{action=Index}/{id?}");
-
-app.MapFallbackToFile("index.html"); ;
+app.MapControllers();
 
 app.Run();
+
+public partial class Program { }

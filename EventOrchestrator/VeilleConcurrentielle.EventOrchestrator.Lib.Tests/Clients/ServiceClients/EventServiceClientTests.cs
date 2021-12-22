@@ -1,7 +1,8 @@
 ﻿using System.Threading.Tasks;
 using VeilleConcurrentielle.EventOrchestrator.Lib.Clients.Models;
-using VeilleConcurrentielle.EventOrchestrator.Lib.Clients.Models.Events;
 using VeilleConcurrentielle.EventOrchestrator.Lib.Clients.ServiceClients;
+using VeilleConcurrentielle.Infrastructure.Core.Models;
+using VeilleConcurrentielle.Infrastructure.Core.Models.Events;
 using Xunit;
 
 namespace VeilleConcurrentielle.EventOrchestrator.Lib.Tests.Clients.ServiceClients

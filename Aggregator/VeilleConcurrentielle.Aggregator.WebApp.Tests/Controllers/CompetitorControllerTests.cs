@@ -2,7 +2,7 @@
 using System.Net.Http.Json;
 using VeilleConcurrentielle.Aggregator.WebApp.Models;
 using System;
-using VeilleConcurrentielle.EventOrchestrator.Lib.Clients.Models.Events;
+using VeilleConcurrentielle.Infrastructure.Core.Models.Events;
 
 namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers
 {
@@ -11,7 +11,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers
         [Fact]
         public async void GetAll()
         {
-            await using var application = new WebApp();
+            await using var application = new AggregatorWebApp();
             using var client = application.CreateClient();
             var response = await client.GetFromJsonAsync<GetAllCompetitorsModels.GetAllCompetitorResponse>("/api/Competitors");
             Assert.NotNull(response);

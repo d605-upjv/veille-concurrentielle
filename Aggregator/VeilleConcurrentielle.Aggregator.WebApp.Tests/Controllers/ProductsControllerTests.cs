@@ -8,8 +8,8 @@ using VeilleConcurrentielle.Aggregator.WebApp.Controllers;
 using VeilleConcurrentielle.Aggregator.WebApp.Models;
 using VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers.TestData;
 using VeilleConcurrentielle.EventOrchestrator.Lib.Clients.Models;
-using VeilleConcurrentielle.EventOrchestrator.Lib.Clients.Models.Events;
 using VeilleConcurrentielle.EventOrchestrator.Lib.Clients.ServiceClients;
+using VeilleConcurrentielle.Infrastructure.Core.Models.Events;
 using VeilleConcurrentielle.Infrastructure.Framework;
 using Xunit;
 using Xunit.Abstractions;
@@ -29,7 +29,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers
         [Fact]
         public async Task PostAddOrEditProduct_Integration()
         {
-            await using var application = new WebApp();
+            await using var application = new AggregatorWebApp();
             using var client = application.CreateClient();
             var request = PostAddOrEditProductValidRequests.GetStandardValidRequest();
             var requestStr = SerializationUtils.Serialize(request);
@@ -47,7 +47,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers
         [ClassData(typeof(PostAddOrEditProductInvalidRequests))]
         public async Task PostAddOrEditProduct_Integration_WithMissingtMandatoryFields_ReturnsBadRequest(AddOrEditProductModels.AddOrEditProductRequest request)
         {
-            await using var application = new WebApp();
+            await using var application = new AggregatorWebApp();
             using var client = application.CreateClient();
             var response = await client.PostAsJsonAsync("api/Products", request);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);

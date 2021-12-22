@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VeilleConcurrentielle.Aggregator.WebApp.Models;
 using VeilleConcurrentielle.EventOrchestrator.Lib.Clients.Models;
-using VeilleConcurrentielle.EventOrchestrator.Lib.Clients.Models.Events;
 using VeilleConcurrentielle.EventOrchestrator.Lib.Clients.ServiceClients;
+using VeilleConcurrentielle.Infrastructure.Core.Models;
+using VeilleConcurrentielle.Infrastructure.Core.Models.Events;
 using VeilleConcurrentielle.Infrastructure.Web;
 
 namespace VeilleConcurrentielle.Aggregator.WebApp.Controllers

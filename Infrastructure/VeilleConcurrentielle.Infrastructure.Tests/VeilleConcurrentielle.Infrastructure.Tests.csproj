@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\VeilleConcurrentielle.Infrastructure.TestLib\VeilleConcurrentielle.Infrastructure.TestLib.csproj" />
     <ProjectReference Include="..\VeilleConcurrentielle.Infrastructure\VeilleConcurrentielle.Infrastructure.csproj" />
   </ItemGroup>
 

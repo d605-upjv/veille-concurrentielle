@@ -14,6 +14,7 @@ builder.Services.AddSqlite<EventDbContext>(eventDbConnectionString)
 
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddScoped<IEventSubscriberRepository, EventSubscriberRepository>();
 
 builder.Services.AddControllers()
         .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));

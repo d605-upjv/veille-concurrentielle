@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using VeilleConcurrentielle.Aggregator.WebApp.Models;
-using VeilleConcurrentielle.EventOrchestrator.Lib.Clients.Models.Events;
+using VeilleConcurrentielle.Infrastructure.Core.Models.Events;
 
 namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers.TestData
 {
