@@ -18,9 +18,9 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Core.Services
         public async Task<PushEventServerResponse> PushEventAsync(PushEventServerRequest request)
         {
             EventEntity entity = new EventEntity();
-            entity.Name = request.EventName;
+            entity.Name = request.EventName.ToString();
             entity.SerializedPayload = request.SerializedPayload;
-            entity.Source = request.Source;
+            entity.Source = request.Source.ToString();
             entity.CreatedAt = DateTime.Now;
             await _eventRepository.InsertAsync(entity);
             Event evt = _mapper.Map<Event>(entity);

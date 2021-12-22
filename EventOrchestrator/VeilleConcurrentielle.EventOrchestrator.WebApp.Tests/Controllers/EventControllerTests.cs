@@ -2,6 +2,8 @@
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using VeilleConcurrentielle.EventOrchestrator.Lib.Servers.Models;
+using VeilleConcurrentielle.Infrastructure.Core.Models;
+using VeilleConcurrentielle.Infrastructure.Core.Models.Events;
 using VeilleConcurrentielle.Infrastructure.Framework;
 using Xunit;
 
@@ -13,14 +15,22 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Tests.Controllers
         public async Task PushEventAsync_WithCorrectValues()
         {
             await using var application = new EventWebApp();
+            using var client = application.CreateClient();
 
+            var payload = new NewPriceSubmittedEventPayload()
+            {
+                ProductId = "Product1",
+                Price = 10,
+                Source = PriceSources.PriceSubmissionApi
+            };
+            var serializedPayload = SerializationUtils.Serialize(payload);
             var request = new PushEventServerRequest()
             {
-                EventName = "SomeEvent",
-                Source = "UnitTest",
-                SerializedPayload = "nothing"
+                EventName = EventNames.NewPriceSubmitted,
+                Source = EventSources.Test,
+                SerializedPayload = serializedPayload
             };
-            using var client = application.CreateClient();
+            
             var response = await client.PostAsJsonAsync("/api/Events", request);
             response.EnsureSuccessStatusCode();
             var responseContent = await HttpClientUtils.ReadBody<PushEventServerResponse>(response);

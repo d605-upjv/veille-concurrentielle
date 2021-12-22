@@ -10,7 +10,7 @@ namespace VeilleConcurrentielle.EventOrchestrator.Lib.Tests.Clients.ServiceClien
     public class EventServiceClientTests
     {
         [Fact]
-        public async Task PushEvent_NewPriceSubmitted()
+        public async Task PushEvent_Integration()
         {
             await using var application = new WebApp();
             using var httpClient = application.CreateClient();
