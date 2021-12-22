@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿extern alias mywebapp;
+
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
+using mywebapp::VeilleConcurrentielle.Aggregator.WebApp.Controllers;
+using mywebapp::VeilleConcurrentielle.Aggregator.WebApp.Models;
 using System.Net;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using VeilleConcurrentielle.Aggregator.WebApp.Controllers;
-using VeilleConcurrentielle.Aggregator.WebApp.Models;
 using VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers.TestData;
 using VeilleConcurrentielle.EventOrchestrator.Lib.Clients.Models;
 using VeilleConcurrentielle.EventOrchestrator.Lib.Clients.ServiceClients;

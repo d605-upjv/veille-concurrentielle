@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿extern alias mywebapp;
+
+using mywebapp::VeilleConcurrentielle.Aggregator.WebApp.Models;
+using System.Collections;
 using System.Collections.Generic;
-using VeilleConcurrentielle.Aggregator.WebApp.Models;
 using VeilleConcurrentielle.Infrastructure.Core.Models.Events;
 
 namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers.TestData

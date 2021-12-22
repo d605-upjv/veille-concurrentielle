@@ -17,6 +17,27 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.1");
 
+            modelBuilder.Entity("VeilleConcurrentielle.EventOrchestrator.WebApp.Data.Entities.EventConsumerEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ApplicationName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("EventId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EventConsumers");
+                });
+
             modelBuilder.Entity("VeilleConcurrentielle.EventOrchestrator.WebApp.Data.Entities.EventEntity", b =>
                 {
                     b.Property<string>("Id")
@@ -82,6 +103,9 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("DispatchedAt")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -92,9 +116,6 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Migrations
 
                     b.Property<string>("Source")
                         .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("SubmittedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

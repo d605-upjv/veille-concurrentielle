@@ -1,4 +1,4 @@
-﻿using VeilleConcurrentielle.Infrastructure.Core.Controllers;
+﻿using VeilleConcurrentielle.EventOrchestrator.Lib.Controllers;
 using VeilleConcurrentielle.Infrastructure.Core.Data.Repositories;
 using VeilleConcurrentielle.Infrastructure.Core.Models;
 

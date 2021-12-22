@@ -10,8 +10,7 @@ var productDbConnectionString = builder.Configuration.GetConnectionString("Produ
 builder.Services.AddSqlite<ProductDbContext>(productDbConnectionString)
                     .AddDatabaseDeveloperPageExceptionFilter();
 
-var eventServiceUrl = builder.Configuration["Services:EventUrl"];
-builder.Services.RegisterEventServiceClientDependencies(eventServiceUrl);
+builder.Services.RegisterEventServiceClientDependencies(builder.Configuration);
 builder.Services.RegisterReceivedEventServiceDependencies<ProductDbContext>();
 
 builder.Services.AddControllers()

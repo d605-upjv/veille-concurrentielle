@@ -13,6 +13,7 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Data
 
         public DbSet<EventEntity> Events => Set<EventEntity>();
         public DbSet<EventSubscriberEntity> EventSubscribers => Set<EventSubscriberEntity>();
+        public DbSet<EventConsumerEntity> EventConsumers => Set<EventConsumerEntity>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

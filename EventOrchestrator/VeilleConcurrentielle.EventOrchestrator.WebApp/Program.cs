@@ -1,7 +1,9 @@
 using System.Text.Json.Serialization;
+using VeilleConcurrentielle.EventOrchestrator.Lib.Servers;
 using VeilleConcurrentielle.EventOrchestrator.WebApp.Core.Services;
 using VeilleConcurrentielle.EventOrchestrator.WebApp.Data;
 using VeilleConcurrentielle.EventOrchestrator.WebApp.Data.Repositories;
+using VeilleConcurrentielle.Infrastructure.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,9 +14,13 @@ var eventDbConnectionString = builder.Configuration.GetConnectionString("EventDb
 builder.Services.AddSqlite<EventDbContext>(eventDbConnectionString)
                     .AddDatabaseDeveloperPageExceptionFilter();
 
+builder.Services.RegisterEventServiceClientDependencies(builder.Configuration);
+builder.Services.RegisterReceivedEventServiceDependencies<EventDbContext>();
+
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IEventSubscriberRepository, EventSubscriberRepository>();
+builder.Services.AddScoped<IEventConsumerRepository, EventConsumerRepository>();
 
 builder.Services.AddControllers()
         .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));

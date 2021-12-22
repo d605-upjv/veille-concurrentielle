@@ -7,11 +7,13 @@ namespace VeilleConcurrentielle.Infrastructure.Core.Framework
     {
         private static Dictionary<Type, Type> _eventByPayloadRegistry = new Dictionary<Type, Type>()
         {
+            {typeof(TestEventPayload), typeof(TestEvent) },
             {typeof(NewPriceSubmittedEventPayload), typeof(NewPriceSubmittedEvent) },
             {typeof(AddOrUPdateProductRequestedEventPayload), typeof(AddOrUpdateProductRequestedEvent) }
         };
         private static Dictionary<EventNames, Type> _eventPayloadByNameRegistry = new Dictionary<EventNames, Type>()
         {
+            { EventNames.Test, typeof(TestEventPayload) },
             { EventNames.NewPriceSubmitted, typeof(NewPriceSubmittedEventPayload) },
             { EventNames.AddOrUpdateProductRequested, typeof(AddOrUPdateProductRequestedEventPayload) }
         };

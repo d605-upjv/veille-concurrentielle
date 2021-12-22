@@ -88,6 +88,9 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("DispatchedAt")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -98,9 +101,6 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Migrations
 
                     b.Property<string>("Source")
                         .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("SubmittedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

@@ -1,8 +1,10 @@
-﻿using Xunit;
+﻿extern alias mywebapp;
+
+using Xunit;
 using System.Net.Http.Json;
-using VeilleConcurrentielle.Aggregator.WebApp.Models;
 using System;
 using VeilleConcurrentielle.Infrastructure.Core.Models.Events;
+using mywebapp::VeilleConcurrentielle.Aggregator.WebApp.Models;
 
 namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers
 {

@@ -1,5 +1,7 @@
-﻿using VeilleConcurrentielle.EventOrchestrator.Lib.Clients.Models;
+﻿using Microsoft.Extensions.Options;
+using VeilleConcurrentielle.EventOrchestrator.Lib.Clients.Models;
 using VeilleConcurrentielle.EventOrchestrator.Lib.Servers.Models;
+using VeilleConcurrentielle.Infrastructure.Core.Configurations;
 using VeilleConcurrentielle.Infrastructure.Core.Framework;
 using VeilleConcurrentielle.Infrastructure.Core.Models;
 using VeilleConcurrentielle.Infrastructure.Framework;
@@ -11,7 +13,7 @@ namespace VeilleConcurrentielle.EventOrchestrator.Lib.Clients.ServiceClients
     {
         protected override string Controller => "Events";
 
-        public EventServiceClient(HttpClient httpClient) : base(httpClient)
+        public EventServiceClient(HttpClient httpClient, IOptions<ServiceUrlsOptions> serviceUrlOptions) : base(httpClient, serviceUrlOptions)
         {
         }
 
@@ -21,7 +23,7 @@ namespace VeilleConcurrentielle.EventOrchestrator.Lib.Clients.ServiceClients
             serverRequest.EventName = clientRequest.Name;
             serverRequest.Source = clientRequest.Source;
             serverRequest.SerializedPayload = SerializationUtils.Serialize(clientRequest.Payload);
-            var serverResponse = await PostAsync<PushEventServerRequest, PushEventServerResponse>(serverRequest);
+            var serverResponse = await PostAsync<PushEventServerRequest, PushEventServerResponse>(GetServiceUrl(ApplicationNames.EventOrchestrator), serverRequest);
             PushEventClientResponse<TEvent, TEventPayload> clientResponse = new PushEventClientResponse<TEvent, TEventPayload>();
             var eventType = EventResolver.GetEventType<TEventPayload>();
 #pragma warning disable CS8601 // Possible null reference assignment.

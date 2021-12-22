@@ -1,7 +1,6 @@
 using System.Text.Json.Serialization;
 using VeilleConcurrentielle.Aggregator.WebApp.Data;
 using VeilleConcurrentielle.Aggregator.WebApp.Data.Repositories;
-using VeilleConcurrentielle.EventOrchestrator.Lib.Clients.ServiceClients;
 using VeilleConcurrentielle.EventOrchestrator.Lib.Servers;
 using VeilleConcurrentielle.Infrastructure.Web;
 
@@ -12,8 +11,7 @@ var aggregatorDbConnectionString = builder.Configuration.GetConnectionString("Ag
 builder.Services.AddSqlite<AggregatorDbContext>(aggregatorDbConnectionString)
                     .AddDatabaseDeveloperPageExceptionFilter();
 
-var eventServiceUrl = builder.Configuration["Services:EventUrl"];
-builder.Services.RegisterEventServiceClientDependencies(eventServiceUrl);
+builder.Services.RegisterEventServiceClientDependencies(builder.Configuration);
 builder.Services.RegisterReceivedEventServiceDependencies<AggregatorDbContext>();
 
 builder.Services.AddScoped<ICompetitorRepository, CompetitorRepository>();
