@@ -18,7 +18,7 @@ namespace VeilleConcurrentielle.EventOrchestrator.Lib.Clients.Models.Events
 
     public enum PriceSources
     {
-        [EnumMember(Value = "NewPriceSubmitted")]
+        [EnumMember(Value = "PriceSubmissionApi")]
         PriceSubmissionApi
     }
 }
