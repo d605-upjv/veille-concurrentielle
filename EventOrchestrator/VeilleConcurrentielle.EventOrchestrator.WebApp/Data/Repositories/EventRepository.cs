@@ -8,5 +8,13 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Data.Repositories
         public EventRepository(EventDbContext dbContext) : base(dbContext)
         {
         }
+
+        public EventEntity GetNextEvent()
+        {
+            return _dbContext.Set<EventEntity>()
+                        .Where(e => e.IsConsumed == false)
+                        .OrderBy(e => e.CreatedAt)
+                        .FirstOrDefault();
+        }
     }
 }

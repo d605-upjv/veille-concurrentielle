@@ -1,8 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using VeilleConcurrentielle.Infrastructure.Data;
 
 namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Data.Entities
 {
+    [Index(nameof(EventId))]
     public class EventConsumerEntity : EntityBase
     {
         [Required]

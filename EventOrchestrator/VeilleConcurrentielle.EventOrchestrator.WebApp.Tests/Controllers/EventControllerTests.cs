@@ -57,5 +57,33 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Tests.Controllers
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
+
+        [Fact]
+        public async Task GetNextEvent_Integration()
+        {
+            await using var application = new EventWebApp();
+            using var client = application.CreateClient();
+
+            var response = await client.GetAsync("/api/Events/next");
+
+            Assert.NotEqual(HttpStatusCode.InternalServerError, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task ConsumeEvent_Integration()
+        {
+            await using var application = new EventWebApp();
+            using var client = application.CreateClient();
+
+            ConsumeEventServerRequest request = new ConsumeEventServerRequest()
+            {
+                EventId="EventId",
+                ApplicationName= ApplicationNames.Aggregator
+            };
+            var payload = HttpClientUtils.CreateHttpContent(request);
+            var response = await client.PostAsync("/api/Events/consume", payload);
+
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }
     }
 }

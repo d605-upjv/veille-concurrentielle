@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VeilleConcurrentielle.EventOrchestrator.WebApp.Data;
 
@@ -10,9 +11,10 @@ using VeilleConcurrentielle.EventOrchestrator.WebApp.Data;
 namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Migrations
 {
     [DbContext(typeof(EventDbContext))]
-    partial class EventDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211222234351_Event_IsConsumed")]
+    partial class Event_IsConsumed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.1");
@@ -95,24 +97,6 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Migrations
                             Id = "212d189d-c176-4490-b7c8-edd0be4b3dff",
                             ApplicationName = "ProductService",
                             EventName = "AddOrUpdateProductRequested"
-                        },
-                        new
-                        {
-                            Id = "7b68fa7b-0062-478e-ac70-111733f6cdee",
-                            ApplicationName = "EventOrchestrator",
-                            EventName = "Test"
-                        },
-                        new
-                        {
-                            Id = "2e778f3b-a580-43e2-b292-774d5a070d92",
-                            ApplicationName = "ProductService",
-                            EventName = "Test"
-                        },
-                        new
-                        {
-                            Id = "a7d97a94-7d70-4415-bbbf-2956d5879b2b",
-                            ApplicationName = "Aggregator",
-                            EventName = "Test"
                         });
                 });
 

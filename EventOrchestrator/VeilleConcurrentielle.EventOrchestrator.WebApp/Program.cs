@@ -7,8 +7,6 @@ using VeilleConcurrentielle.Infrastructure.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
 // Add services to the container.
 var eventDbConnectionString = builder.Configuration.GetConnectionString("EventDb") ?? "Data Source=events.db";
 builder.Services.AddSqlite<EventDbContext>(eventDbConnectionString)

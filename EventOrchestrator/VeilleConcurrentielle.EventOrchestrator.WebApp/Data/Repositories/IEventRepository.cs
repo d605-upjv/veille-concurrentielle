@@ -5,5 +5,6 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Data.Repositories
 {
     public interface IEventRepository : IRepository<EventEntity>
     {
+        EventEntity GetNextEvent();
     }
 }

@@ -12,5 +12,6 @@ namespace VeilleConcurrentielle.EventOrchestrator.Lib.Servers.Models
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public EventSources Source { get; set; }
         public string SerializedPayload { get; set; }
+        public bool IsConsumed { get; set; }
     }
 }

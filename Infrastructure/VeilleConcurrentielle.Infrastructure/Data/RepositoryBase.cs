@@ -5,7 +5,7 @@ namespace VeilleConcurrentielle.Infrastructure.Data
 {
     public class RepositoryBase<T> : IRepository<T> where T : EntityBase
     {
-        private readonly DbContext _dbContext;
+        protected readonly DbContext _dbContext;
         public RepositoryBase(DbContext dbContext)
         {
             _dbContext = dbContext;

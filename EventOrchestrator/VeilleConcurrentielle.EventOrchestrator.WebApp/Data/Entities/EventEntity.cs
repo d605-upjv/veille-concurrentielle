@@ -14,5 +14,6 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Data.Entities
         public string SerializedPayload { get; set; }
         public DateTime CreatedAt { get; set; }
         public string Source { get; set; }
+        public bool IsConsumed { get; set; }
     }
 }
