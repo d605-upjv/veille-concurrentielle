@@ -13,5 +13,7 @@ namespace VeilleConcurrentielle.EventOrchestrator.Lib.Servers.Models
         public EventSources Source { get; set; }
         public string SerializedPayload { get; set; }
         public bool IsConsumed { get; set; }
+        public List<EventConsumer> Consumers { get; set; }
+        public List<EventSubscriber> Subscribers { get; set; }
     }
 }

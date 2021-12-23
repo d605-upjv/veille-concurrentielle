@@ -25,20 +25,38 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Tests.Core.Services
         public async Task PushEventAsync_AllServicesAreCalledCorrectly()
         {
             Mock<IEventRepository> eventRepositoryMock = new Mock<IEventRepository>();
-            eventRepositoryMock.Setup(s => s.InsertAsync(It.IsAny<EventEntity>())).Returns((EventEntity entity) =>
-            {
-                entity.Id = Guid.NewGuid().ToString();
-                return Task.CompletedTask;
-            });
             Mock<IEventConsumerRepository> eventConsumerRepositoryMock = new Mock<IEventConsumerRepository>();
             Mock<IEventSubscriberRepository> eventSubscriberRepositoryMock = new Mock<IEventSubscriberRepository>();
-            IEventService eventService = new EventService(eventRepositoryMock.Object, eventSubscriberRepositoryMock.Object, eventConsumerRepositoryMock.Object);
+
+            var eventId = "EventId";
             var payload = new TestEventPayload()
             {
                 StringData = "String",
                 IntData = 10
             };
             var serializedPayload = SerializationUtils.Serialize(payload);
+            eventRepositoryMock.Setup(s => s.InsertAsync(It.IsAny<EventEntity>())).Returns((EventEntity entity) =>
+            {
+                entity.Id = eventId;
+                return Task.CompletedTask;
+            });
+            eventRepositoryMock.Setup(s => s.GetByIdAsync(eventId))
+                                    .Returns((string eventId) =>
+                                     {
+                                         return Task.FromResult(new EventEntity()
+                                         {
+                                             Id = eventId,
+                                             Name = EventNames.Test.ToString(),
+                                             Source = EventSources.Test.ToString(),
+                                             SerializedPayload = serializedPayload
+                                         });
+                                     });
+            eventConsumerRepositoryMock.Setup(s => s.GetAllAsync(It.IsAny<Expression<Func<EventConsumerEntity, bool>>>()))
+                                        .Returns(Task.FromResult(new List<EventConsumerEntity>()));
+            eventSubscriberRepositoryMock.Setup(s => s.GetAllAsync(It.IsAny<Expression<Func<EventSubscriberEntity, bool>>>()))
+                                        .Returns(Task.FromResult(new List<EventSubscriberEntity>()));
+            IEventService eventService = new EventService(eventRepositoryMock.Object, eventSubscriberRepositoryMock.Object, eventConsumerRepositoryMock.Object);
+            
             PushEventServerRequest request = new PushEventServerRequest()
             {
                 EventName = EventNames.Test,
@@ -57,22 +75,22 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Tests.Core.Services
         [Fact]
         public async Task GetNextEventAsync_AllServicesAreCalledCorrectly()
         {
+            var existingEventId = "EventId";
             Mock<IEventRepository> eventRepositoryMock = new Mock<IEventRepository>();
-            eventRepositoryMock.Setup(s => s.GetNextEvent()).Returns(() =>
-            {
-                return new EventEntity()
-                {
-                    Id = "EventId",
-                    Name = EventNames.Test.ToString(),
-                    Source = EventSources.Test.ToString(),
-                };
-            });
+            eventRepositoryMock.Setup(s => s.GetNextEventId()).Returns(existingEventId);
+            eventRepositoryMock.Setup(s => s.GetByIdAsync(It.IsAny<string>()))
+                                        .Returns(Task.FromResult(new EventEntity()
+                                        {
+                                            Id = existingEventId,
+                                            Name = EventNames.Test.ToString(),
+                                            Source = EventSources.Test.ToString()
+                                        }));
             Mock<IEventConsumerRepository> eventConsumerRepositoryMock = new Mock<IEventConsumerRepository>();
             eventConsumerRepositoryMock.Setup(s => s.GetAllAsync(It.IsAny<Expression<Func<EventConsumerEntity, bool>>>()))
                 .Returns(Task.FromResult(new List<EventConsumerEntity>
                 {
-                    new EventConsumerEntity() { ApplicationName= ApplicationNames.EventOrchestrator.ToString(), EventId="EventId"},
-                    new EventConsumerEntity() { ApplicationName= ApplicationNames.Aggregator.ToString(), EventId="Eventid"}
+                    new EventConsumerEntity() { ApplicationName= ApplicationNames.EventOrchestrator.ToString(), EventId=existingEventId},
+                    new EventConsumerEntity() { ApplicationName= ApplicationNames.Aggregator.ToString(), EventId=existingEventId}
                 }));
             Mock<IEventSubscriberRepository> eventSubscriberRepositoryMock = new Mock<IEventSubscriberRepository>();
             eventSubscriberRepositoryMock.Setup(s => s.GetAllAsync(It.IsAny<Expression<Func<EventSubscriberEntity, bool>>>()))
@@ -85,15 +103,15 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Tests.Core.Services
             var response = await eventService.GetNextEventAsync();
             Assert.NotNull(response);
             Assert.NotNull(response.Event);
-            Assert.NotEmpty(response.Subscribers);
-            Assert.NotEmpty(response.Consumers);
+            Assert.NotEmpty(response.Event.Subscribers);
+            Assert.NotEmpty(response.Event.Consumers);
         }
 
         [Fact]
         public async Task GetNextEventAsync_WhenNoEvent_RetournNull()
         {
             Mock<IEventRepository> eventRepositoryMock = new Mock<IEventRepository>();
-            eventRepositoryMock.Setup(s => s.GetNextEvent()).Returns(() =>
+            eventRepositoryMock.Setup(s => s.GetNextEventId()).Returns(() =>
             {
                 return null;
             });
@@ -159,8 +177,8 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Tests.Core.Services
             Assert.NotNull(response);
             Assert.NotNull(response.Event);
             Assert.True(response.Event.IsConsumed);
-            Assert.NotEmpty(response.Subscribers);
-            Assert.NotEmpty(response.Consumers);
+            Assert.NotEmpty(response.Event.Subscribers);
+            Assert.NotEmpty(response.Event.Consumers);
             eventRepositoryMock.VerifyAll();
             eventRepositoryMock.Verify(s => s.UpdateAsync(It.IsAny<EventEntity>()), Times.Once());
             eventConsumerRepositoryMock.VerifyAll();
@@ -231,10 +249,10 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Tests.Core.Services
                                             IsConsumed = true
                                         }))
                                         .Verifiable();
-            eventConsumerRepositoryMock.Setup(s => s.GetAllAsync(It.IsAny<Expression<Func<EventConsumerEntity, bool>>>()));
-            eventSubscriberRepositoryMock.Setup(s => s.GetAllAsync(It.IsAny<Expression<Func<EventSubscriberEntity, bool>>>()));
-            eventConsumerRepositoryMock.Setup(s => s.InsertAsync(It.IsAny<EventConsumerEntity>()));
-            eventRepositoryMock.Setup(s => s.UpdateAsync(It.IsAny<EventEntity>()));
+            eventConsumerRepositoryMock.Setup(s => s.GetAllAsync(It.IsAny<Expression<Func<EventConsumerEntity, bool>>>()))
+                                        .Returns(Task.FromResult(new List<EventConsumerEntity>()));
+            eventSubscriberRepositoryMock.Setup(s => s.GetAllAsync(It.IsAny<Expression<Func<EventSubscriberEntity, bool>>>()))
+                                        .Returns(Task.FromResult(new List<EventSubscriberEntity>()));
             IEventService eventService = new EventService(eventRepositoryMock.Object, eventSubscriberRepositoryMock.Object, eventConsumerRepositoryMock.Object);
             ConsumeEventServerRequest request = new ConsumeEventServerRequest()
             {
@@ -289,9 +307,78 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Tests.Core.Services
             Assert.NotNull(response);
             Assert.NotNull(response.Event);
             Assert.False(response.Event.IsConsumed);
+            Assert.NotEmpty(response.Event.Subscribers);
+            Assert.NotEmpty(response.Event.Consumers);
+            eventRepositoryMock.Verify(s => s.UpdateAsync(It.IsAny<EventEntity>()), Times.Never());
+        }
+
+        [Fact]
+        public async Task GetEvent_LoadAllDependencies()
+        {
+            var eventId = "EventId";
+            Mock<IEventRepository> eventRepositoryMock = new Mock<IEventRepository>();
+            Mock<IEventSubscriberRepository> eventSubscriberRepositoryMock = new Mock<IEventSubscriberRepository>();
+            Mock<IEventConsumerRepository> eventConsumerRepositoryMock = new Mock<IEventConsumerRepository>();
+            eventRepositoryMock.Setup(s => s.GetByIdAsync(It.IsAny<string>()))
+                                        .Returns(Task.FromResult(new EventEntity()
+                                        {
+                                            Id = eventId,
+                                            Name = EventNames.Test.ToString(),
+                                            Source = EventSources.Test.ToString()
+                                        }))
+                                        .Verifiable();
+            eventConsumerRepositoryMock.Setup(s => s.GetAllAsync(It.IsAny<Expression<Func<EventConsumerEntity, bool>>>()))
+                                        .Returns(Task.FromResult(new List<EventConsumerEntity>
+                                        {
+                                            new EventConsumerEntity()
+                                            {
+                                                Id = "Id",
+                                                EventId= eventId,
+                                                ApplicationName = ApplicationNames.Aggregator.ToString()
+                                            }
+                                        }))
+                                        .Verifiable();
+            eventSubscriberRepositoryMock.Setup(s => s.GetAllAsync(It.IsAny<Expression<Func<EventSubscriberEntity, bool>>>()))
+                                        .Returns(Task.FromResult(new List<EventSubscriberEntity>
+                                        {
+                                            new EventSubscriberEntity()
+                                            {
+                                                ApplicationName = ApplicationNames.Aggregator.ToString()
+                                            },
+                                            new EventSubscriberEntity()
+                                            {
+                                                ApplicationName = ApplicationNames.ProductService.ToString()
+                                            }
+                                        }))
+                                        .Verifiable();
+            IEventService eventService = new EventService(eventRepositoryMock.Object, eventSubscriberRepositoryMock.Object, eventConsumerRepositoryMock.Object);
+
+            var response = await eventService.GetEventAsync(eventId);
+
+            Assert.NotNull(response);
             Assert.NotEmpty(response.Subscribers);
             Assert.NotEmpty(response.Consumers);
-            eventRepositoryMock.Verify(s => s.UpdateAsync(It.IsAny<EventEntity>()), Times.Never());
+            eventRepositoryMock.VerifyAll();
+            eventConsumerRepositoryMock.VerifyAll();
+            eventSubscriberRepositoryMock.VerifyAll();
+        }
+
+        [Fact]
+        public async Task GetEvent_ReturnsNull_IfNotFound()
+        {
+            var eventId = "EventId";
+            Mock<IEventRepository> eventRepositoryMock = new Mock<IEventRepository>();
+            Mock<IEventSubscriberRepository> eventSubscriberRepositoryMock = new Mock<IEventSubscriberRepository>();
+            Mock<IEventConsumerRepository> eventConsumerRepositoryMock = new Mock<IEventConsumerRepository>();
+            eventRepositoryMock.Setup(s => s.GetByIdAsync(It.IsAny<string>()))
+                                        .Returns(Task.FromResult<EventEntity>(null))
+                                        .Verifiable();
+            IEventService eventService = new EventService(eventRepositoryMock.Object, eventSubscriberRepositoryMock.Object, eventConsumerRepositoryMock.Object);
+
+            var response = await eventService.GetEventAsync(eventId);
+
+            Assert.Null(response);
+            eventRepositoryMock.VerifyAll();
         }
     }
 }

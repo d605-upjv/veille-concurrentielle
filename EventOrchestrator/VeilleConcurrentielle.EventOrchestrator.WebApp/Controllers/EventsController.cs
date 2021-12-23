@@ -16,6 +16,30 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Controllers
             _logger = logger;
         }
 
+        [HttpGet("{eventId}")]
+        public async Task<IActionResult> GetEvent(string eventId)
+        {
+            if (string.IsNullOrEmpty(eventId))
+            {
+                ModelState.AddModelError("eventId", "Value is required");
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var response = await _eventService.GetEventAsync(eventId);
+                if (response == null)
+                {
+                    return NotFound();
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Failed to get event");
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] PushEventServerRequest request)
         {
@@ -74,11 +98,11 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Controllers
             {
                 return BadRequest("Event is already consumed");
             }
-            catch(ApplicationSubscriptionNotFoundException)
+            catch (ApplicationSubscriptionNotFoundException)
             {
                 return BadRequest("Application subscription not found");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex, $"Failed to get next event");
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);

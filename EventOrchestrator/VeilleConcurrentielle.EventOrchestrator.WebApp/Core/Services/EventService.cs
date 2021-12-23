@@ -28,33 +28,19 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Core.Services
             entity.CreatedAt = DateTime.Now;
             entity.IsConsumed = false;
             await _eventRepository.InsertAsync(entity);
-            Event evt = EventFromEntity(entity);
-            return new PushEventServerResponse() { Event = evt };
+            Event event_ = await GetEventAsync(entity.Id);
+            return new PushEventServerResponse() { Event = event_ };
         }
 
         public async Task<GetNextEventServerResponse> GetNextEventAsync()
         {
-            var nextEventEntity = _eventRepository.GetNextEvent();
-            if (nextEventEntity != null)
+            var nextEventId = _eventRepository.GetNextEventId();
+            if (nextEventId != null)
             {
-                Event evt = EventFromEntity(nextEventEntity);
-                var subscribers = (await _eventSubscriberRepository.GetAllAsync(e => e.EventName == nextEventEntity.Name))
-                                    .Select(e => new EventSubscriber()
-                                    {
-                                        ApplicationName = EnumUtils.GetValueFromString<ApplicationNames>(e.ApplicationName)
-                                    }).ToList();
-                var consumers = (await _eventConsumerRepository.GetAllAsync(e => e.EventId == nextEventEntity.Id))
-                                    .Select(e => new EventConsumer()
-                                    {
-                                        Id = e.Id,
-                                        ApplicationName = EnumUtils.GetValueFromString<ApplicationNames>(e.ApplicationName),
-                                        CreatedAt = e.CreatedAt
-                                    }).ToList();
+                Event event_ = await GetEventAsync(nextEventId);
                 return new GetNextEventServerResponse()
                 {
-                    Event = evt,
-                    Subscribers = subscribers,
-                    Consumers = consumers
+                    Event = event_
                 };
             }
             return null;
@@ -62,30 +48,14 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Core.Services
 
         public async Task<ConsumeEventServerResponse> ConsumeEventAsync(ConsumeEventServerRequest request)
         {
-            var eventEntity = await _eventRepository.GetByIdAsync(request.EventId);
-            if (eventEntity != null)
+            var event_ = await GetEventAsync(request.EventId);
+            if (event_ != null)
             {
-                if (eventEntity.IsConsumed)
+                if (event_.IsConsumed)
                 {
                     throw new EventAlreadyConsumedException();
                 }
-                var subscribers = (await _eventSubscriberRepository.GetAllAsync(e => e.EventName == eventEntity.Name))
-                                        .Select(s => new EventSubscriber()
-                                        {
-                                            ApplicationName = EnumUtils.GetValueFromString<ApplicationNames>(s.ApplicationName)
-                                        }).ToList();
-                if (!subscribers.Exists(s => s.ApplicationName == request.ApplicationName))
-                {
-                    throw new ApplicationSubscriptionNotFoundException();
-                }
-                var consumers = (await _eventConsumerRepository.GetAllAsync(e => e.EventId == request.EventId))
-                                        .Select(c => new EventConsumer()
-                                        {
-                                            Id = c.Id,
-                                            ApplicationName = EnumUtils.GetValueFromString<ApplicationNames>(c.ApplicationName),
-                                            CreatedAt = c.CreatedAt
-                                        }).ToList();
-                if (consumers.Exists(c => c.ApplicationName == request.ApplicationName))
+                if (event_.Consumers.Exists(c => c.ApplicationName == request.ApplicationName))
                 {
                     throw new EventAlreadyConsumedException();
                 }
@@ -96,38 +66,63 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Core.Services
                     CreatedAt = DateTime.Now
                 };
                 await _eventConsumerRepository.InsertAsync(consumer);
-                consumers.Add(new EventConsumer()
+                event_.Consumers.Add(new EventConsumer()
                 {
                     Id = consumer.Id,
                     ApplicationName = EnumUtils.GetValueFromString<ApplicationNames>(consumer.ApplicationName),
                     CreatedAt = consumer.CreatedAt
                 });
-                if (subscribers.All(s => consumers.Exists(c => c.ApplicationName == s.ApplicationName)))
+                if (event_.Subscribers.All(s => event_.Consumers.Exists(c => c.ApplicationName == s.ApplicationName)))
                 {
-                    eventEntity.IsConsumed = true;
-                    await _eventRepository.UpdateAsync(eventEntity);
+                    event_.IsConsumed = true;
+                    await _eventRepository.UpdateAsync(new EventEntity()
+                    {
+                        Id = event_.Id,
+                        Name = event_.Name.ToString(),
+                        Source = event_.Source.ToString(),
+                        SerializedPayload = event_.SerializedPayload,
+                        CreatedAt = event_.CreatedAt,
+                        IsConsumed = event_.IsConsumed
+                    });
                 }
                 return new ConsumeEventServerResponse()
                 {
-                    Event = EventFromEntity(eventEntity),
-                    Consumers = consumers,
-                    Subscribers = subscribers
+                    Event = event_
                 };
             }
             return null;
         }
 
-        public static Event EventFromEntity(EventEntity eventEntity)
+        public async Task<Event> GetEventAsync(string eventId)
         {
-            return new Event()
+            var entity = await this._eventRepository.GetByIdAsync(eventId);
+            if (entity != null)
             {
-                Id = eventEntity.Id,
-                Name = EnumUtils.GetValueFromString<EventNames>(eventEntity.Name),
-                Source = EnumUtils.GetValueFromString<EventSources>(eventEntity.Source),
-                CreatedAt = eventEntity.CreatedAt,
-                SerializedPayload = eventEntity.SerializedPayload,
-                IsConsumed = eventEntity.IsConsumed
-            };
+                var subscribers = (await _eventSubscriberRepository.GetAllAsync(e => e.EventName == entity.Name))
+                                    .Select(e => new EventSubscriber()
+                                    {
+                                        ApplicationName = EnumUtils.GetValueFromString<ApplicationNames>(e.ApplicationName)
+                                    }).ToList();
+                var consumers = (await _eventConsumerRepository.GetAllAsync(e => e.EventId == entity.Id))
+                                    .Select(e => new EventConsumer()
+                                    {
+                                        Id = e.Id,
+                                        ApplicationName = EnumUtils.GetValueFromString<ApplicationNames>(e.ApplicationName),
+                                        CreatedAt = e.CreatedAt
+                                    }).ToList();
+                return new Event()
+                {
+                    Id = entity.Id,
+                    Name = EnumUtils.GetValueFromString<EventNames>(entity.Name),
+                    Source = EnumUtils.GetValueFromString<EventSources>(entity.Source),
+                    CreatedAt = entity.CreatedAt,
+                    SerializedPayload = entity.SerializedPayload,
+                    IsConsumed = entity.IsConsumed,
+                    Consumers = consumers,
+                    Subscribers = subscribers
+                };
+            }
+            return null;
         }
     }
 }

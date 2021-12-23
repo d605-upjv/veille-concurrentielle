@@ -38,6 +38,10 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Tests.Controllers
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
             Assert.NotNull(responseContent.Event);
             Assert.NotNull(responseContent.Event.Id);
+            Assert.NotNull(responseContent.Event.Subscribers);
+            Assert.NotNull(responseContent.Event.Consumers);
+            Assert.False(responseContent.Event.IsConsumed);
+            Assert.Equal(request.Source, responseContent.Event.Source);
         }
 
         [Fact]
@@ -82,6 +86,18 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Tests.Controllers
             };
             var payload = HttpClientUtils.CreateHttpContent(request);
             var response = await client.PostAsync("/api/Events/consume", payload);
+
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task GetEventt_Integration()
+        {
+            await using var application = new EventWebApp();
+            using var client = application.CreateClient();
+
+            var eventId = "UnknownEventId";
+            var response = await client.GetAsync($"/api/Events/{eventId}");
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
