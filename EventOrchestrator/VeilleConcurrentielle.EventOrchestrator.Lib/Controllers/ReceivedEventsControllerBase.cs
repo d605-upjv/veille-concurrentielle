@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using VeilleConcurrentielle.EventOrchestrator.Lib.Clients.ServiceClients;
 using VeilleConcurrentielle.EventOrchestrator.Lib.Servers.Models;
 using VeilleConcurrentielle.Infrastructure.Core.Data.Entities;
 using VeilleConcurrentielle.Infrastructure.Core.Data.Repositories;
@@ -15,12 +16,17 @@ namespace VeilleConcurrentielle.EventOrchestrator.Lib.Controllers
     {
         protected readonly ILogger<TController> _logger;
         protected readonly IReceivedEventRepository _receivedEentRepository;
+        protected readonly IEventServiceClient _eventServiceClient;
 
-        public ReceivedEventsControllerBase(IReceivedEventRepository receivedEventRepository, ILogger<TController> logger)
+        public ReceivedEventsControllerBase(IReceivedEventRepository receivedEventRepository, ILogger<TController> logger, IEventServiceClient eventServiceClient)
         {
             _receivedEentRepository = receivedEventRepository;
             _logger = logger;
+            _eventServiceClient = eventServiceClient;
         }
+
+        public abstract ApplicationNames ApplicationName { get; }
+        protected abstract Task ProcessEvent(string eventId, EventNames eventName, EventPayload eventPayload);
 
         [HttpPost]
         public async Task<IActionResult> ReceiveEvent([FromBody] DispatchEventServerRequest request)
@@ -29,14 +35,14 @@ namespace VeilleConcurrentielle.EventOrchestrator.Lib.Controllers
             {
                 return BadRequest(ModelState);
             }
-            
+
             try
             {
                 _logger.LogInformation($"Event received: {SerializationUtils.Serialize(request)}");
                 var storedId = await StoreReceivedEvent(request);
                 var payloadType = EventResolver.GetEventPayloadType(request.EventName);
                 var payload = SerializationUtils.Deserialize(request.SerializedPayload, payloadType) as EventPayload;
-                await ProcessEvent(request.EventName, payload);
+                await ProcessEvent(request.EventId, request.EventName, payload);
                 return Ok(new DispatchEventServerResponse() { ReceivedEventId = storedId });
             }
             catch (Exception ex)
@@ -57,7 +63,5 @@ namespace VeilleConcurrentielle.EventOrchestrator.Lib.Controllers
             await _receivedEentRepository.InsertAsync(receivedEventEntity);
             return receivedEventEntity.Id;
         }
-
-        protected abstract Task ProcessEvent(EventNames eventName, EventPayload eventPayload);
     }
 }

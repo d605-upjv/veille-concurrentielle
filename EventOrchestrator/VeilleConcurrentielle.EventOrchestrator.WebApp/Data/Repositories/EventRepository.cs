@@ -9,7 +9,7 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Data.Repositories
         {
         }
 
-        public string GetNextEventId()
+        public string? GetNextEventId()
         {
             return _dbContext.Set<EventEntity>()
                         .Where(e => e.IsConsumed == false)

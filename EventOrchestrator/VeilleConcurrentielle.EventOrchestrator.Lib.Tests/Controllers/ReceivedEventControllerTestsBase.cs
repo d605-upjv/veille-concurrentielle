@@ -29,6 +29,7 @@ namespace VeilleConcurrentielle.Infrastructure.Tests.Core.Controllers
             var serializedPayload = SerializationUtils.Serialize(payload);
             DispatchEventServerRequest request = new DispatchEventServerRequest()
             {
+                EventId = "EventId",
                 EventName = EventNames.Test,
                 Source = EventSources.Test,
                 DispatchedAt = DateTime.Now,
@@ -48,6 +49,7 @@ namespace VeilleConcurrentielle.Infrastructure.Tests.Core.Controllers
             using var client = application.CreateClient();
             DispatchEventServerRequest request = new DispatchEventServerRequest()
             {
+                EventId = "EventId",
                 EventName = EventNames.NewPriceSubmitted,
                 Source = EventSources.Test,
                 DispatchedAt = DateTime.Now,

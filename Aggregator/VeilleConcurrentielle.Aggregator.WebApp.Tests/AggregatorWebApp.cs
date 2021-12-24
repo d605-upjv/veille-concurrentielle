@@ -25,7 +25,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests
                     services.Remove(existingEventServiceClient);
                 }
                 var eventServiceClientMock = new Mock<IEventServiceClient>();
-                eventServiceClientMock.Setup(s => s.PushEvent(It.IsAny<PushEventClientRequest<AddOrUpdateProductRequestedEvent, AddOrUPdateProductRequestedEventPayload>>()))
+                eventServiceClientMock.Setup(s => s.PushEventAsync(It.IsAny<PushEventClientRequest<AddOrUpdateProductRequestedEvent, AddOrUPdateProductRequestedEventPayload>>()))
                                             .Returns((PushEventClientRequest<AddOrUpdateProductRequestedEvent, AddOrUPdateProductRequestedEventPayload> request) => { 
                                                 return Task.FromResult(new PushEventClientResponse<AddOrUpdateProductRequestedEvent, AddOrUPdateProductRequestedEventPayload>() { Event = new AddOrUpdateProductRequestedEvent() { Id = $"{request.Name}EventUniqueId" } }); 
                                             });

@@ -1,4 +1,5 @@
-﻿using VeilleConcurrentielle.EventOrchestrator.Lib.Controllers;
+﻿using VeilleConcurrentielle.EventOrchestrator.Lib.Clients.ServiceClients;
+using VeilleConcurrentielle.EventOrchestrator.Lib.Controllers;
 using VeilleConcurrentielle.Infrastructure.Core.Data.Repositories;
 using VeilleConcurrentielle.Infrastructure.Core.Models;
 
@@ -6,11 +7,14 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Controllers
 {
     public class ReceivedEventsController : ReceivedEventsControllerBase<ReceivedEventsController>
     {
-        public ReceivedEventsController(IReceivedEventRepository receivedEventRepository, ILogger<ReceivedEventsController> logger) : base(receivedEventRepository, logger)
+        public ReceivedEventsController(IReceivedEventRepository receivedEventRepository, ILogger<ReceivedEventsController> logger, IEventServiceClient eventServiceClient) 
+            : base(receivedEventRepository, logger, eventServiceClient)
         {
         }
 
-        protected override async Task ProcessEvent(EventNames eventName, EventPayload eventPayload)
+        public override ApplicationNames ApplicationName => ApplicationNames.Aggregator;
+
+        protected override async Task ProcessEvent(string eventId, EventNames eventName, EventPayload eventPayload)
         {
         }
     }

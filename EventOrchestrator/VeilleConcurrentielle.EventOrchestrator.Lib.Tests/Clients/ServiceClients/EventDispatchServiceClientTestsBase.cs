@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Moq;
 using System;
 using System.Threading.Tasks;
 using VeilleConcurrentielle.EventOrchestrator.Lib.Clients.Models;
@@ -18,6 +20,11 @@ namespace VeilleConcurrentielle.EventOrchestrator.Lib.Tests.Clients.ServiceClien
         where TEntryPoint : class
         where TDbContext : DbContext
     {
+        protected readonly Mock<ILogger<EventDispatcherServiceClient>> _loggerMock;
+        public EventDispatchServiceClientTestsBase()
+        {
+            _loggerMock = new Mock<ILogger<EventDispatcherServiceClient>>();
+        }
         public virtual async Task DispatchEvent_Integration()
         {
             await using var application = new TWebApp();
@@ -29,7 +36,7 @@ namespace VeilleConcurrentielle.EventOrchestrator.Lib.Tests.Clients.ServiceClien
                 AggregatorUrl = httpClient.BaseAddress.ToString(),
                 ProductUrl = httpClient.BaseAddress.ToString(),
             });
-            IEventDispatcherServiceClient eventDispatcherServiceClient = new EventDispatcherServiceClient(httpClient, serviceUrlOptions);
+            IEventDispatcherServiceClient eventDispatcherServiceClient = new EventDispatcherServiceClient(httpClient, serviceUrlOptions, _loggerMock.Object);
             var payload = new TestEventPayload()
             {
                 StringData = "String",
@@ -38,6 +45,7 @@ namespace VeilleConcurrentielle.EventOrchestrator.Lib.Tests.Clients.ServiceClien
             var serializedPayload = SerializationUtils.Serialize(payload);
             DispatchEventClientRequest clientRequest = new DispatchEventClientRequest()
             {
+                EventId = "EventId",
                 ApplicationName = ApplicationNames.EventOrchestrator,
                 EventName = EventNames.Test,
                 Source = EventSources.Test,
@@ -45,7 +53,7 @@ namespace VeilleConcurrentielle.EventOrchestrator.Lib.Tests.Clients.ServiceClien
                 DispatchedAt = DateTime.Now,
                 SerializedPayload = serializedPayload
             };
-            var clientResponse = await eventDispatcherServiceClient.DispatchEvent(clientRequest);
+            var clientResponse = await eventDispatcherServiceClient.DispatchEventAsync(clientRequest);
             Assert.NotNull(clientResponse);
             Assert.NotNull(clientResponse.ReceivedEventId);
         }

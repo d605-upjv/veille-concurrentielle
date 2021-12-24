@@ -6,6 +6,8 @@ namespace VeilleConcurrentielle.EventOrchestrator.Lib.Servers.Models
 {
     public class DispatchEventServerRequest
     {
+        [Required]
+        public string EventId { get; set; }
         [JsonConverter(typeof(JsonStringEnumConverter))]
         [Required]
         public ApplicationNames ApplicationName { get; set; }

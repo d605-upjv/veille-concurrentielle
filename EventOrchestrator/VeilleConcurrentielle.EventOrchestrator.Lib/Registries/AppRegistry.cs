@@ -1,14 +1,13 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using VeilleConcurrentielle.EventOrchestrator.Lib.Clients.ServiceClients;
 using VeilleConcurrentielle.Infrastructure.Core.Configurations;
 
-namespace VeilleConcurrentielle.EventOrchestrator.Lib.Servers
+namespace VeilleConcurrentielle.EventOrchestrator.Lib.Registries
 {
-    public static class WebAppRegistry
+    public static class AppRegistry
     {
-        public static void RegisterEventServiceClientDependencies(this IServiceCollection services, ConfigurationManager configuration)
+        public static void RegisterEventServiceClientDependencies(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<ServiceUrlsOptions>(configuration.GetSection(ServiceUrlsOptions.ServiceUrls));
             services.AddHttpClient<IEventDispatcherServiceClient, EventDispatcherServiceClient>();

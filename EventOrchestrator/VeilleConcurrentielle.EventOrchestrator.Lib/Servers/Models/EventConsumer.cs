@@ -9,5 +9,6 @@ namespace VeilleConcurrentielle.EventOrchestrator.Lib.Servers.Models
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public ApplicationNames ApplicationName { get; set; }
         public DateTime CreatedAt { get; set; }
+        public string? Reason { get; set; }
     }
 }

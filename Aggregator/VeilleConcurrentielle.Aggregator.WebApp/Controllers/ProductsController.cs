@@ -31,7 +31,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Controllers
                 eventRequest.Name = EventNames.AddOrUpdateProductRequested;
                 eventRequest.Source = EventSources.ProductService;
                 eventRequest.Payload = request;
-                var response = await _eventServiceClient.PushEvent(eventRequest);
+                var response = await _eventServiceClient.PushEventAsync(eventRequest);
                 return Ok(new AddOrEditProductModels.AddOrEditProductResponse(response.Event.Id));
             }
             catch (Exception ex)

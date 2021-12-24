@@ -59,14 +59,14 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers
         public async Task PostAddOrEditProduct_CallsAppropriateServices()
         {
             var eventServiceClientMock = new Mock<IEventServiceClient>();
-            eventServiceClientMock.Setup(s => s.PushEvent(It.IsAny<PushEventClientRequest<AddOrUpdateProductRequestedEvent, AddOrUPdateProductRequestedEventPayload>>()))
+            eventServiceClientMock.Setup(s => s.PushEventAsync(It.IsAny<PushEventClientRequest<AddOrUpdateProductRequestedEvent, AddOrUPdateProductRequestedEventPayload>>()))
                                             .Returns((PushEventClientRequest<AddOrUpdateProductRequestedEvent, AddOrUPdateProductRequestedEventPayload> request) => {
                                                 return Task.FromResult(new PushEventClientResponse<AddOrUpdateProductRequestedEvent, AddOrUPdateProductRequestedEventPayload>() { Event = new AddOrUpdateProductRequestedEvent() { Id = $"{request.Name}EventUniqueId" } });
                                             });
             ProductsController controller = new ProductsController(eventServiceClientMock.Object, _loggerMocker.Object);
             var request = PostAddOrEditProductValidRequests.GetStandardValidRequest();
             var response = await controller.PostAddOrEditProduct(request);
-            eventServiceClientMock.Verify(s => s.PushEvent(It.IsAny<PushEventClientRequest<AddOrUpdateProductRequestedEvent, AddOrUPdateProductRequestedEventPayload>>()), Times.Once());
+            eventServiceClientMock.Verify(s => s.PushEventAsync(It.IsAny<PushEventClientRequest<AddOrUpdateProductRequestedEvent, AddOrUPdateProductRequestedEventPayload>>()), Times.Once());
             Assert.IsType<OkObjectResult>(response);
         }
     }

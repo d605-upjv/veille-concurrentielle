@@ -4,6 +4,6 @@ namespace VeilleConcurrentielle.EventOrchestrator.Lib.Clients.ServiceClients
 {
     public interface IEventDispatcherServiceClient
     {
-        Task<DispatchEventClientResponse> DispatchEvent(DispatchEventClientRequest cllientRequest);
+        Task<DispatchEventClientResponse?> DispatchEventAsync(DispatchEventClientRequest cllientRequest);
     }
 }

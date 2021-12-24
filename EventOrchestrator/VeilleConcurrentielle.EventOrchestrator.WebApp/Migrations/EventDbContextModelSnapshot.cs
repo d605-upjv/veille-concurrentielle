@@ -33,7 +33,12 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Reason")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("EventId");
 
                     b.ToTable("EventConsumers");
                 });

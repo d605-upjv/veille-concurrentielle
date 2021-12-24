@@ -30,7 +30,7 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Tests.Controllers
                 Source = EventSources.Test,
                 SerializedPayload = serializedPayload
             };
-            
+
             var response = await client.PostAsJsonAsync("/api/Events", request);
             response.EnsureSuccessStatusCode();
             var responseContent = await HttpClientUtils.ReadBody<PushEventServerResponse>(response);
@@ -81,8 +81,8 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Tests.Controllers
 
             ConsumeEventServerRequest request = new ConsumeEventServerRequest()
             {
-                EventId="EventId",
-                ApplicationName= ApplicationNames.Aggregator
+                EventId = "EventId",
+                ApplicationName = ApplicationNames.Aggregator
             };
             var payload = HttpClientUtils.CreateHttpContent(request);
             var response = await client.PostAsync("/api/Events/consume", payload);

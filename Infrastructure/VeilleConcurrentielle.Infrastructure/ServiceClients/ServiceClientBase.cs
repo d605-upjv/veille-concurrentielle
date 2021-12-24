@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.Options;
-using System.Configuration;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
 using System.Text;
 using VeilleConcurrentielle.Infrastructure.Core.Configurations;
@@ -13,8 +13,9 @@ namespace VeilleConcurrentielle.Infrastructure.ServiceClients
         private readonly HttpClient _httpClient;
         private readonly ServiceUrlsOptions _serviceUrlOptions;
         protected readonly Dictionary<ApplicationNames, string> _serviceUrls;
+        protected readonly ILogger _logger;
         protected abstract string Controller { get; }
-        public ServiceClientBase(HttpClient httpClient, IOptions<ServiceUrlsOptions> serviceUrlOptions)
+        public ServiceClientBase(HttpClient httpClient, IOptions<ServiceUrlsOptions> serviceUrlOptions, ILogger logger)
         {
             _httpClient = httpClient;
             _serviceUrlOptions = serviceUrlOptions.Value;
@@ -24,6 +25,7 @@ namespace VeilleConcurrentielle.Infrastructure.ServiceClients
                 {ApplicationNames.Aggregator, _serviceUrlOptions.AggregatorUrl },
                 {ApplicationNames.ProductService, _serviceUrlOptions.ProductUrl }
             };
+            _logger = logger;
         }
 
         protected string GetServiceUrl(ApplicationNames applicationName)
@@ -31,7 +33,7 @@ namespace VeilleConcurrentielle.Infrastructure.ServiceClients
             return _serviceUrls[applicationName];
         }
 
-        public async Task<TResponse> PostAsync<TRequest, TResponse>(string serviceUrl, TRequest request, string path = null) where TRequest : class where TResponse : class
+        private string ComputeServiceUrl(string serviceUrl, string path)
         {
             StringBuilder urlBuilder = new StringBuilder();
             var baseUrl = serviceUrl;
@@ -44,10 +46,49 @@ namespace VeilleConcurrentielle.Infrastructure.ServiceClients
             {
                 urlBuilder.Append($"/{path}");
             }
-            var response = await _httpClient.PostAsJsonAsync(urlBuilder.ToString(), request);
-            response.EnsureSuccessStatusCode();
-            var responseContent = await HttpClientUtils.ReadBody<TResponse>(response);
-            return responseContent;
+            return urlBuilder.ToString();
+        }
+
+        public async Task<TResponse?> PostAsync<TRequest, TResponse>(string serviceUrl, TRequest request, string path = null) where TRequest : class where TResponse : class
+        {
+            try
+            {
+                var url = ComputeServiceUrl(serviceUrl, path);
+                var response = await _httpClient.PostAsJsonAsync(url, request);
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    return null;
+                }
+                response.EnsureSuccessStatusCode();
+                var responseContent = await HttpClientUtils.ReadBody<TResponse>(response);
+                return responseContent;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Failed to call service: {serviceUrl}/{path}  (request: {SerializationUtils.Serialize(request)})");
+                throw;
+            }
+        }
+
+        public async Task<TResponse?> GetAsync<TResponse>(string serviceUrl, string path = null) where TResponse : class
+        {
+            try
+            {
+                var url = ComputeServiceUrl(serviceUrl, path);
+                var response = await _httpClient.GetAsync(url);
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    return null;
+                }
+                response.EnsureSuccessStatusCode();
+                var responseContent = await HttpClientUtils.ReadBody<TResponse>(response);
+                return responseContent;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Failed to call service: {serviceUrl}/{path}");
+                throw;
+            }
         }
     }
 }

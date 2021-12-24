@@ -12,5 +12,6 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Data.Entities
         [Required]
         public string ApplicationName { get; set; }
         public DateTime CreatedAt { get; set; }
+        public string? Reason { get; set; }
     }
 }

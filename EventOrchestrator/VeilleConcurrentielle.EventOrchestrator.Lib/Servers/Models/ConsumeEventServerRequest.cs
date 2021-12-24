@@ -11,5 +11,6 @@ namespace VeilleConcurrentielle.EventOrchestrator.Lib.Servers.Models
         [Required]
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public ApplicationNames ApplicationName { get; set; }
+        public string? Reason { get; set; }
     }
 }

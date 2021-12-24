@@ -1,9 +1,9 @@
 using System.Text.Json.Serialization;
-using VeilleConcurrentielle.EventOrchestrator.Lib.Servers;
+using VeilleConcurrentielle.EventOrchestrator.Lib.Registries;
 using VeilleConcurrentielle.EventOrchestrator.WebApp.Core.Services;
 using VeilleConcurrentielle.EventOrchestrator.WebApp.Data;
 using VeilleConcurrentielle.EventOrchestrator.WebApp.Data.Repositories;
-using VeilleConcurrentielle.Infrastructure.Web;
+using VeilleConcurrentielle.Infrastructure.Registries;
 
 var builder = WebApplication.CreateBuilder(args);
 
