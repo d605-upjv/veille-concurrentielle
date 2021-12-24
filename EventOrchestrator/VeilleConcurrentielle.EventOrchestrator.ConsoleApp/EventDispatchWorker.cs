@@ -11,8 +11,8 @@ namespace VeilleConcurrentielle.EventOrchestrator.ConsoleApp
 {
     public class EventDispatchWorker : IEventDispatchWorker
     {
-        public const int RETRY_COUNT_BEFORE_FATAL = 3;
-        public const int FATAL_EXIT_CODE = 99;
+        public const int RetryCountBeforeFatal = 3;
+        public const int FatalExitCode = 99;
         private readonly ILogger<EventDispatchWorker> _logger;
         private readonly IEventServiceClient _eventServiceClient;
         private readonly IEventDispatcherServiceClient _eventDispatcherServiceClient;
@@ -103,7 +103,7 @@ namespace VeilleConcurrentielle.EventOrchestrator.ConsoleApp
 
             var consumePolicy = Policy
                                     .Handle<Exception>()
-                                    .WaitAndRetryAsync(RETRY_COUNT_BEFORE_FATAL - 1,
+                                    .WaitAndRetryAsync(RetryCountBeforeFatal - 1,
                                                         retryAttempt => TimeSpan.FromSeconds(_workerConfig.RetryWaitInSeconds),
                                                         onRetryAsync: async (ex, retryCount) =>
                                                          {
@@ -125,7 +125,7 @@ namespace VeilleConcurrentielle.EventOrchestrator.ConsoleApp
             {
                 _logger.LogCritical(ex, $"Failed to consume event {event_.Name} ({event_.Id}) for application {applicationName}");
                 _logger.LogCritical("Exit program due to fatal error");
-                _appTerminator.Terminate(FATAL_EXIT_CODE);
+                _appTerminator.Terminate(FatalExitCode);
             }
         }
     }

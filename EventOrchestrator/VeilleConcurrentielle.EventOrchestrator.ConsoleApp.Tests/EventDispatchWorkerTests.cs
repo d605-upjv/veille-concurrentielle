@@ -274,8 +274,8 @@ namespace VeilleConcurrentielle.EventOrchestrator.ConsoleApp.Tests
             eventDispatcherServiceClientMock.Verify(s => s.DispatchEventAsync(It.IsAny<DispatchEventClientRequest>()), Times.Exactly(event_.Subscribers.Count * workerConfigOptions.Value.DispatchRetryCountBeforeForcingConsume));
             // Unfortunately, I don't know yet how to stop the unit test execution.
             // That's why, it would run as many times as we have subscribers
-            eventServiceClientMock.Verify(s => s.ConsumeEventAsync(It.IsAny<ConsumeEventClientRequest>()), Times.Exactly(event_.Subscribers.Count * EventDispatchWorker.RETRY_COUNT_BEFORE_FATAL));
-            _appTerminatorMock.Verify(s => s.Terminate(EventDispatchWorker.FATAL_EXIT_CODE), Times.Exactly(event_.Subscribers.Count));
+            eventServiceClientMock.Verify(s => s.ConsumeEventAsync(It.IsAny<ConsumeEventClientRequest>()), Times.Exactly(event_.Subscribers.Count * EventDispatchWorker.RetryCountBeforeFatal));
+            _appTerminatorMock.Verify(s => s.Terminate(EventDispatchWorker.FatalExitCode), Times.Exactly(event_.Subscribers.Count));
         }
     }
 }
