@@ -1,0 +1,23 @@
+{
+  "productId": "ProductId",
+  "productName": null,
+  "price": 0,
+  "quantity": 0,
+  "isActive": false,
+  "imageUrl": null,
+  "strategies": [ { "id": "OverallAveragePrice" } ],
+  "competitorConfigs": [
+    {
+      "competitorId": "ShopA",
+      "holder": {
+        "items": [
+          {
+            "key": null,
+            "value": null
+          }
+        ]
+      }
+    }
+  ],
+  "refererEventId": null
+}

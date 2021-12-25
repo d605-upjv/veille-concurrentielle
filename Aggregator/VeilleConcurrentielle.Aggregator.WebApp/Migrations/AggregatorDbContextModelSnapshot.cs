@@ -91,6 +91,10 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Migrations
                     b.Property<DateTime>("DispatchedAt")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("EventId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");

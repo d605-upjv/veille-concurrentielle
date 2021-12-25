@@ -31,18 +31,18 @@ namespace VeilleConcurrentielle.Infrastructure.Data
         {
             entity.Id = Guid.NewGuid().ToString();
         }
-        public async Task InsertAsync(T entity)
+        public virtual async Task InsertAsync(T entity)
         {
             ComputeNewIdBeforeInsert(entity);
             _dbContext.Set<T>().Add(entity);
             await _dbContext.SaveChangesAsync();
         }
-        public async Task UpdateAsync(T entity)
+        public virtual async Task UpdateAsync(T entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
         }
-        public async Task DeleteAsync(T entity)
+        public virtual async Task DeleteAsync(T entity)
         {
             _dbContext.Set<T>().Remove(entity);
             await _dbContext.SaveChangesAsync();

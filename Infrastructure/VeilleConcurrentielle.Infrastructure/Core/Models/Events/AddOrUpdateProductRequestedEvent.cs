@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using VeilleConcurrentielle.Infrastructure.Framework;
 
@@ -12,8 +11,7 @@ namespace VeilleConcurrentielle.Infrastructure.Core.Models.Events
 
     public class AddOrUPdateProductRequestedEventPayload : EventPayload
     {
-        [Required]
-        public string ProductId { get; set; }
+        public string? ProductId { get; set; }
         [Required]
         public string ProductName { get; set; }
         [Required]
@@ -21,9 +19,13 @@ namespace VeilleConcurrentielle.Infrastructure.Core.Models.Events
         [Required]
         public int Quantity { get; set; }
         [Required]
-        [AtLeast(1)]
-        public List<Strategy> Strategys { get; set; }
+        public bool IsActive { get; set; }
+        public string? ImageUrl { get; set; }
         [Required]
+        [AtLeast(1)]
+        public List<Strategy> Strategies { get; set; }
+        [Required]
+        [AtLeast(1)]
         public List<CompetitorConfig> CompetitorConfigs { get; set; }
 
         public class Strategy
@@ -38,59 +40,7 @@ namespace VeilleConcurrentielle.Infrastructure.Core.Models.Events
             [JsonConverter(typeof(JsonStringEnumConverter))]
             public CompetitorIds CompetitorId { get; set; }
             [Required]
-            public List<ProductExternalId> ProductExternalIds { get; set; }
-            [Required]
-            public List<ProductUrl> ProductUrls { get; set; }
-
-            public class ProductExternalId
-            {
-                [Required]
-                [JsonConverter(typeof(JsonStringEnumConverter))]
-                public ProductExternalIdNames Name { get; set; }
-                [Required]
-                public string Id { get; set; }
-            }
-
-            public class ProductUrl
-            {
-                [Required]
-                [JsonConverter(typeof(JsonStringEnumConverter))]
-                public ProductUrlNames Name { get; set; }
-                [Required]
-                public string Url { get; set; }
-            }
+            public ConfigHolder Holder { get; set; }
         }
-    }
-
-    public enum CompetitorIds
-    {
-        [EnumMember(Value = "ShopA")]
-        ShopA,
-        [EnumMember(Value = "ShopB")]
-        ShopB
-    }
-
-    public enum StrategyIds
-    {
-        [EnumMember(Value = "OverallAveragePrice")]
-        OverallAveragePrice,
-        [EnumMember(Value = "OverallCheaperPrice")]
-        OverallCheaperPrice,
-        [EnumMember(Value = "FivePercentAboveMeanPrice")]
-        FivePercentAboveMeanPrice
-    }
-
-    public enum ProductExternalIdNames
-    {
-        [EnumMember(Value = "UniqueId")]
-        UniqueId,
-        [EnumMember(Value = "EAN")]
-        EAN
-    }
-
-    public enum ProductUrlNames
-    {
-        [EnumMember(Value = "ProductProfile")]
-        ProductProfile,
     }
 }

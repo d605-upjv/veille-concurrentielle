@@ -97,12 +97,6 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "212d189d-c176-4490-b7c8-edd0be4b3dff",
-                            ApplicationName = "ProductService",
-                            EventName = "AddOrUpdateProductRequested"
-                        },
-                        new
-                        {
                             Id = "7b68fa7b-0062-478e-ac70-111733f6cdee",
                             ApplicationName = "EventOrchestrator",
                             EventName = "Test"
@@ -118,6 +112,18 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Migrations
                             Id = "a7d97a94-7d70-4415-bbbf-2956d5879b2b",
                             ApplicationName = "Aggregator",
                             EventName = "Test"
+                        },
+                        new
+                        {
+                            Id = "212d189d-c176-4490-b7c8-edd0be4b3dff",
+                            ApplicationName = "ProductService",
+                            EventName = "AddOrUpdateProductRequested"
+                        },
+                        new
+                        {
+                            Id = "92e062c7-7372-43e2-957d-47c51e91bc16",
+                            ApplicationName = "Aggregator",
+                            EventName = "ProductAddedOrUpdated"
                         });
                 });
 
@@ -130,6 +136,10 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DispatchedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("EventId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")

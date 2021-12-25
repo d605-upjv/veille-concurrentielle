@@ -2,6 +2,6 @@
 {
     public abstract class EventPayload
     {
-
+        public string? RefererEventId { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.Json;
 using VeilleConcurrentielle.Infrastructure.Framework;
+using VeilleConcurrentielle.Infrastructure.TestLib.TestData;
 using Xunit;
 
 namespace VeilleConcurrentielle.Infrastructure.Tests.Framework
@@ -53,6 +54,14 @@ namespace VeilleConcurrentielle.Infrastructure.Tests.Framework
             {
                 SerializationUtils.Deserialize(serialized, typeof(SimpleClass));
             });
+        }
+
+        [Theory]
+        [ClassData(typeof(EmptyStringTestData))]
+        public void Deserialize_WithNullOrEmpty_ReturnsNull(string serialized)
+        {
+            var deserialized = SerializationUtils.Deserialize<SimpleClass>(serialized);
+            Assert.Null(deserialized);
         }
 
         class SimpleClass

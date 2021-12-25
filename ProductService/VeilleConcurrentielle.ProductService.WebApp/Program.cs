@@ -1,7 +1,9 @@
 using System.Text.Json.Serialization;
 using VeilleConcurrentielle.EventOrchestrator.Lib.Registries;
 using VeilleConcurrentielle.Infrastructure.Registries;
+using VeilleConcurrentielle.ProductService.WebApp.Core.Services;
 using VeilleConcurrentielle.ProductService.WebApp.Data;
+using VeilleConcurrentielle.ProductService.WebApp.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,11 @@ builder.Services.AddSqlite<ProductDbContext>(productDbConnectionString)
 
 builder.Services.RegisterEventServiceClientDependencies(builder.Configuration);
 builder.Services.RegisterReceivedEventServiceDependencies<ProductDbContext>();
+
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IEventProcessor, EventProcessor>();
+builder.Services.AddScoped<IProductsService, ProductsService>();
+builder.Services.AddScoped<IProductPriceService, ProductPriceService>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));

@@ -56,6 +56,7 @@ namespace VeilleConcurrentielle.EventOrchestrator.Lib.Controllers
         {
             ReceivedEventEntity receivedEventEntity = new ReceivedEventEntity();
             receivedEventEntity.Name = request.EventName.ToString();
+            receivedEventEntity.EventId = request.EventId;
             receivedEventEntity.DispatchedAt = request.DispatchedAt;
             receivedEventEntity.Source = request.Source.ToString();
             receivedEventEntity.CreatedAt = DateTime.Now;

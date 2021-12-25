@@ -5,6 +5,7 @@ using System.Net.Http.Json;
 using System;
 using VeilleConcurrentielle.Infrastructure.Core.Models.Events;
 using mywebapp::VeilleConcurrentielle.Aggregator.WebApp.Models;
+using VeilleConcurrentielle.Infrastructure.Core.Models;
 
 namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers
 {

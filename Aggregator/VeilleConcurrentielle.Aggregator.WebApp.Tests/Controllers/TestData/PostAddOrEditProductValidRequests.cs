@@ -2,6 +2,7 @@
 
 using mywebapp::VeilleConcurrentielle.Aggregator.WebApp.Models;
 using System.Collections.Generic;
+using VeilleConcurrentielle.Infrastructure.Core.Models;
 using VeilleConcurrentielle.Infrastructure.Core.Models.Events;
 
 namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers.TestData
@@ -16,7 +17,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers.TestData
                 ProductName = "Product1Name",
                 Price = 100,
                 Quantity = 10,
-                Strategys = new List<AddOrUPdateProductRequestedEventPayload.Strategy> {
+                Strategies = new List<AddOrUPdateProductRequestedEventPayload.Strategy> {
                     new AddOrUPdateProductRequestedEventPayload.Strategy() { Id = StrategyIds.OverallAveragePrice},
                     new AddOrUPdateProductRequestedEventPayload.Strategy() { Id = StrategyIds.OverallCheaperPrice}
                 },
@@ -24,15 +25,17 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers.TestData
                 {
                     new AddOrUPdateProductRequestedEventPayload.CompetitorConfig(){
                         CompetitorId= CompetitorIds.ShopA,
-                        ProductExternalIds= new List<AddOrUPdateProductRequestedEventPayload.CompetitorConfig.ProductExternalId>
-                        {
-                            new AddOrUPdateProductRequestedEventPayload.CompetitorConfig.ProductExternalId(){ Id="Unique1", Name=ProductExternalIdNames.UniqueId},
-                            new AddOrUPdateProductRequestedEventPayload.CompetitorConfig.ProductExternalId(){ Id="EAN1", Name=ProductExternalIdNames.EAN}
-                        },
-                        ProductUrls= new List<AddOrUPdateProductRequestedEventPayload.CompetitorConfig.ProductUrl>
-                        {
-                            new AddOrUPdateProductRequestedEventPayload.CompetitorConfig.ProductUrl(){ Name=ProductUrlNames.ProductProfile, Url="https://product.com/Id1"}
-                        }
+                        Holder = new ConfigHolder()
+                                {
+                                    Items = new List<ConfigHolder.ConfigItem>
+                                    {
+                                        new ConfigHolder.ConfigItem
+                                        {
+                                            Key = CompetitorConfigHolderKeys.ProfileUrl.ToString(),
+                                            Value = "https://anyurl.com"
+                                        }
+                                    }
+                                }
                     }
                 }
             };

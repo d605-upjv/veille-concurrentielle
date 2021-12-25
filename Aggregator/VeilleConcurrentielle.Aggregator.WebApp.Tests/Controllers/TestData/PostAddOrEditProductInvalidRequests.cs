@@ -3,6 +3,7 @@
 using mywebapp::VeilleConcurrentielle.Aggregator.WebApp.Models;
 using System.Collections;
 using System.Collections.Generic;
+using VeilleConcurrentielle.Infrastructure.Core.Models;
 using VeilleConcurrentielle.Infrastructure.Core.Models.Events;
 
 namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers.TestData
@@ -11,14 +12,15 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers.TestData
     {
         public IEnumerator<object[]> GetEnumerator()
         {
+            // missing ProductName
             yield return new object[]
             {
                 new AddOrEditProductModels.AddOrEditProductRequest()
                 {
-                    ProductName = "ProductName",
+                    ProductId = "ProductId",
                     Price = 100,
                     Quantity = 10,
-                    Strategys = new List<AddOrUPdateProductRequestedEventPayload.Strategy> {
+                    Strategies = new List<AddOrUPdateProductRequestedEventPayload.Strategy> {
                             new AddOrUPdateProductRequestedEventPayload.Strategy() { Id = StrategyIds.OverallAveragePrice},
                             new AddOrUPdateProductRequestedEventPayload.Strategy() { Id = StrategyIds.OverallCheaperPrice}
                         },
@@ -26,16 +28,15 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers.TestData
                         {
                             new AddOrUPdateProductRequestedEventPayload.CompetitorConfig(){
                                 CompetitorId= CompetitorIds.ShopA,
-                                ProductExternalIds= new List<AddOrUPdateProductRequestedEventPayload.CompetitorConfig.ProductExternalId>
+                                Holder = new ConfigHolder()
                                 {
-                                    new AddOrUPdateProductRequestedEventPayload.CompetitorConfig.ProductExternalId(){ Id="Unique1", Name=ProductExternalIdNames.UniqueId},
-                                    new AddOrUPdateProductRequestedEventPayload.CompetitorConfig.ProductExternalId(){ Id="EAN1", Name=ProductExternalIdNames.EAN}
-                                },
-                                ProductUrls= new List<AddOrUPdateProductRequestedEventPayload.CompetitorConfig.ProductUrl>
-                                {
-                                    new AddOrUPdateProductRequestedEventPayload.CompetitorConfig.ProductUrl(){
-                                        Name = ProductUrlNames.ProductProfile,
-                                        Url = "https://product.com/Id1"
+                                    Items = new List<ConfigHolder.ConfigItem>
+                                    {
+                                        new ConfigHolder.ConfigItem()
+                                        {
+                                            Key = CompetitorConfigHolderKeys.ProfileUrl.ToString(),
+                                            Value = "https://anyurl.com"
+                                        }
                                     }
                                 }
                             }
@@ -43,38 +44,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers.TestData
                 }
             };
 
-            yield return new object[]
-            {
-                new AddOrEditProductModels.AddOrEditProductRequest()
-                {
-                    ProductId = "ProductId",
-                    Price = 100,
-                    Quantity = 10,
-                    Strategys = new List<AddOrUPdateProductRequestedEventPayload.Strategy> {
-                            new AddOrUPdateProductRequestedEventPayload.Strategy() { Id = StrategyIds.OverallAveragePrice},
-                            new AddOrUPdateProductRequestedEventPayload.Strategy() { Id = StrategyIds.OverallCheaperPrice}
-                        },
-                    CompetitorConfigs = new List<AddOrUPdateProductRequestedEventPayload.CompetitorConfig>
-                        {
-                            new AddOrUPdateProductRequestedEventPayload.CompetitorConfig(){
-                                CompetitorId= CompetitorIds.ShopA,
-                                ProductExternalIds= new List<AddOrUPdateProductRequestedEventPayload.CompetitorConfig.ProductExternalId>
-                                {
-                                    new AddOrUPdateProductRequestedEventPayload.CompetitorConfig.ProductExternalId(){ Id="Unique1", Name=ProductExternalIdNames.UniqueId},
-                                    new AddOrUPdateProductRequestedEventPayload.CompetitorConfig.ProductExternalId(){ Id="EAN1", Name=ProductExternalIdNames.EAN}
-                                },
-                                ProductUrls= new List<AddOrUPdateProductRequestedEventPayload.CompetitorConfig.ProductUrl>
-                                {
-                                    new AddOrUPdateProductRequestedEventPayload.CompetitorConfig.ProductUrl(){
-                                        Name = ProductUrlNames.ProductProfile,
-                                        Url = "https://product.com/Id1"
-                                    }
-                                }
-                            }
-                        }
-                }
-            };
-
+            // missing Strategies
             yield return new object[]
             {
                 new AddOrEditProductModels.AddOrEditProductRequest()
@@ -83,21 +53,20 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers.TestData
                     ProductName = "ProductName",
                     Price = 100,
                     Quantity = 10,
-                    Strategys = null,
+                    Strategies = null,
                     CompetitorConfigs = new List<AddOrUPdateProductRequestedEventPayload.CompetitorConfig>
                         {
                             new AddOrUPdateProductRequestedEventPayload.CompetitorConfig(){
                                 CompetitorId= CompetitorIds.ShopA,
-                                ProductExternalIds= new List<AddOrUPdateProductRequestedEventPayload.CompetitorConfig.ProductExternalId>
+                                Holder = new ConfigHolder()
                                 {
-                                    new AddOrUPdateProductRequestedEventPayload.CompetitorConfig.ProductExternalId(){ Id="Unique1", Name=ProductExternalIdNames.UniqueId},
-                                    new AddOrUPdateProductRequestedEventPayload.CompetitorConfig.ProductExternalId(){ Id="EAN1", Name=ProductExternalIdNames.EAN}
-                                },
-                                ProductUrls= new List<AddOrUPdateProductRequestedEventPayload.CompetitorConfig.ProductUrl>
-                                {
-                                    new AddOrUPdateProductRequestedEventPayload.CompetitorConfig.ProductUrl(){
-                                        Name = ProductUrlNames.ProductProfile,
-                                        Url = "https://product.com/Id1"
+                                    Items = new List<ConfigHolder.ConfigItem>
+                                    {
+                                        new ConfigHolder.ConfigItem()
+                                        {
+                                            Key = CompetitorConfigHolderKeys.ProfileUrl.ToString(),
+                                            Value = "https://anyurl.com"
+                                        }
                                     }
                                 }
                             }
@@ -105,6 +74,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers.TestData
                 }
             };
 
+            // missing 1 Strategy
             yield return new object[]
             {
                 new AddOrEditProductModels.AddOrEditProductRequest()
@@ -113,21 +83,20 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers.TestData
                     ProductName = "ProductName",
                     Price = 100,
                     Quantity = 10,
-                    Strategys = new List<AddOrUPdateProductRequestedEventPayload.Strategy>(),
+                    Strategies = new List<AddOrUPdateProductRequestedEventPayload.Strategy>(),
                     CompetitorConfigs = new List<AddOrUPdateProductRequestedEventPayload.CompetitorConfig>
                         {
                             new AddOrUPdateProductRequestedEventPayload.CompetitorConfig(){
                                 CompetitorId = CompetitorIds.ShopA,
-                                ProductExternalIds = new List<AddOrUPdateProductRequestedEventPayload.CompetitorConfig.ProductExternalId>
+                                Holder = new ConfigHolder()
                                 {
-                                    new AddOrUPdateProductRequestedEventPayload.CompetitorConfig.ProductExternalId(){ Id="Unique1", Name=ProductExternalIdNames.UniqueId},
-                                    new AddOrUPdateProductRequestedEventPayload.CompetitorConfig.ProductExternalId(){ Id="EAN1", Name=ProductExternalIdNames.EAN}
-                                },
-                                ProductUrls= new List<AddOrUPdateProductRequestedEventPayload.CompetitorConfig.ProductUrl>
-                                {
-                                    new AddOrUPdateProductRequestedEventPayload.CompetitorConfig.ProductUrl(){
-                                        Name = ProductUrlNames.ProductProfile,
-                                        Url = "https://product.com/Id1"
+                                    Items = new List<ConfigHolder.ConfigItem>
+                                    {
+                                        new ConfigHolder.ConfigItem
+                                        {
+                                            Key = CompetitorConfigHolderKeys.ProfileUrl.ToString(),
+                                            Value = "https://anyurl.com"
+                                        }
                                     }
                                 }
                             }
@@ -135,6 +104,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers.TestData
                 }
             };
 
+            // missing CompetitorConfigs
             yield return new object[]
             {
                 new AddOrEditProductModels.AddOrEditProductRequest()
@@ -143,11 +113,28 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers.TestData
                     ProductName = "ProductName",
                     Price = 100,
                     Quantity = 10,
-                    Strategys = new List<AddOrUPdateProductRequestedEventPayload.Strategy> {
+                    Strategies = new List<AddOrUPdateProductRequestedEventPayload.Strategy> {
                             new AddOrUPdateProductRequestedEventPayload.Strategy() { Id = StrategyIds.OverallAveragePrice},
                             new AddOrUPdateProductRequestedEventPayload.Strategy() { Id = StrategyIds.OverallCheaperPrice}
                         },
                     CompetitorConfigs = null
+                }
+            };
+
+            // missing 1 CompetitorConfigs
+            yield return new object[]
+            {
+                new AddOrEditProductModels.AddOrEditProductRequest()
+                {
+                    ProductId = "ProductId",
+                    ProductName = "ProductName",
+                    Price = 100,
+                    Quantity = 10,
+                    Strategies = new List<AddOrUPdateProductRequestedEventPayload.Strategy> {
+                            new AddOrUPdateProductRequestedEventPayload.Strategy() { Id = StrategyIds.OverallAveragePrice},
+                            new AddOrUPdateProductRequestedEventPayload.Strategy() { Id = StrategyIds.OverallCheaperPrice}
+                        },
+                    CompetitorConfigs = new List<AddOrUPdateProductRequestedEventPayload.CompetitorConfig>()
                 }
             };
         }

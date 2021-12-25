@@ -18,10 +18,11 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<EventSubscriberEntity>().HasData(
-                new EventSubscriberEntity() { Id = "212d189d-c176-4490-b7c8-edd0be4b3dff", EventName = EventNames.AddOrUpdateProductRequested.ToString(), ApplicationName = ApplicationNames.ProductService.ToString() },
                 new EventSubscriberEntity() { Id = "7b68fa7b-0062-478e-ac70-111733f6cdee", EventName = EventNames.Test.ToString(), ApplicationName = ApplicationNames.EventOrchestrator.ToString() },
                 new EventSubscriberEntity() { Id = "2e778f3b-a580-43e2-b292-774d5a070d92", EventName = EventNames.Test.ToString(), ApplicationName = ApplicationNames.ProductService.ToString() },
-                new EventSubscriberEntity() { Id = "a7d97a94-7d70-4415-bbbf-2956d5879b2b", EventName = EventNames.Test.ToString(), ApplicationName = ApplicationNames.Aggregator.ToString() }
+                new EventSubscriberEntity() { Id = "a7d97a94-7d70-4415-bbbf-2956d5879b2b", EventName = EventNames.Test.ToString(), ApplicationName = ApplicationNames.Aggregator.ToString() },
+                new EventSubscriberEntity() { Id = "212d189d-c176-4490-b7c8-edd0be4b3dff", EventName = EventNames.AddOrUpdateProductRequested.ToString(), ApplicationName = ApplicationNames.ProductService.ToString() },
+                new EventSubscriberEntity() { Id = "92e062c7-7372-43e2-957d-47c51e91bc16", EventName = EventNames.ProductAddedOrUpdated.ToString(), ApplicationName = ApplicationNames.Aggregator.ToString() }
                 );
             base.OnModelCreating(modelBuilder);
         }
