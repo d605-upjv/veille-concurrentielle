@@ -18,14 +18,14 @@ namespace VeilleConcurrentielle.Infrastructure.Core.Models.Events
         public int Quantity { get; set; }
         public bool IsActive { get; set; }
         public string? ImageUrl { get; set; }
-        public ProductPrice? MinPrice { get; set; }
-        public ProductPrice? MaxPrice { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         [Required]
         public List<ProductStrategy> Strategies { get; set; }
         [Required]
         public List<ProductCompetitorConfig> CompetitorConfigs { get; set; }
+        [Required]
+        public CompetitorProductPrices LastCompetitorPrices { get; set; }
 
         public class ProductStrategy
         {

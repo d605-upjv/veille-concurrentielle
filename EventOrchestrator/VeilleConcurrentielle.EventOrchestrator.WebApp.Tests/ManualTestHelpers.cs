@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using VeilleConcurrentielle.EventOrchestrator.Lib.Servers.Models;
 using VeilleConcurrentielle.Infrastructure.Core.Models;
 using VeilleConcurrentielle.Infrastructure.Core.Models.Events;
@@ -74,7 +75,8 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Tests
                 CompetitorId = CompetitorIds.ShopA,
                 Price = 100,
                 Quantity = 10,
-                Source = PriceSources.PriceApi
+                Source = PriceSources.PriceApi,
+                CreatedAt = DateTime.Now
             };
             var serializedPayload = SerializationUtils.Serialize(payload);
             PushEventServerRequest request = new PushEventServerRequest();

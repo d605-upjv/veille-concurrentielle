@@ -69,9 +69,8 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Core.Services
             {
                 await _productRepository.UpdateAsync(productEntity);
             }
-            var minPrice = await _productPriceService.GetMinPriceAsync(productEntity.Id);
-            var maxPrice = await _productPriceService.GetMaxPriceAsync(productEntity.Id);
-            await _eventSenderService.SendProductAddedOrUpdatedEvent(refererEventId, productEntity, minPrice, maxPrice);
+            var lastCompetitorPrices = await _productPriceService.GetLastPricesAsync(productEntity.Id);
+            await _eventSenderService.SendProductAddedOrUpdatedEvent(refererEventId, productEntity, lastCompetitorPrices);
         }
     }
 }

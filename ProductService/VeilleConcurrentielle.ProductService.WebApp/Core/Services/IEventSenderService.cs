@@ -5,6 +5,6 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Core.Services
 {
     public interface IEventSenderService
     {
-        Task SendProductAddedOrUpdatedEvent(string refererEventId, ProductEntity productEntity, ProductPrice? minPrice, ProductPrice? maxPrice);
+        Task SendProductAddedOrUpdatedEvent(string refererEventId, ProductEntity productEntity, CompetitorProductPrices lastCompetitorPrices);
     }
 }

@@ -1,6 +1,8 @@
-﻿using VeilleConcurrentielle.Infrastructure.Core.Models;
+﻿using Microsoft.Extensions.Options;
+using VeilleConcurrentielle.Infrastructure.Core.Models;
 using VeilleConcurrentielle.Infrastructure.Core.Models.Events;
 using VeilleConcurrentielle.Infrastructure.Framework;
+using VeilleConcurrentielle.ProductService.WebApp.Core.Configurations;
 using VeilleConcurrentielle.ProductService.WebApp.Data.Entities;
 using VeilleConcurrentielle.ProductService.WebApp.Data.Repositories;
 
@@ -12,12 +14,17 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Core.Services
         private readonly IEventSenderService _eventSenderService;
         private readonly IProductRepository _productRepository;
         private readonly ILogger<ProductPriceService> _logger;
-        public ProductPriceService(ICompetitorPriceRepository competitorPriceRepository, IEventSenderService eventSenderService, IProductRepository productRepository, ILogger<ProductPriceService> logger)
+        private readonly ProductPriceOptions _productPriceOptions;
+        public ProductPriceService(ICompetitorPriceRepository competitorPriceRepository,
+            IEventSenderService eventSenderService, IProductRepository productRepository,
+            ILogger<ProductPriceService> logger,
+            IOptions<ProductPriceOptions> productPriceOptions)
         {
             _competitorPriceRepository = competitorPriceRepository;
             _eventSenderService = eventSenderService;
             _productRepository = productRepository;
             _logger = logger;
+            _productPriceOptions = productPriceOptions.Value;
         }
         public async Task OnPriceIdentifedAsync(string refererEventId, PriceIdentifiedEventPayload request)
         {
@@ -27,10 +34,10 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Core.Services
                 _logger.LogError($"Failed to load product {request.ProductId} to process identified price\nRequest: {SerializationUtils.Serialize(request)}");
                 return;
             }
-            var isDifferntFromLastPrice = await _competitorPriceRepository.IsDifferntFromLastPriceAsync(request.ProductId, request.CompetitorId.ToString(), request.Price, request.Quantity);
+            var isDifferntFromLastPrice = await _competitorPriceRepository.IsDifferentFromLastPriceAsync(request.ProductId, request.CompetitorId.ToString(), request.Price, request.Quantity, request.CreatedAt);
             if (!isDifferntFromLastPrice)
             {
-                _logger.LogInformation($"Price is not different form the last one\nRequest: {SerializationUtils.Serialize(request)}");
+                _logger.LogInformation($"Price is not different form the last one or is already outdated\nRequest: {SerializationUtils.Serialize(request)}");
                 return;
             }
             CompetitorPriceEntity entity = new CompetitorPriceEntity();
@@ -39,40 +46,54 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Core.Services
             entity.Quantity = request.Quantity;
             entity.CompetitorId = request.CompetitorId.ToString();
             entity.Source = request.Source.ToString();
+            entity.CreatedAt = request.CreatedAt;
             await _competitorPriceRepository.InsertAsync(entity);
-            var minPrice = await GetMinPriceAsync(request.ProductId);
-            var maxPrice = await GetMaxPriceAsync(request.ProductId);
-            await _eventSenderService.SendProductAddedOrUpdatedEvent(refererEventId, productEntity, minPrice, maxPrice);
+            var lastCompetitorPrices = await GetLastPricesAsync(request.ProductId);
+            await _eventSenderService.SendProductAddedOrUpdatedEvent(refererEventId, productEntity, lastCompetitorPrices);
         }
 
-        public async Task<ProductPrice?> GetMinPriceAsync(string productId)
+        public async Task<CompetitorProductPrices> GetLastPricesAsync(string productId)
         {
-            var entity = await _competitorPriceRepository.GetMinPriceAsync(productId);
-            if (entity != null)
+            CompetitorProductPrices competitorProductPrices = new CompetitorProductPrices()
             {
-                return new ProductPrice()
-                {
-                    CompetitorId = EnumUtils.GetValueFromString<CompetitorIds>(entity.CompetitorId),
-                    Price = entity.Price,
-                    Quantity = entity.Quantity
-                };
-            }
-            return null;
-        }
-
-        public async Task<ProductPrice?> GetMaxPriceAsync(string productId)
-        {
-            var entity = await _competitorPriceRepository.GetMaxPriceAsync(productId);
-            if (entity != null)
+                Prices = new List<CompetitorProductPrices.CompetitorItemProductPrices>()
+            };
+            CompetitorProductPrices.ProductMinMaxPrice? minPrice = null;
+            CompetitorProductPrices.ProductMinMaxPrice? maxPrice = null;
+            var competitorIds = Enum.GetValues<CompetitorIds>();
+            foreach (var competitorId in competitorIds)
             {
-                return new ProductPrice()
+                var prices = (await _competitorPriceRepository.GetLastPricesAsync(productId, competitorId.ToString(), _productPriceOptions.HistoryPriceCount))
+                                                .Select(e => new ProductPrice()
+                                                {
+                                                    Price = e.Price,
+                                                    Quantity = e.Quantity,
+                                                    CreatedAt = e.CreatedAt
+                                                }).ToList();
+                competitorProductPrices.Prices.Add(new CompetitorProductPrices.CompetitorItemProductPrices()
                 {
-                    CompetitorId = EnumUtils.GetValueFromString<CompetitorIds>(entity.CompetitorId),
-                    Price = entity.Price,
-                    Quantity = entity.Quantity
-                };
+                    CompetitorId = competitorId,
+                    Prices = prices
+                });
+                var lastPrice = prices.FirstOrDefault();
+                if (lastPrice != null)
+                {
+                    var lastMinMaxPrice = new CompetitorProductPrices.ProductMinMaxPrice()
+                    {
+                        CompetitorId = competitorId,
+                        Price = lastPrice.Price,
+                        Quantity = lastPrice.Quantity,
+                        CreatedAt = lastPrice.CreatedAt
+                    };
+                    maxPrice = maxPrice == null ? lastMinMaxPrice :
+                                        (lastMinMaxPrice.Price > maxPrice.Price) ? lastMinMaxPrice : maxPrice;
+                    minPrice = minPrice == null ? lastMinMaxPrice :
+                                        (lastMinMaxPrice.Price < minPrice.Price) ? lastMinMaxPrice : minPrice;
+                }
             }
-            return null;
+            competitorProductPrices.MinPrice = minPrice;
+            competitorProductPrices.MaxPrice = maxPrice;
+            return competitorProductPrices;
         }
     }
 }

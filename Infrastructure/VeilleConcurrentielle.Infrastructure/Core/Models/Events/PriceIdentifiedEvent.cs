@@ -19,6 +19,7 @@ namespace VeilleConcurrentielle.Infrastructure.Core.Models.Events
         public CompetitorIds CompetitorId { get; set; }
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public PriceSources Source { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 
     public enum PriceSources

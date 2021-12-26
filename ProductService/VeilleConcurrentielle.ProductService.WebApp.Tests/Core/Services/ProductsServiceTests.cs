@@ -4,10 +4,9 @@ using Moq;
 using mywebapp::VeilleConcurrentielle.ProductService.WebApp.Core.Services;
 using mywebapp::VeilleConcurrentielle.ProductService.WebApp.Data.Entities;
 using mywebapp::VeilleConcurrentielle.ProductService.WebApp.Data.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using VeilleConcurrentielle.EventOrchestrator.Lib.Clients.Models;
-using VeilleConcurrentielle.EventOrchestrator.Lib.Clients.ServiceClients;
 using VeilleConcurrentielle.Infrastructure.Core.Models;
 using VeilleConcurrentielle.Infrastructure.Core.Models.Events;
 using Xunit;
@@ -24,10 +23,11 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Tests.Core.Services
             _productPriceServiceMock = new Mock<IProductPriceService>();
             _eventSenderServiceMock = new Mock<IEventSenderService>();
 
-            _productPriceServiceMock.Setup(s => s.GetMinPriceAsync(It.IsAny<string>()))
-                                        .Returns(Task.FromResult<ProductPrice?>(null));
-            _productPriceServiceMock.Setup(s => s.GetMaxPriceAsync(It.IsAny<string>()))
-                                        .Returns(Task.FromResult<ProductPrice?>(null));
+            _productPriceServiceMock.Setup(s => s.GetLastPricesAsync(It.IsAny<string>()))
+                                        .Returns(Task.FromResult(new CompetitorProductPrices()
+                                        {
+                                            Prices = new List<CompetitorProductPrices.CompetitorItemProductPrices>()
+                                        }));
         }
 
         [Fact]
@@ -115,9 +115,8 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Tests.Core.Services
 
         private void CheckCommonServicesForStoreProduct(string productId)
         {
-            _productPriceServiceMock.Verify(s => s.GetMinPriceAsync(productId), Times.Once());
-            _productPriceServiceMock.Verify(s => s.GetMaxPriceAsync(productId), Times.Once());
-            _eventSenderServiceMock.Verify(s => s.SendProductAddedOrUpdatedEvent(It.IsAny<string>(), It.IsAny<ProductEntity>(), It.IsAny<ProductPrice?>(), It.IsAny<ProductPrice?>()), Times.Once());
+            _productPriceServiceMock.Verify(s => s.GetLastPricesAsync(productId), Times.Once());
+            _eventSenderServiceMock.Verify(s => s.SendProductAddedOrUpdatedEvent(It.IsAny<string>(), It.IsAny<ProductEntity>(), It.IsAny<CompetitorProductPrices>()), Times.Once());
         }
     }
 }

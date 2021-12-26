@@ -28,17 +28,33 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Core.Services
             productEntity.Quantity = request.Quantity;
             productEntity.IsActive = request.IsActive;
             productEntity.ImageUrl = request.ImageUrl;
-            if (request.MinPrice != null)
+            if (request.LastCompetitorPrices.MinPrice != null)
             {
-                productEntity.MinPrice = request.MinPrice.Price;
-                productEntity.MinPriceQuantity = request.MinPrice.Quantity;
-                productEntity.MinPriceCompetitorId = request.MinPrice.CompetitorId.ToString();
+                productEntity.MinPrice = request.LastCompetitorPrices.MinPrice.Price;
+                productEntity.MinPriceQuantity = request.LastCompetitorPrices.MinPrice.Quantity;
+                productEntity.MinPriceCompetitorId = request.LastCompetitorPrices.MinPrice.CompetitorId.ToString();
             }
-            if (request.MaxPrice != null)
+            if (request.LastCompetitorPrices.MaxPrice != null)
             {
-                productEntity.MaxPrice = request.MaxPrice.Price;
-                productEntity.MaxPriceQuantit = request.MaxPrice.Quantity;
-                productEntity.MaxPriceCompetitorId = request.MaxPrice.CompetitorId.ToString();
+                productEntity.MaxPrice = request.LastCompetitorPrices.MaxPrice.Price;
+                productEntity.MaxPriceQuantit = request.LastCompetitorPrices.MaxPrice.Quantity;
+                productEntity.MaxPriceCompetitorId = request.LastCompetitorPrices.MaxPrice.CompetitorId.ToString();
+            }
+            productEntity.LastPrices = new List<ProductAggregatePriceEntity>();
+            foreach (var competitorPrices in request.LastCompetitorPrices.Prices)
+            {
+                foreach (var price in competitorPrices.Prices)
+                {
+                    productEntity.LastPrices.Add(new ProductAggregatePriceEntity()
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        ProductId = productEntity.Id,
+                        CompetitorId = competitorPrices.CompetitorId.ToString(),
+                        Price = price.Price,
+                        Quantity = price.Quantity,
+                        CreatedAt = price.CreatedAt
+                    });
+                }
             }
             productEntity.Strategies = new List<ProductAggregateStrategyEntity>();
             foreach (var strategy in request.Strategies)

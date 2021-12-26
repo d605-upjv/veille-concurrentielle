@@ -6,6 +6,7 @@ using mywebapp::VeilleConcurrentielle.Aggregator.WebApp.Data.Entities;
 using mywebapp::VeilleConcurrentielle.Aggregator.WebApp.Data.Repositories;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using VeilleConcurrentielle.Infrastructure.Core.Models;
 using VeilleConcurrentielle.Infrastructure.Core.Models.Events;
 using Xunit;
 
@@ -34,7 +35,11 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Core.Services
             {
                 ProductId = null,
                 Strategies = new List<ProductAddedOrUpdatedEventPayload.ProductStrategy>(),
-                CompetitorConfigs = new List<ProductAddedOrUpdatedEventPayload.ProductCompetitorConfig>()
+                CompetitorConfigs = new List<ProductAddedOrUpdatedEventPayload.ProductCompetitorConfig>(),
+                LastCompetitorPrices = new CompetitorProductPrices()
+                {
+                    Prices = new List<CompetitorProductPrices.CompetitorItemProductPrices>()
+                }
             };
             await productsService.StoreProductAsync(_refererEventId, request);
 
@@ -60,7 +65,11 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Core.Services
             {
                 ProductId = productId,
                 Strategies = new List<ProductAddedOrUpdatedEventPayload.ProductStrategy>(),
-                CompetitorConfigs = new List<ProductAddedOrUpdatedEventPayload.ProductCompetitorConfig>()
+                CompetitorConfigs = new List<ProductAddedOrUpdatedEventPayload.ProductCompetitorConfig>(),
+                LastCompetitorPrices = new CompetitorProductPrices()
+                {
+                    Prices = new List<CompetitorProductPrices.CompetitorItemProductPrices>()
+                }
             };
             await productsService.StoreProductAsync(_refererEventId, request);
 
@@ -89,7 +98,11 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Core.Services
             {
                 ProductId = null,
                 Strategies = new List<ProductAddedOrUpdatedEventPayload.ProductStrategy>(),
-                CompetitorConfigs = new List<ProductAddedOrUpdatedEventPayload.ProductCompetitorConfig>()
+                CompetitorConfigs = new List<ProductAddedOrUpdatedEventPayload.ProductCompetitorConfig>(),
+                LastCompetitorPrices = new CompetitorProductPrices()
+                {
+                    Prices = new List<CompetitorProductPrices.CompetitorItemProductPrices>()
+                }
             };
             await productsService.StoreProductAsync(_refererEventId, request);
 

@@ -14,7 +14,7 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Core.Services
         {
             _eventServiceClient = eventServiceClient;
         }
-        public async Task SendProductAddedOrUpdatedEvent(string refererEventId, ProductEntity productEntity, ProductPrice? minPrice, ProductPrice? maxPrice)
+        public async Task SendProductAddedOrUpdatedEvent(string refererEventId, ProductEntity productEntity, CompetitorProductPrices lastCompetitorPrices)
         {
             ProductAddedOrUpdatedEventPayload payload = new ProductAddedOrUpdatedEventPayload()
             {
@@ -38,8 +38,7 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Core.Services
                     CompetitorId = EnumUtils.GetValueFromString<CompetitorIds>(e.CompetitorId),
                     Holder = SerializationUtils.Deserialize<ConfigHolder>(e.SerializedHolder)
                 }).ToList(),
-                MinPrice = minPrice,
-                MaxPrice = maxPrice,
+                LastCompetitorPrices = lastCompetitorPrices,
                 RefererEventId = refererEventId
             };
             PushEventClientRequest<ProductAddedOrUpdatedEvent, ProductAddedOrUpdatedEventPayload> request = new PushEventClientRequest<ProductAddedOrUpdatedEvent, ProductAddedOrUpdatedEventPayload>()

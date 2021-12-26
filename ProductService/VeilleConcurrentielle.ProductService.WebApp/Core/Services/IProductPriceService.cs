@@ -6,7 +6,6 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Core.Services
     public interface IProductPriceService
     {
         Task OnPriceIdentifedAsync(string eventId, PriceIdentifiedEventPayload request);
-        Task<ProductPrice?> GetMaxPriceAsync(string productId);
-        Task<ProductPrice?> GetMinPriceAsync(string productId);
+        Task<CompetitorProductPrices> GetLastPricesAsync(string productId);
     }
 }

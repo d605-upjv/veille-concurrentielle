@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using VeilleConcurrentielle.EventOrchestrator.Lib.Registries;
 using VeilleConcurrentielle.Infrastructure.Core.Services;
 using VeilleConcurrentielle.Infrastructure.Registries;
+using VeilleConcurrentielle.ProductService.WebApp.Core.Configurations;
 using VeilleConcurrentielle.ProductService.WebApp.Core.Services;
 using VeilleConcurrentielle.ProductService.WebApp.Data;
 using VeilleConcurrentielle.ProductService.WebApp.Data.Repositories;
@@ -22,6 +23,7 @@ builder.Services.AddScoped<IProductsService, ProductsService>();
 builder.Services.AddScoped<IProductPriceService, ProductPriceService>();
 builder.Services.AddScoped<ICompetitorPriceRepository, CompetitorPriceRepository>();
 builder.Services.AddScoped<IEventSenderService, EventSenderService>();
+builder.Services.Configure<ProductPriceOptions>(builder.Configuration.GetSection(ProductPriceOptions.ProductPrice));
 
 builder.Services.AddControllers()
     .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));

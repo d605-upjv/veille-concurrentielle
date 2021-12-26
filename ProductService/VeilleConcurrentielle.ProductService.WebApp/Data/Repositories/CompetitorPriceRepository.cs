@@ -10,16 +10,17 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Data.Repositories
         {
         }
 
-        public async Task<bool> IsDifferntFromLastPriceAsync(string productId, string competitorId, double price, int quantity)
+        public async Task<bool> IsDifferentFromLastPriceAsync(string productId, string competitorId, double price, int quantity, DateTime createdAt)
         {
             ProductDbContext dbContext = (ProductDbContext)_dbContext;
             var lastPrice = await dbContext.CompetitorPrices.AsNoTracking()
                                                 .Where(e => e.ProductId == productId && e.CompetitorId == competitorId)
                                                 .OrderByDescending(e => e.CreatedAt)
-                                                .LastOrDefaultAsync();
+                                                .FirstOrDefaultAsync();
             if (lastPrice != null)
             {
-                return !(lastPrice.ProductId == productId
+                return lastPrice.CreatedAt < createdAt 
+                    && !(lastPrice.ProductId == productId
                     && lastPrice.CompetitorId == competitorId
                     && lastPrice.Price == price
                     && lastPrice.Quantity == quantity);
@@ -27,24 +28,15 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Data.Repositories
             return true;
         }
 
-        public async Task<CompetitorPriceEntity?> GetMinPriceAsync(string productId)
+        public async Task<List<CompetitorPriceEntity>> GetLastPricesAsync(string productId, string competitorId, int priceCount)
         {
             ProductDbContext dbContext = (ProductDbContext)_dbContext;
-            var price = await dbContext.CompetitorPrices.AsNoTracking()
-                                    .Where(e => e.ProductId == productId)
-                                    .OrderBy(e => e.Price)
-                                    .FirstOrDefaultAsync();
-            return price;
-        }
-
-        public async Task<CompetitorPriceEntity?> GetMaxPriceAsync(string productId)
-        {
-            ProductDbContext dbContext = (ProductDbContext)_dbContext;
-            var price = await dbContext.CompetitorPrices.AsNoTracking()
-                                    .Where(e => e.ProductId == productId)
-                                    .OrderByDescending(e => e.Price)
-                                    .FirstOrDefaultAsync();
-            return price;
+            var prices = await dbContext.CompetitorPrices.AsNoTracking()
+                                            .Where(e => e.ProductId == productId && e.CompetitorId == competitorId)
+                                            .OrderByDescending(e => e.CreatedAt)
+                                            .Take(priceCount)
+                                            .ToListAsync();
+            return prices;
         }
     }
 }
