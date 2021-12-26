@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using VeilleConcurrentielle.EventOrchestrator.Lib.Servers.Models;
 using VeilleConcurrentielle.Infrastructure.Core.Models;
 using VeilleConcurrentielle.Infrastructure.Core.Models.Events;
 using VeilleConcurrentielle.Infrastructure.Framework;
@@ -53,6 +54,34 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Tests
                 }
             };
             _output.WriteLine(SerializationUtils.Serialize(payload));
+        }
+
+        [Fact]
+        public void GenerateSerialized_PriceIdentifiedEventPayload()
+        {
+            PriceIdentifiedEventPayload payload = new PriceIdentifiedEventPayload()
+            {
+            };
+            _output.WriteLine(SerializationUtils.Serialize(payload));
+        }
+
+        [Fact]
+        public void GenerateSerialized_PushEventServerRequest_PriceIdentified()
+        {
+            PriceIdentifiedEventPayload payload = new PriceIdentifiedEventPayload()
+            {
+                ProductId = "Productid",
+                CompetitorId = CompetitorIds.ShopA,
+                Price = 100,
+                Quantity = 10,
+                Source = PriceSources.PriceApi
+            };
+            var serializedPayload = SerializationUtils.Serialize(payload);
+            PushEventServerRequest request = new PushEventServerRequest();
+            request.EventName = EventNames.PriceIdentified;
+            request.Source = EventSources.Test;
+            request.SerializedPayload = serializedPayload;
+            _output.WriteLine(SerializationUtils.Serialize(request));
         }
     }
 }

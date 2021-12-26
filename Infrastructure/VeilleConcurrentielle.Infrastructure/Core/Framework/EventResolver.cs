@@ -8,14 +8,14 @@ namespace VeilleConcurrentielle.Infrastructure.Core.Framework
         private static Dictionary<Type, Type> _eventByPayloadRegistry = new Dictionary<Type, Type>()
         {
             {typeof(TestEventPayload), typeof(TestEvent) },
-            {typeof(NewPriceSubmittedEventPayload), typeof(NewPriceSubmittedEvent) },
+            {typeof(PriceIdentifiedEventPayload), typeof(PriceIdentifiedEvent) },
             {typeof(AddOrUPdateProductRequestedEventPayload), typeof(AddOrUpdateProductRequestedEvent) },
             {typeof(ProductAddedOrUpdatedEventPayload), typeof(ProductAddedOrUpdatedEvent) }
         };
         private static Dictionary<EventNames, Type> _eventPayloadByNameRegistry = new Dictionary<EventNames, Type>()
         {
             { EventNames.Test, typeof(TestEventPayload) },
-            { EventNames.NewPriceSubmitted, typeof(NewPriceSubmittedEventPayload) },
+            { EventNames.PriceIdentified, typeof(PriceIdentifiedEventPayload) },
             { EventNames.AddOrUpdateProductRequested, typeof(AddOrUPdateProductRequestedEventPayload) },
             { EventNames.ProductAddedOrUpdated, typeof(ProductAddedOrUpdatedEventPayload) }
         };

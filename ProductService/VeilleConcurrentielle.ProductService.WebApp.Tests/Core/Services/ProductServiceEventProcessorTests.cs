@@ -12,17 +12,35 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Tests.Core.Services
 {
     public class ProductServiceEventProcessorTests
     {
+        private Mock<IProductsService> _productServiceMock;
+        private Mock<IProductPriceService> _productPriceServiceMock;
+        private IEventProcessor _eventProcessor;
+        public ProductServiceEventProcessorTests()
+        {
+            _productServiceMock = new Mock<IProductsService>();
+            _productPriceServiceMock = new Mock<IProductPriceService>();
+            _eventProcessor = new ProductServiceEventProcessor(_productServiceMock.Object, _productPriceServiceMock.Object);
+        }
         [Fact]
         public async Task ProcessEventAsync_AddOrUpdateProductRequested()
         {
             string eventId = "EventId";
             EventNames eventName = EventNames.AddOrUpdateProductRequested;
             var payload = new AddOrUPdateProductRequestedEventPayload();
-            Mock<IProductsService> productServiceMock = new Mock<IProductsService>();
-            IEventProcessor eventProcessor = new ProductServiceEventProcessor(productServiceMock.Object);
 
-            await eventProcessor.ProcessEventAsync(eventId, eventName, payload);
-            productServiceMock.Verify(s => s.StoreProductAsync(eventId, payload), Times.Once());
+            await _eventProcessor.ProcessEventAsync(eventId, eventName, payload);
+            _productServiceMock.Verify(s => s.OnAddOrUPdateProductRequestedAsync(eventId, payload), Times.Once());
+        }
+
+        [Fact]
+        public async Task ProcessEventAsync_PriceIdentified()
+        {
+            string eventId = "EventId";
+            EventNames eventName = EventNames.PriceIdentified;
+            var payload = new  PriceIdentifiedEventPayload();
+
+            await _eventProcessor.ProcessEventAsync(eventId, eventName, payload);
+            _productPriceServiceMock.Verify(s => s.OnPriceIdentifedAsync(eventId, payload), Times.Once());
         }
     }
 }

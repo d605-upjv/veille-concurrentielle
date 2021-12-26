@@ -31,5 +31,15 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Data.Repositories
             dbContext.CompetitorConfigs.AddRange(entity.CompetitorConfigs);
             await _dbContext.SaveChangesAsync();
         }
+
+        public override async Task<ProductEntity?> GetByIdAsync(string id)
+        {
+            ProductDbContext dbContext = (ProductDbContext)_dbContext;
+            return await dbContext.Products.AsNoTracking()
+                            .Include(e => e.Strategies)
+                            .Include(e => e.CompetitorConfigs)
+                            .AsSplitQuery()
+                            .FirstOrDefaultAsync(e => e.Id == id);
+        }
     }
 }

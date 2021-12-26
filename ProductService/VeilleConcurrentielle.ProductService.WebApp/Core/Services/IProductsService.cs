@@ -4,6 +4,6 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Core.Services
 {
     public interface IProductsService
     {
-        Task StoreProductAsync(string refererEventId, AddOrUPdateProductRequestedEventPayload request);
+        Task OnAddOrUPdateProductRequestedAsync(string refererEventId, AddOrUPdateProductRequestedEventPayload request);
     }
 }

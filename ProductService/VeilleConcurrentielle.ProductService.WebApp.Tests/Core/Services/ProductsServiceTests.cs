@@ -17,12 +17,12 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Tests.Core.Services
     public class ProductsServiceTests
     {
         private readonly string _refererEventId = "SourceEventId";
-        private readonly Mock<IEventServiceClient> _eventServiceClientMock;
         private readonly Mock<IProductPriceService> _productPriceServiceMock;
+        private readonly Mock<IEventSenderService> _eventSenderServiceMock;
         public ProductsServiceTests()
         {
-            _eventServiceClientMock = new Mock<IEventServiceClient>();
             _productPriceServiceMock = new Mock<IProductPriceService>();
+            _eventSenderServiceMock = new Mock<IEventSenderService>();
 
             _productPriceServiceMock.Setup(s => s.GetMinPriceAsync(It.IsAny<string>()))
                                         .Returns(Task.FromResult<ProductPrice?>(null));
@@ -31,11 +31,11 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Tests.Core.Services
         }
 
         [Fact]
-        public async Task StoreProduct_AddProduct_IfIdIsNullOrEmpty()
+        public async Task OnAddOrUPdateProductRequestedAsync_AddProduct_IfIdIsNullOrEmpty()
         {
             string productId = "ProductId";
             Mock<IProductRepository> productRepositoryMock = new Mock<IProductRepository>();
-            IProductsService productsService = new ProductsService(productRepositoryMock.Object, _eventServiceClientMock.Object, _productPriceServiceMock.Object);
+            IProductsService productsService = new ProductsService(productRepositoryMock.Object, _eventSenderServiceMock.Object, _productPriceServiceMock.Object);
 
             productRepositoryMock.Setup(s => s.InsertAsync(It.IsAny<ProductEntity>()))
                                                 .Callback<ProductEntity>(entity =>
@@ -50,7 +50,7 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Tests.Core.Services
                 Strategies = new List<AddOrUPdateProductRequestedEventPayload.Strategy>(),
                 CompetitorConfigs = new List<AddOrUPdateProductRequestedEventPayload.CompetitorConfig>()
             };
-            await productsService.StoreProductAsync(_refererEventId, request);
+            await productsService.OnAddOrUPdateProductRequestedAsync(_refererEventId, request);
 
             productRepositoryMock.Verify(s => s.GetByIdAsync(It.IsAny<string>()), Times.Never());
             productRepositoryMock.Verify(s => s.InsertAsync(It.IsAny<ProductEntity>()), Times.Once());
@@ -59,11 +59,11 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Tests.Core.Services
         }
 
         [Fact]
-        public async Task StoreProduct_AddProduct_KeepProvidedProductId()
+        public async Task OnAddOrUPdateProductRequestedAsync_AddProduct_KeepProvidedProductId()
         {
             string productId = "ProductId";
             Mock<IProductRepository> productRepositoryMock = new Mock<IProductRepository>();
-            IProductsService productsService = new ProductsService(productRepositoryMock.Object, _eventServiceClientMock.Object, _productPriceServiceMock.Object);
+            IProductsService productsService = new ProductsService(productRepositoryMock.Object, _eventSenderServiceMock.Object, _productPriceServiceMock.Object);
 
             productRepositoryMock.Setup(s => s.InsertAsync(It.IsAny<ProductEntity>()))
                                                 .Callback<ProductEntity>(entity =>
@@ -78,17 +78,17 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Tests.Core.Services
                 Strategies = new List<AddOrUPdateProductRequestedEventPayload.Strategy>(),
                 CompetitorConfigs = new List<AddOrUPdateProductRequestedEventPayload.CompetitorConfig>()
             };
-            await productsService.StoreProductAsync(_refererEventId, request);
+            await productsService.OnAddOrUPdateProductRequestedAsync(_refererEventId, request);
 
             Assert.Equal(productId, request.ProductId);
         }
 
         [Fact]
-        public async Task StoreProduct_EditProduct_IfIdIsProvided()
+        public async Task OnAddOrUPdateProductRequestedAsync_EditProduct_IfIdIsProvided()
         {
             string productId = "ProductId";
             Mock<IProductRepository> productRepositoryMock = new Mock<IProductRepository>();
-            IProductsService productsService = new ProductsService(productRepositoryMock.Object, _eventServiceClientMock.Object, _productPriceServiceMock.Object);
+            IProductsService productsService = new ProductsService(productRepositoryMock.Object, _eventSenderServiceMock.Object, _productPriceServiceMock.Object);
 
             productRepositoryMock.Setup(s => s.GetByIdAsync(productId))
                                             .Returns(Task.FromResult<ProductEntity?>(
@@ -105,7 +105,7 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Tests.Core.Services
                 Strategies = new List<AddOrUPdateProductRequestedEventPayload.Strategy>(),
                 CompetitorConfigs = new List<AddOrUPdateProductRequestedEventPayload.CompetitorConfig>()
             };
-            await productsService.StoreProductAsync(_refererEventId, request);
+            await productsService.OnAddOrUPdateProductRequestedAsync(_refererEventId, request);
 
             productRepositoryMock.Verify(s => s.GetByIdAsync(It.IsAny<string>()), Times.Once());
             productRepositoryMock.Verify(s => s.InsertAsync(It.IsAny<ProductEntity>()), Times.Never());
@@ -117,7 +117,7 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Tests.Core.Services
         {
             _productPriceServiceMock.Verify(s => s.GetMinPriceAsync(productId), Times.Once());
             _productPriceServiceMock.Verify(s => s.GetMaxPriceAsync(productId), Times.Once());
-            _eventServiceClientMock.Verify(s => s.PushEventAsync<ProductAddedOrUpdatedEvent, ProductAddedOrUpdatedEventPayload>(It.IsAny<PushEventClientRequest<ProductAddedOrUpdatedEvent, ProductAddedOrUpdatedEventPayload>>()), Times.Once());
+            _eventSenderServiceMock.Verify(s => s.SendProductAddedOrUpdatedEvent(It.IsAny<string>(), It.IsAny<ProductEntity>(), It.IsAny<ProductPrice?>(), It.IsAny<ProductPrice?>()), Times.Once());
         }
     }
 }

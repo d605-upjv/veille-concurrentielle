@@ -6,8 +6,8 @@ namespace VeilleConcurrentielle.Infrastructure.Core.Models
     {
         [EnumMember(Value = "Test")]
         Test,
-        [EnumMember(Value = "NewPriceSubmitted")]
-        NewPriceSubmitted,
+        [EnumMember(Value = "PriceIdentified")]
+        PriceIdentified,
         [EnumMember(Value = "AddOrUpdateProductRequested")]
         AddOrUpdateProductRequested,
         [EnumMember(Value = "ProductAddedOrUpdated")]

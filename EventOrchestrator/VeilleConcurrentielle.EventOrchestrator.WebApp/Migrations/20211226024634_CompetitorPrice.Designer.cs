@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VeilleConcurrentielle.EventOrchestrator.WebApp.Data;
 
@@ -10,9 +11,10 @@ using VeilleConcurrentielle.EventOrchestrator.WebApp.Data;
 namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Migrations
 {
     [DbContext(typeof(EventDbContext))]
-    partial class EventDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211226024634_CompetitorPrice")]
+    partial class CompetitorPrice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.1");

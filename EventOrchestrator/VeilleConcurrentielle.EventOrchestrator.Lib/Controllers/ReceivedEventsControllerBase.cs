@@ -13,7 +13,8 @@ using VeilleConcurrentielle.Infrastructure.Web;
 
 namespace VeilleConcurrentielle.EventOrchestrator.Lib.Controllers
 {
-    public abstract class ReceivedEventsControllerBase<TController> : ApiControllerBase where TController : ApiControllerBase
+    public abstract class ReceivedEventsControllerBase<TController> : ApiControllerBase, IReceivedEventsController
+        where TController : ApiControllerBase
     {
         protected readonly ILogger<TController> _logger;
         protected readonly IReceivedEventRepository _receivedEentRepository;

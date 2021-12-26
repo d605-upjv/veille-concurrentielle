@@ -1,0 +1,3 @@
+Rupture: 0
+Bas: 10
+Normal: 20

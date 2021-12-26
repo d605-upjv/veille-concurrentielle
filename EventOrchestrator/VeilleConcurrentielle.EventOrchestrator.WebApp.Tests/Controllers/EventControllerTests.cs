@@ -17,16 +17,15 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Tests.Controllers
             await using var application = new EventWebApp();
             using var client = application.CreateClient();
 
-            var payload = new NewPriceSubmittedEventPayload()
+            var payload = new TestEventPayload()
             {
-                ProductId = "Product1",
-                Price = 10,
-                Source = PriceSources.PriceSubmissionApi
+                StringData = "String",
+                IntData = 10
             };
             var serializedPayload = SerializationUtils.Serialize(payload);
             var request = new PushEventServerRequest()
             {
-                EventName = EventNames.NewPriceSubmitted,
+                EventName = EventNames.Test,
                 Source = EventSources.Test,
                 SerializedPayload = serializedPayload
             };

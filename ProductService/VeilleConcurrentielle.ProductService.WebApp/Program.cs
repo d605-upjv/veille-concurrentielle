@@ -20,6 +20,8 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IEventProcessor, ProductServiceEventProcessor>();
 builder.Services.AddScoped<IProductsService, ProductsService>();
 builder.Services.AddScoped<IProductPriceService, ProductPriceService>();
+builder.Services.AddScoped<ICompetitorPriceRepository, CompetitorPriceRepository>();
+builder.Services.AddScoped<IEventSenderService, EventSenderService>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
