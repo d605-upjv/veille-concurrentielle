@@ -1,19 +1,26 @@
 {
-  "productId": "ProductId",
-  "productName": null,
-  "price": 0,
-  "quantity": 0,
-  "isActive": false,
-  "imageUrl": null,
-  "strategies": [ { "id": "OverallAveragePrice" } ],
+  "productId": "some-fake-product-id",
+  "productName": "Product1Name",
+  "price": 100,
+  "quantity": 10,
+  "isActive": true,
+  "imageUrl": "https://www.google.com",
+  "strategies": [
+    {
+      "id": "OverallAveragePrice"
+    },
+    {
+      "id": "OverallCheaperPrice"
+    }
+  ],
   "competitorConfigs": [
     {
       "competitorId": "ShopA",
       "holder": {
         "items": [
           {
-            "key": null,
-            "value": null
+            "key": "UniqueId",
+            "value": "ShopAProductUniqueId"
           }
         ]
       }

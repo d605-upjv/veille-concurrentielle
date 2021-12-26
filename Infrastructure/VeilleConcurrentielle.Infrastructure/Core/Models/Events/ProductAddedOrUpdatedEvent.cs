@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace VeilleConcurrentielle.Infrastructure.Core.Models.Events
 {
@@ -30,6 +31,7 @@ namespace VeilleConcurrentielle.Infrastructure.Core.Models.Events
         {
             [Required]
             public string Id { get; set; }
+            [JsonConverter(typeof(JsonStringEnumConverter))]
             public StrategyIds StrategyId { get; set; }
             [Required]
             public string ProductId { get; set; }
@@ -39,6 +41,7 @@ namespace VeilleConcurrentielle.Infrastructure.Core.Models.Events
         {
             [Required]
             public string Id { get; set; }
+            [JsonConverter(typeof(JsonStringEnumConverter))]
             public CompetitorIds CompetitorId { get; set; }
             [Required]
             public ConfigHolder Holder { get; set; }

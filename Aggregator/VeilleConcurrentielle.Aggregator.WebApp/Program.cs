@@ -1,7 +1,9 @@
 using System.Text.Json.Serialization;
+using VeilleConcurrentielle.Aggregator.WebApp.Core.Services;
 using VeilleConcurrentielle.Aggregator.WebApp.Data;
 using VeilleConcurrentielle.Aggregator.WebApp.Data.Repositories;
 using VeilleConcurrentielle.EventOrchestrator.Lib.Registries;
+using VeilleConcurrentielle.Infrastructure.Core.Services;
 using VeilleConcurrentielle.Infrastructure.Registries;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +18,9 @@ builder.Services.RegisterReceivedEventServiceDependencies<AggregatorDbContext>()
 
 builder.Services.AddScoped<ICompetitorRepository, CompetitorRepository>();
 builder.Services.AddScoped<IStrategyRepository, StrategyRepository>();
+builder.Services.AddScoped<IEventProcessor, AggregatorEventProcessor>();
+builder.Services.AddScoped<IProductAggregateRepository, ProductAggregateRepository>();
+builder.Services.AddScoped<IProductAggregateService, ProductAggregateService>();
 
 builder.Services.AddControllersWithViews()
     .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));

@@ -1,12 +1,13 @@
 ﻿using VeilleConcurrentielle.Infrastructure.Core.Models;
 using VeilleConcurrentielle.Infrastructure.Core.Models.Events;
+using VeilleConcurrentielle.Infrastructure.Core.Services;
 
 namespace VeilleConcurrentielle.ProductService.WebApp.Core.Services
 {
-    public class EventProcessor : IEventProcessor
+    public class ProductServiceEventProcessor : IEventProcessor
     {
         private readonly IProductsService _productService;
-        public EventProcessor(IProductsService productService)
+        public ProductServiceEventProcessor(IProductsService productService)
         {
             _productService = productService;
         }

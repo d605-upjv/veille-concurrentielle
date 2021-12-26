@@ -3,7 +3,6 @@
 using Microsoft.Extensions.Logging;
 using Moq;
 using mywebapp::VeilleConcurrentielle.ProductService.WebApp.Controllers;
-using mywebapp::VeilleConcurrentielle.ProductService.WebApp.Core.Services;
 using mywebapp::VeilleConcurrentielle.ProductService.WebApp.Data;
 using System;
 using System.Threading.Tasks;
@@ -12,6 +11,7 @@ using VeilleConcurrentielle.EventOrchestrator.Lib.Servers.Models;
 using VeilleConcurrentielle.Infrastructure.Core.Data.Repositories;
 using VeilleConcurrentielle.Infrastructure.Core.Models;
 using VeilleConcurrentielle.Infrastructure.Core.Models.Events;
+using VeilleConcurrentielle.Infrastructure.Core.Services;
 using VeilleConcurrentielle.Infrastructure.Framework;
 using VeilleConcurrentielle.Infrastructure.Tests.Core.Controllers;
 using Xunit;

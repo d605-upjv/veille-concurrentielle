@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using VeilleConcurrentielle.EventOrchestrator.Lib.Registries;
+using VeilleConcurrentielle.Infrastructure.Core.Services;
 using VeilleConcurrentielle.Infrastructure.Registries;
 using VeilleConcurrentielle.ProductService.WebApp.Core.Services;
 using VeilleConcurrentielle.ProductService.WebApp.Data;
@@ -16,7 +17,7 @@ builder.Services.RegisterEventServiceClientDependencies(builder.Configuration);
 builder.Services.RegisterReceivedEventServiceDependencies<ProductDbContext>();
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IEventProcessor, EventProcessor>();
+builder.Services.AddScoped<IEventProcessor, ProductServiceEventProcessor>();
 builder.Services.AddScoped<IProductsService, ProductsService>();
 builder.Services.AddScoped<IProductPriceService, ProductPriceService>();
 

@@ -93,7 +93,7 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Core.Services
 
         private async Task<bool> ConsumeWholeEventIfApplicableAsync(Event event_)
         {
-            if (event_.Subscribers.All(s => event_.Consumers.Exists(c => c.ApplicationName == s.ApplicationName)))
+            if (event_.Subscribers.Count == 0 || event_.Subscribers.All(s => event_.Consumers.Exists(c => c.ApplicationName == s.ApplicationName)))
             {
                 event_.IsConsumed = true;
                 await _eventRepository.UpdateAsync(new EventEntity()

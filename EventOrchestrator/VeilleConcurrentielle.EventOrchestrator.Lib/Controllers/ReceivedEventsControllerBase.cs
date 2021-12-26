@@ -7,6 +7,7 @@ using VeilleConcurrentielle.Infrastructure.Core.Data.Entities;
 using VeilleConcurrentielle.Infrastructure.Core.Data.Repositories;
 using VeilleConcurrentielle.Infrastructure.Core.Framework;
 using VeilleConcurrentielle.Infrastructure.Core.Models;
+using VeilleConcurrentielle.Infrastructure.Core.Services;
 using VeilleConcurrentielle.Infrastructure.Framework;
 using VeilleConcurrentielle.Infrastructure.Web;
 
@@ -17,16 +18,28 @@ namespace VeilleConcurrentielle.EventOrchestrator.Lib.Controllers
         protected readonly ILogger<TController> _logger;
         protected readonly IReceivedEventRepository _receivedEentRepository;
         protected readonly IEventServiceClient _eventServiceClient;
+        protected readonly IEventProcessor _eventProcessor;
 
-        public ReceivedEventsControllerBase(IReceivedEventRepository receivedEventRepository, ILogger<TController> logger, IEventServiceClient eventServiceClient)
+        public ReceivedEventsControllerBase(IReceivedEventRepository receivedEventRepository, ILogger<TController> logger, IEventServiceClient eventServiceClient, IEventProcessor eventProcessor)
         {
             _receivedEentRepository = receivedEventRepository;
             _logger = logger;
             _eventServiceClient = eventServiceClient;
+            _eventProcessor = eventProcessor;
         }
 
         public abstract ApplicationNames ApplicationName { get; }
-        protected abstract Task ProcessEvent(string eventId, EventNames eventName, EventPayload eventPayload);
+        protected virtual async Task ProcessEvent(string eventId, EventNames eventName, EventPayload eventPayload)
+        {
+            try
+            {
+                await _eventProcessor.ProcessEventAsync(eventId, eventName, eventPayload);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Failed to process event {eventName} ({eventId})\nPayload: {SerializationUtils.Serialize(eventPayload)}");
+            }
+        }
 
         [HttpPost]
         public async Task<IActionResult> ReceiveEvent([FromBody] DispatchEventServerRequest request)

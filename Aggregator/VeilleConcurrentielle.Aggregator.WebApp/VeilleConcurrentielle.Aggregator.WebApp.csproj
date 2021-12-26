@@ -34,7 +34,6 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\src\components\product\" />
-    <Folder Include="Core\" />
   </ItemGroup>
 
   <ItemGroup>

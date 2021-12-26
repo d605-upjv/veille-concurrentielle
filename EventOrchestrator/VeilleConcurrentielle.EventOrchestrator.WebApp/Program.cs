@@ -3,6 +3,7 @@ using VeilleConcurrentielle.EventOrchestrator.Lib.Registries;
 using VeilleConcurrentielle.EventOrchestrator.WebApp.Core.Services;
 using VeilleConcurrentielle.EventOrchestrator.WebApp.Data;
 using VeilleConcurrentielle.EventOrchestrator.WebApp.Data.Repositories;
+using VeilleConcurrentielle.Infrastructure.Core.Services;
 using VeilleConcurrentielle.Infrastructure.Registries;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,7 @@ builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IEventSubscriberRepository, EventSubscriberRepository>();
 builder.Services.AddScoped<IEventConsumerRepository, EventConsumerRepository>();
+builder.Services.AddScoped<IEventProcessor, EventOrchestratorEventProcessor>();
 
 builder.Services.AddControllers()
         .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VeilleConcurrentielle.Aggregator.WebApp.Data.Entities;
 using VeilleConcurrentielle.Infrastructure.Core.Models;
-using VeilleConcurrentielle.Infrastructure.Core.Models.Events;
 using VeilleConcurrentielle.Infrastructure.Data;
 
 namespace VeilleConcurrentielle.Aggregator.WebApp.Data
@@ -14,8 +13,33 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Data
 
         public DbSet<CompetitorEntity> Competitors => Set<CompetitorEntity>();
         public DbSet<StrategyEntity> Strategies => Set<StrategyEntity>();
+        public DbSet<ProductAggregateEntity> ProductAggregates => Set<ProductAggregateEntity>();
+        public DbSet<ProductAggregateStrategyEntity> ProductAggregateStrategies => Set<ProductAggregateStrategyEntity>();
+        public DbSet<ProductAggregateCompetitorConfigEntity> ProductAggregateCompetitorConfigs => Set<ProductAggregateCompetitorConfigEntity>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            SetupModelRelations(modelBuilder);
+            SeedData(modelBuilder);
+            base.OnModelCreating(modelBuilder);
+        }
+
+        private void SetupModelRelations(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ProductAggregateEntity>()
+                            .HasMany(e => e.Strategies)
+                            .WithOne(e => e.Product)
+                            .OnDelete(DeleteBehavior.Cascade)
+                            .HasForeignKey(e => e.ProductId);
+
+            modelBuilder.Entity<ProductAggregateEntity>()
+                            .HasMany(e => e.CompetitorConfigs)
+                            .WithOne(e => e.Product)
+                            .OnDelete(DeleteBehavior.Cascade)
+                            .HasForeignKey(e => e.ProductId);
+        }
+
+        private void SeedData(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<CompetitorEntity>().HasData(
                 new CompetitorEntity() { Id = CompetitorIds.ShopA.ToString(), Name = "Shop A", LogoUrl = "https://www.icone-png.com/png/43/43296.png" },
@@ -23,11 +47,10 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Data
                 );
 
             modelBuilder.Entity<StrategyEntity>().HasData(
-                new StrategyEntity() { Id = StrategyIds.OverallAveragePrice.ToString(), Name = "Dans la moyenne"},
+                new StrategyEntity() { Id = StrategyIds.OverallAveragePrice.ToString(), Name = "Dans la moyenne" },
                 new StrategyEntity() { Id = StrategyIds.OverallCheaperPrice.ToString(), Name = "Le moins cher" },
                 new StrategyEntity() { Id = StrategyIds.FivePercentAboveMeanPrice.ToString(), Name = "5% plus cher que la moyenne" }
                 );
-            base.OnModelCreating(modelBuilder);
         }
     }
 }

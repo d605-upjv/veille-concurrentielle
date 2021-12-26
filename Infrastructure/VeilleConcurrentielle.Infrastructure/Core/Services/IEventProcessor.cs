@@ -1,6 +1,6 @@
 ﻿using VeilleConcurrentielle.Infrastructure.Core.Models;
 
-namespace VeilleConcurrentielle.ProductService.WebApp.Core.Services
+namespace VeilleConcurrentielle.Infrastructure.Core.Services
 {
     public interface IEventProcessor
     {

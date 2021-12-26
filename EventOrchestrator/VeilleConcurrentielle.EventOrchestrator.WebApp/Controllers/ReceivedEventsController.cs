@@ -2,20 +2,17 @@
 using VeilleConcurrentielle.EventOrchestrator.Lib.Controllers;
 using VeilleConcurrentielle.Infrastructure.Core.Data.Repositories;
 using VeilleConcurrentielle.Infrastructure.Core.Models;
+using VeilleConcurrentielle.Infrastructure.Core.Services;
 
 namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Controllers
 {
     public class ReceivedEventsController : ReceivedEventsControllerBase<ReceivedEventsController>
     {
-        public ReceivedEventsController(IReceivedEventRepository receivedEventRepository, ILogger<ReceivedEventsController> logger, IEventServiceClient eventServiceClient) 
-            : base(receivedEventRepository, logger, eventServiceClient)
+        public ReceivedEventsController(IReceivedEventRepository receivedEventRepository, ILogger<ReceivedEventsController> logger, IEventServiceClient eventServiceClient, IEventProcessor eventProcessor) 
+            : base(receivedEventRepository, logger, eventServiceClient, eventProcessor)
         {
         }
 
         public override ApplicationNames ApplicationName => ApplicationNames.EventOrchestrator;
-
-        protected override async Task ProcessEvent(string eventId, EventNames eventName, EventPayload eventPayload)
-        {
-        }
     }
 }
