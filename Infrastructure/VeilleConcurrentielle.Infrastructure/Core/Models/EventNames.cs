@@ -11,6 +11,8 @@ namespace VeilleConcurrentielle.Infrastructure.Core.Models
         [EnumMember(Value = "AddOrUpdateProductRequested")]
         AddOrUpdateProductRequested,
         [EnumMember(Value = "ProductAddedOrUpdated")]
-        ProductAddedOrUpdated
+        ProductAddedOrUpdated,
+        [EnumMember(Value = "NewRecommendationPushed")]
+        NewRecommendationPushed
     }
 }

@@ -26,6 +26,8 @@ namespace VeilleConcurrentielle.Infrastructure.Core.Models.Events
         public List<ProductCompetitorConfig> CompetitorConfigs { get; set; }
         [Required]
         public CompetitorProductPrices LastCompetitorPrices { get; set; }
+        [Required]
+        public List<ProductRecommendation> Recommendations { get; set; }
 
         public class ProductStrategy
         {
@@ -33,8 +35,6 @@ namespace VeilleConcurrentielle.Infrastructure.Core.Models.Events
             public string Id { get; set; }
             [JsonConverter(typeof(JsonStringEnumConverter))]
             public StrategyIds StrategyId { get; set; }
-            [Required]
-            public string ProductId { get; set; }
         }
 
         public class ProductCompetitorConfig

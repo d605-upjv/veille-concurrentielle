@@ -130,6 +130,12 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Migrations
                             Id = "3c0e3b84-e3e6-4203-97c3-7f9159fd3bc0",
                             ApplicationName = "ProductService",
                             EventName = "PriceIdentified"
+                        },
+                        new
+                        {
+                            Id = "45037b0a-561d-44df-9d14-47bf2f21487d",
+                            ApplicationName = "Aggregator",
+                            EventName = "NewRecommendationPushed"
                         });
                 });
 

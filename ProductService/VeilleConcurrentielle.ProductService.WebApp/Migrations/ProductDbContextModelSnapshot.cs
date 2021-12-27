@@ -142,6 +142,35 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("VeilleConcurrentielle.ProductService.WebApp.Data.Entities.RecommendationEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<double>("CurrentPrice")
+                        .HasColumnType("REAL");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("REAL");
+
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("StrategyId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Recommendations");
+                });
+
             modelBuilder.Entity("VeilleConcurrentielle.ProductService.WebApp.Data.Entities.StrategyEntity", b =>
                 {
                     b.Property<string>("Id")
@@ -184,6 +213,17 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("VeilleConcurrentielle.ProductService.WebApp.Data.Entities.RecommendationEntity", b =>
+                {
+                    b.HasOne("VeilleConcurrentielle.ProductService.WebApp.Data.Entities.ProductEntity", "Product")
+                        .WithMany("Recommendations")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("VeilleConcurrentielle.ProductService.WebApp.Data.Entities.StrategyEntity", b =>
                 {
                     b.HasOne("VeilleConcurrentielle.ProductService.WebApp.Data.Entities.ProductEntity", "Product")
@@ -200,6 +240,8 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Migrations
                     b.Navigation("CompetitorConfigs");
 
                     b.Navigation("CompetitorPrices");
+
+                    b.Navigation("Recommendations");
 
                     b.Navigation("Strategies");
                 });

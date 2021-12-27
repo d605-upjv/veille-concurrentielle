@@ -14,7 +14,7 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Core.Services
         {
             _eventServiceClient = eventServiceClient;
         }
-        public async Task SendProductAddedOrUpdatedEvent(string refererEventId, ProductEntity productEntity, CompetitorProductPrices lastCompetitorPrices)
+        public async Task SendProductAddedOrUpdatedEvent(string refererEventId, ProductEntity productEntity, CompetitorProductPrices lastCompetitorPrices, List<ProductRecommendation> recommendations)
         {
             ProductAddedOrUpdatedEventPayload payload = new ProductAddedOrUpdatedEventPayload()
             {
@@ -29,7 +29,6 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Core.Services
                 Strategies = productEntity.Strategies.Select(e => new ProductAddedOrUpdatedEventPayload.ProductStrategy()
                 {
                     Id = e.Id,
-                    ProductId = e.ProductId,
                     StrategyId = EnumUtils.GetValueFromString<StrategyIds>(e.StrategyId)
                 }).ToList(),
                 CompetitorConfigs = productEntity.CompetitorConfigs.Select(e => new ProductAddedOrUpdatedEventPayload.ProductCompetitorConfig()
@@ -39,6 +38,7 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Core.Services
                     Holder = SerializationUtils.Deserialize<ConfigHolder>(e.SerializedHolder)
                 }).ToList(),
                 LastCompetitorPrices = lastCompetitorPrices,
+                Recommendations = recommendations,
                 RefererEventId = refererEventId
             };
             PushEventClientRequest<ProductAddedOrUpdatedEvent, ProductAddedOrUpdatedEventPayload> request = new PushEventClientRequest<ProductAddedOrUpdatedEvent, ProductAddedOrUpdatedEventPayload>()
@@ -48,6 +48,26 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Core.Services
                 Payload = payload
             };
             var response = await _eventServiceClient.PushEventAsync(request);
+        }
+
+        public async Task SendNewRecommendationPushedEvent(string refererEventId, string productId, List<ProductRecommendation> newRecommendations)
+        {
+            foreach(var recommendation in newRecommendations)
+            {
+                NewRecommendationPushedEventPayload payload = new NewRecommendationPushedEventPayload()
+                {
+                    ProductId = productId,
+                    Recommendation = recommendation,
+                    RefererEventId = refererEventId
+                };
+                PushEventClientRequest<NewRecommendationPushedEvent, NewRecommendationPushedEventPayload> request = new PushEventClientRequest<NewRecommendationPushedEvent, NewRecommendationPushedEventPayload>()
+                {
+                    Name = EventNames.NewRecommendationPushed,
+                    Source = EventSources.ProductService,
+                    Payload = payload
+                };
+                var response = await _eventServiceClient.PushEventAsync(request);
+            }
         }
     }
 }

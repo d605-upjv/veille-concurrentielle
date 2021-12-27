@@ -10,6 +10,15 @@ namespace VeilleConcurrentielle.Infrastructure.Core.Models
         public ProductMinMaxPrice? MinPrice { get; set; }
         public ProductMinMaxPrice? MaxPrice { get; set; }
 
+        public List<ProductPrice> GetLatestPricesPerCompetitor()
+        {
+            if (Prices != null)
+            {
+                return Prices.Select(e => e.Prices).Select(e => e.First()).ToList();
+            }
+            return new List<ProductPrice>();
+        }
+
         public class CompetitorItemProductPrices
         {
             [JsonConverter(typeof(JsonStringEnumConverter))]

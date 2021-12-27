@@ -1,5 +1,6 @@
 ﻿using VeilleConcurrentielle.Infrastructure.Core.Models.Events;
 using VeilleConcurrentielle.Infrastructure.Framework;
+using VeilleConcurrentielle.ProductService.WebApp.Core.Models;
 using VeilleConcurrentielle.ProductService.WebApp.Data.Entities;
 using VeilleConcurrentielle.ProductService.WebApp.Data.Repositories;
 
@@ -10,11 +11,13 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Core.Services
         private readonly IProductRepository _productRepository;
         private readonly IEventSenderService _eventSenderService;
         private readonly IProductPriceService _productPriceService;
-        public ProductsService(IProductRepository productRepository, IEventSenderService eventSenderService, IProductPriceService productPriceService)
+        private readonly IRecommendationService _recommendationService;
+        public ProductsService(IProductRepository productRepository, IEventSenderService eventSenderService, IProductPriceService productPriceService, IRecommendationService recommendationService)
         {
             _productRepository = productRepository;
             _eventSenderService = eventSenderService;
             _productPriceService = productPriceService;
+            _recommendationService = recommendationService;
         }
         public async Task OnAddOrUPdateProductRequestedAsync(string refererEventId, AddOrUPdateProductRequestedEventPayload request)
         {
@@ -70,7 +73,16 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Core.Services
                 await _productRepository.UpdateAsync(productEntity);
             }
             var lastCompetitorPrices = await _productPriceService.GetLastPricesAsync(productEntity.Id);
-            await _eventSenderService.SendProductAddedOrUpdatedEvent(refererEventId, productEntity, lastCompetitorPrices);
+            var recommendationResponse = await _recommendationService.GetRecommendationsAsync(new GetRecommendationRequest()
+            {
+                ProductId = productEntity.Id,
+                Price = productEntity.Price,
+                Quantity = productEntity.Quantity,
+                Strategies = request.Strategies.Select(e => e.Id).ToList(),
+                LastCompetitorPrices = lastCompetitorPrices
+            });
+            await _eventSenderService.SendProductAddedOrUpdatedEvent(refererEventId, productEntity, lastCompetitorPrices, recommendationResponse.Recommendations);
+            await _eventSenderService.SendNewRecommendationPushedEvent(refererEventId, productEntity.Id, recommendationResponse.NewRecommendations);
         }
     }
 }

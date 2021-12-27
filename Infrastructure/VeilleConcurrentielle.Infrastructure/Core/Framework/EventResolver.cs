@@ -10,14 +10,16 @@ namespace VeilleConcurrentielle.Infrastructure.Core.Framework
             {typeof(TestEventPayload), typeof(TestEvent) },
             {typeof(PriceIdentifiedEventPayload), typeof(PriceIdentifiedEvent) },
             {typeof(AddOrUPdateProductRequestedEventPayload), typeof(AddOrUpdateProductRequestedEvent) },
-            {typeof(ProductAddedOrUpdatedEventPayload), typeof(ProductAddedOrUpdatedEvent) }
+            {typeof(ProductAddedOrUpdatedEventPayload), typeof(ProductAddedOrUpdatedEvent) },
+            {typeof(NewRecommendationPushedEventPayload), typeof(NewRecommendationPushedEvent) }
         };
         private static Dictionary<EventNames, Type> _eventPayloadByNameRegistry = new Dictionary<EventNames, Type>()
         {
             { EventNames.Test, typeof(TestEventPayload) },
             { EventNames.PriceIdentified, typeof(PriceIdentifiedEventPayload) },
             { EventNames.AddOrUpdateProductRequested, typeof(AddOrUPdateProductRequestedEventPayload) },
-            { EventNames.ProductAddedOrUpdated, typeof(ProductAddedOrUpdatedEventPayload) }
+            { EventNames.ProductAddedOrUpdated, typeof(ProductAddedOrUpdatedEventPayload) },
+            { EventNames.NewRecommendationPushed, typeof(NewRecommendationPushedEventPayload) }
         };
         public static Type GetEventType<TEventPayload>() where TEventPayload : EventPayload
         {

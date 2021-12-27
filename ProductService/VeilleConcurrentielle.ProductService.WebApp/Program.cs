@@ -24,6 +24,8 @@ builder.Services.AddScoped<IProductPriceService, ProductPriceService>();
 builder.Services.AddScoped<ICompetitorPriceRepository, CompetitorPriceRepository>();
 builder.Services.AddScoped<IEventSenderService, EventSenderService>();
 builder.Services.Configure<ProductPriceOptions>(builder.Configuration.GetSection(ProductPriceOptions.ProductPrice));
+builder.Services.AddScoped<IRecommendationService, RecommendationService>();
+builder.Services.AddScoped<IRecommendationRepository, RecommendationRepository>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));

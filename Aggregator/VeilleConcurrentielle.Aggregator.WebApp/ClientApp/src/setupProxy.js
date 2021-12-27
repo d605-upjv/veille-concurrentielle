@@ -8,7 +8,9 @@ const context =  [
     "/weatherforecast",
     "/api/competitors",
     "/api/strategys",
-    "/api/products"
+    "/api/products",
+    "/api/recommendationalerts",
+    "/api/recommendationalerts/seen"
 ];
 
 module.exports = function(app) {

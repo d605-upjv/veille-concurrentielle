@@ -15,5 +15,6 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Data.Entities
         public ICollection<StrategyEntity> Strategies { get; set; }
         public ICollection<CompetitorConfigEntity> CompetitorConfigs { get; set; }
         public ICollection<CompetitorPriceEntity> CompetitorPrices { get; set; }
+        public ICollection<RecommendationEntity> Recommendations { get; set; }
     }
 }

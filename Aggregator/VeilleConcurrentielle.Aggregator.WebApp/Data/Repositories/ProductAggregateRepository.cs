@@ -25,10 +25,13 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Data.Repositories
             dbContext.ProductAggregateCompetitorConfigs.RemoveRange(competitorConfigs);
             var lastPrices = dbContext.ProductAggregatePrices.Where(e => e.ProductId == entity.Id).ToList();
             dbContext.ProductAggregatePrices.RemoveRange(lastPrices);
+            var recommendations = dbContext.ProductRecommendations.Where(e => e.ProductId == entity.Id).ToList();
+            dbContext.ProductRecommendations.RemoveRange(recommendations);
             await _dbContext.SaveChangesAsync();
             dbContext.ProductAggregateStrategies.AddRange(entity.Strategies);
             dbContext.ProductAggregateCompetitorConfigs.AddRange(entity.CompetitorConfigs);
             dbContext.ProductAggregatePrices.AddRange(entity.LastPrices);
+            dbContext.ProductRecommendations.AddRange(entity.Recommendations);
             await _dbContext.SaveChangesAsync();
         }
     }

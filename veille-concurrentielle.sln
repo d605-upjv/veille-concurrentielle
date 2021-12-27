@@ -46,6 +46,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__Memos", "__Memos", "{D1BDB2C0-CE9F-40B1-B7BB-1C220DDE8553}"
 	ProjectSection(SolutionItems) = preProject
 		__Memos\AddOrUpdateProductRequestedEventPayload.json = __Memos\AddOrUpdateProductRequestedEventPayload.json
+		__Memos\PriceIdentifiedEvent.json = __Memos\PriceIdentifiedEvent.json
 		__Memos\StockLevel.txt = __Memos\StockLevel.txt
 		__Memos\TestEventPayload.json = __Memos\TestEventPayload.json
 	EndProjectSection

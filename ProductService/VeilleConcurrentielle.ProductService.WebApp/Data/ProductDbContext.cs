@@ -14,6 +14,7 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Data
         public DbSet<StrategyEntity> Strategies => Set<StrategyEntity>();
         public DbSet<CompetitorConfigEntity> CompetitorConfigs => Set<CompetitorConfigEntity>();
         public DbSet<CompetitorPriceEntity> CompetitorPrices => Set<CompetitorPriceEntity>();
+        public DbSet<RecommendationEntity> Recommendations => Set<RecommendationEntity>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -29,6 +30,10 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Data
                             .HasMany(e => e.CompetitorPrices)
                             .WithOne(e => e.Product)
                             .OnDelete(DeleteBehavior.SetNull);
+            modelBuilder.Entity<ProductEntity>()
+                            .HasMany(e => e.Recommendations)
+                            .WithOne(e => e.Product)
+                            .OnDelete(DeleteBehavior.Cascade);
             base.OnModelCreating(modelBuilder);
         }
     }

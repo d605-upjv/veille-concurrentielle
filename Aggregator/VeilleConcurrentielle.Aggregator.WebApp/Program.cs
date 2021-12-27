@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.HttpOverrides;
 using System.Text.Json.Serialization;
 using VeilleConcurrentielle.Aggregator.WebApp.Core.Services;
 using VeilleConcurrentielle.Aggregator.WebApp.Data;
@@ -21,6 +22,14 @@ builder.Services.AddScoped<IStrategyRepository, StrategyRepository>();
 builder.Services.AddScoped<IEventProcessor, AggregatorEventProcessor>();
 builder.Services.AddScoped<IProductAggregateRepository, ProductAggregateRepository>();
 builder.Services.AddScoped<IProductAggregateService, ProductAggregateService>();
+builder.Services.AddScoped<IRecommendationAlertRepository, RecommendationAlertRepository>();
+builder.Services.AddScoped<IRecommendationAlertService, RecommendationAlertService>();
+
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders =
+        ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+});
 
 builder.Services.AddControllersWithViews()
     .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
@@ -34,10 +43,14 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+else
+{
+    app.UseForwardedHeaders();
+    app.UseHsts();
 }
 
 app.UseHttpsRedirection();

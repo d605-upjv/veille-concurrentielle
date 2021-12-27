@@ -39,7 +39,8 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Core.Services
                 LastCompetitorPrices = new CompetitorProductPrices()
                 {
                     Prices = new List<CompetitorProductPrices.CompetitorItemProductPrices>()
-                }
+                },
+                Recommendations = new List<ProductRecommendation>()
             };
             await productsService.StoreProductAsync(_refererEventId, request);
 
@@ -69,7 +70,8 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Core.Services
                 LastCompetitorPrices = new CompetitorProductPrices()
                 {
                     Prices = new List<CompetitorProductPrices.CompetitorItemProductPrices>()
-                }
+                },
+                Recommendations = new List<ProductRecommendation>()
             };
             await productsService.StoreProductAsync(_refererEventId, request);
 
@@ -102,7 +104,8 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Core.Services
                 LastCompetitorPrices = new CompetitorProductPrices()
                 {
                     Prices = new List<CompetitorProductPrices.CompetitorItemProductPrices>()
-                }
+                },
+                Recommendations = new List<ProductRecommendation>()
             };
             await productsService.StoreProductAsync(_refererEventId, request);
 

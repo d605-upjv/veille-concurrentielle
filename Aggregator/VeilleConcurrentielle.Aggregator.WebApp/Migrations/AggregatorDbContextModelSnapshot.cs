@@ -152,6 +152,35 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Migrations
                     b.ToTable("ProductAggregatePrices");
                 });
 
+            modelBuilder.Entity("VeilleConcurrentielle.Aggregator.WebApp.Data.Entities.ProductAggregateRecommendationEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<double>("CurrentPrice")
+                        .HasColumnType("REAL");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("REAL");
+
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("StrategyId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductRecommendations");
+                });
+
             modelBuilder.Entity("VeilleConcurrentielle.Aggregator.WebApp.Data.Entities.ProductAggregateStrategyEntity", b =>
                 {
                     b.Property<string>("Id")
@@ -170,6 +199,43 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductAggregateStrategies");
+                });
+
+            modelBuilder.Entity("VeilleConcurrentielle.Aggregator.WebApp.Data.Entities.RecommendationAlertEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<double>("CurrentPrice")
+                        .HasColumnType("REAL");
+
+                    b.Property<bool>("IsSeen")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("REAL");
+
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("SeenAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("StrategyId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsSeen");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("RecommendationAlerts");
                 });
 
             modelBuilder.Entity("VeilleConcurrentielle.Aggregator.WebApp.Data.Entities.StrategyEntity", b =>
@@ -257,6 +323,17 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("VeilleConcurrentielle.Aggregator.WebApp.Data.Entities.ProductAggregateRecommendationEntity", b =>
+                {
+                    b.HasOne("VeilleConcurrentielle.Aggregator.WebApp.Data.Entities.ProductAggregateEntity", "Product")
+                        .WithMany("Recommendations")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("VeilleConcurrentielle.Aggregator.WebApp.Data.Entities.ProductAggregateStrategyEntity", b =>
                 {
                     b.HasOne("VeilleConcurrentielle.Aggregator.WebApp.Data.Entities.ProductAggregateEntity", "Product")
@@ -273,6 +350,8 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Migrations
                     b.Navigation("CompetitorConfigs");
 
                     b.Navigation("LastPrices");
+
+                    b.Navigation("Recommendations");
 
                     b.Navigation("Strategies");
                 });

@@ -3,6 +3,7 @@ using VeilleConcurrentielle.Infrastructure.Core.Models;
 using VeilleConcurrentielle.Infrastructure.Core.Models.Events;
 using VeilleConcurrentielle.Infrastructure.Framework;
 using VeilleConcurrentielle.ProductService.WebApp.Core.Configurations;
+using VeilleConcurrentielle.ProductService.WebApp.Core.Models;
 using VeilleConcurrentielle.ProductService.WebApp.Data.Entities;
 using VeilleConcurrentielle.ProductService.WebApp.Data.Repositories;
 
@@ -15,16 +16,19 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Core.Services
         private readonly IProductRepository _productRepository;
         private readonly ILogger<ProductPriceService> _logger;
         private readonly ProductPriceOptions _productPriceOptions;
+        private readonly IRecommendationService _recommendationService;
         public ProductPriceService(ICompetitorPriceRepository competitorPriceRepository,
             IEventSenderService eventSenderService, IProductRepository productRepository,
             ILogger<ProductPriceService> logger,
-            IOptions<ProductPriceOptions> productPriceOptions)
+            IOptions<ProductPriceOptions> productPriceOptions,
+            IRecommendationService recommendationService)
         {
             _competitorPriceRepository = competitorPriceRepository;
             _eventSenderService = eventSenderService;
             _productRepository = productRepository;
             _logger = logger;
             _productPriceOptions = productPriceOptions.Value;
+            _recommendationService = recommendationService;
         }
         public async Task OnPriceIdentifedAsync(string refererEventId, PriceIdentifiedEventPayload request)
         {
@@ -49,7 +53,16 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Core.Services
             entity.CreatedAt = request.CreatedAt;
             await _competitorPriceRepository.InsertAsync(entity);
             var lastCompetitorPrices = await GetLastPricesAsync(request.ProductId);
-            await _eventSenderService.SendProductAddedOrUpdatedEvent(refererEventId, productEntity, lastCompetitorPrices);
+            var recommendationResponse = await _recommendationService.GetRecommendationsAsync(new GetRecommendationRequest()
+            {
+                ProductId = productEntity.Id,
+                Price = productEntity.Price,
+                Quantity = productEntity.Quantity,
+                Strategies = productEntity.Strategies.Select(e => EnumUtils.GetValueFromString<StrategyIds>(e.StrategyId)).ToList(),
+                LastCompetitorPrices = lastCompetitorPrices
+            });
+            await _eventSenderService.SendProductAddedOrUpdatedEvent(refererEventId, productEntity, lastCompetitorPrices, recommendationResponse.Recommendations);
+            await _eventSenderService.SendNewRecommendationPushedEvent(refererEventId, productEntity.Id, recommendationResponse.NewRecommendations);
         }
 
         public async Task<CompetitorProductPrices> GetLastPricesAsync(string productId)

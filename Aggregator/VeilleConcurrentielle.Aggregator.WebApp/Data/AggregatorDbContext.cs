@@ -17,6 +17,8 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Data
         public DbSet<ProductAggregateStrategyEntity> ProductAggregateStrategies => Set<ProductAggregateStrategyEntity>();
         public DbSet<ProductAggregateCompetitorConfigEntity> ProductAggregateCompetitorConfigs => Set<ProductAggregateCompetitorConfigEntity>();
         public DbSet<ProductAggregatePriceEntity> ProductAggregatePrices => Set<ProductAggregatePriceEntity>();
+        public DbSet<ProductAggregateRecommendationEntity> ProductRecommendations => Set<ProductAggregateRecommendationEntity>();
+        public DbSet<RecommendationAlertEntity> RecommendationAlerts => Set<RecommendationAlertEntity>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -41,6 +43,12 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Data
 
             modelBuilder.Entity<ProductAggregateEntity>()
                             .HasMany(e => e.LastPrices)
+                            .WithOne(e => e.Product)
+                            .OnDelete(DeleteBehavior.Cascade)
+                            .HasForeignKey(e => e.ProductId);
+
+            modelBuilder.Entity<ProductAggregateEntity>()
+                            .HasMany(e => e.Recommendations)
                             .WithOne(e => e.Product)
                             .OnDelete(DeleteBehavior.Cascade)
                             .HasForeignKey(e => e.ProductId);

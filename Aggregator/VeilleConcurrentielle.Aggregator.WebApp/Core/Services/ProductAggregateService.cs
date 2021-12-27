@@ -56,6 +56,19 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Core.Services
                     });
                 }
             }
+            productEntity.Recommendations = new List<ProductAggregateRecommendationEntity>();
+            foreach (var recommendation in request.Recommendations)
+            {
+                productEntity.Recommendations.Add(new ProductAggregateRecommendationEntity()
+                {
+                    Id = recommendation.Id,
+                    CurrentPrice = recommendation.CurrentPrice,
+                    Price = recommendation.Price,
+                    ProductId = request.ProductId,
+                    StrategyId = recommendation.StrategyId.ToString(),
+                    CreatedAt = recommendation.CreatedAt
+                });
+            }
             productEntity.Strategies = new List<ProductAggregateStrategyEntity>();
             foreach (var strategy in request.Strategies)
             {
