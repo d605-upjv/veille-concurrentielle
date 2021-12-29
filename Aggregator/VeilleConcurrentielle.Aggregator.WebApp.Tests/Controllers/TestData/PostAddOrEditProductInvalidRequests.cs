@@ -34,7 +34,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers.TestData
                                     {
                                         new ConfigHolder.ConfigItem()
                                         {
-                                            Key = CompetitorConfigHolderKeys.ProfileUrl.ToString(),
+                                            Key = ConfigHolderKeys.ProductPageUrl.ToString(),
                                             Value = "https://anyurl.com"
                                         }
                                     }
@@ -64,7 +64,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers.TestData
                                     {
                                         new ConfigHolder.ConfigItem()
                                         {
-                                            Key = CompetitorConfigHolderKeys.ProfileUrl.ToString(),
+                                            Key = ConfigHolderKeys.ProductPageUrl.ToString(),
                                             Value = "https://anyurl.com"
                                         }
                                     }
@@ -94,7 +94,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers.TestData
                                     {
                                         new ConfigHolder.ConfigItem
                                         {
-                                            Key = CompetitorConfigHolderKeys.ProfileUrl.ToString(),
+                                            Key = ConfigHolderKeys.ProductPageUrl.ToString(),
                                             Value = "https://anyurl.com"
                                         }
                                     }

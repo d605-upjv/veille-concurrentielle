@@ -17,6 +17,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Data.Entities
         public int? MaxPriceQuantit { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public string ShopProductId { get; set; }
 
         public List<ProductAggregateStrategyEntity> Strategies { get; set; }
         public List<ProductAggregateCompetitorConfigEntity> CompetitorConfigs { get; set; }

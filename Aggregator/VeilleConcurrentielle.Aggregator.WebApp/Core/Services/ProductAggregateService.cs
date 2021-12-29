@@ -28,6 +28,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Core.Services
             productEntity.Quantity = request.Quantity;
             productEntity.IsActive = request.IsActive;
             productEntity.ImageUrl = request.ImageUrl;
+            productEntity.ShopProductId = request.ShopProductId;
             if (request.LastCompetitorPrices.MinPrice != null)
             {
                 productEntity.MinPrice = request.LastCompetitorPrices.MinPrice.Price;

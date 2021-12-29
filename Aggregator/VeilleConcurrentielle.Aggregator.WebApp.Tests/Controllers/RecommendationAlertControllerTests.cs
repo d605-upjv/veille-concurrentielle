@@ -2,7 +2,6 @@
 
 using mywebapp::VeilleConcurrentielle.Aggregator.WebApp.Models;
 using System.Net;
-using System.Net.Http.Json;
 using VeilleConcurrentielle.Infrastructure.Framework;
 using Xunit;
 
@@ -28,11 +27,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers
         {
             await using var application = new AggregatorWebApp();
             using var client = application.CreateClient();
-            SetSeenRecommendationAlertModels.SetSeenRecommendationAlertRequest request = new SetSeenRecommendationAlertModels.SetSeenRecommendationAlertRequest()
-            {
-                Id = "AlertId"
-            };
-            var response = await client.PutAsJsonAsync("/api/RecommendationAlerts/seen", request);
+            var response = await client.PutAsync("/api/RecommendationAlerts/seen/AlertId", null);
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
     }

@@ -122,6 +122,21 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Tests.Core.Services
             CheckCommonServicesForStoreProduct(productId);
         }
 
+        [Fact]
+        public async Task GetProductsToScrap_CheckServiceCalls()
+        {
+            Mock<IProductRepository> productRepositoryMock = new Mock<IProductRepository>();
+            IProductsService productsService = new ProductsService(productRepositoryMock.Object, _eventSenderServiceMock.Object, _productPriceServiceMock.Object, _recommendationServiceMock.Object);
+
+            productRepositoryMock.Setup(s => s.GetProductsToScrap())
+                                            .Returns(Task.FromResult(new List<ProductEntity>()));
+
+            var items = await productsService.GetProductsToScrap();
+
+            Assert.NotNull(items);
+            productRepositoryMock.Verify(s => s.GetProductsToScrap(), Times.Once());
+        }
+
         private void CheckCommonServicesForStoreProduct(string productId)
         {
             _productPriceServiceMock.Verify(s => s.GetLastPricesAsync(productId), Times.Once());

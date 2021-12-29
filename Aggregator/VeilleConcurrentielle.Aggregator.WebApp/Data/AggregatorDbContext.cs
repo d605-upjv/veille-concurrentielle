@@ -58,7 +58,8 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Data
         {
             modelBuilder.Entity<CompetitorEntity>().HasData(
                 new CompetitorEntity() { Id = CompetitorIds.ShopA.ToString(), Name = "Shop A", LogoUrl = "https://www.icone-png.com/png/43/43296.png" },
-                new CompetitorEntity() { Id = CompetitorIds.ShopB.ToString(), Name = "Shop A", LogoUrl = "https://www.icone-png.com/png/43/43302.png" }
+                new CompetitorEntity() { Id = CompetitorIds.ShopB.ToString(), Name = "Shop B", LogoUrl = "https://www.icone-png.com/png/43/43302.png" },
+                new CompetitorEntity() { Id = CompetitorIds.ShopC.ToString(), Name = "Shop C", LogoUrl = "https://www.icone-png.com/png/33/32570.png" }
                 );
 
             modelBuilder.Entity<StrategyEntity>().HasData(

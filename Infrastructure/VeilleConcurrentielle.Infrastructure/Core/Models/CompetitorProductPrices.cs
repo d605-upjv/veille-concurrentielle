@@ -14,7 +14,12 @@ namespace VeilleConcurrentielle.Infrastructure.Core.Models
         {
             if (Prices != null)
             {
-                return Prices.Select(e => e.Prices).Select(e => e.First()).ToList();
+#pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
+                return Prices.Select(e => e.Prices ?? new List<ProductPrice>())
+                                        .Select(e => e.FirstOrDefault())
+                                                .Where(e => e != null)
+                                                    .Select(e => e).ToList();
+#pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
             }
             return new List<ProductPrice>();
         }

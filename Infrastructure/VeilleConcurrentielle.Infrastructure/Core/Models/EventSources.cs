@@ -7,6 +7,8 @@ namespace VeilleConcurrentielle.Infrastructure.Core.Models
         [EnumMember(Value = "Test")]
         Test,
         [EnumMember(Value = "ProdouctService")]
-        ProductService
+        ProductService,
+        [EnumMember(Value = "Scraper")]
+        Scraper
     }
 }

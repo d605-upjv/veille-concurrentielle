@@ -26,7 +26,7 @@ namespace VeilleConcurrentielle.Infrastructure.Core.Models.Events
     {
         [EnumMember(Value = "PriceApi")]
         PriceApi,
-        [EnumMember(Value = "PriceCrawler")]
-        PriceCrawler
+        [EnumMember(Value = "PriceScraper")]
+        PriceScraper
     }
 }

@@ -10,7 +10,7 @@ namespace VeilleConcurrentielle.Infrastructure.Core.Models
         public class ConfigItem
         {
             /// <summary>
-            /// See <see cref="CompetitorConfigHolderKeys"/>
+            /// See <see cref="ConfigHolderKeys"/>
             /// </summary>
             [Required]
             public string Key { get; set; }

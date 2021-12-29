@@ -45,7 +45,13 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Migrations
                         {
                             Id = "ShopB",
                             LogoUrl = "https://www.icone-png.com/png/43/43302.png",
-                            Name = "Shop A"
+                            Name = "Shop B"
+                        },
+                        new
+                        {
+                            Id = "ShopC",
+                            LogoUrl = "https://www.icone-png.com/png/33/32570.png",
+                            Name = "Shop C"
                         });
                 });
 
@@ -114,6 +120,10 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Migrations
 
                     b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("ShopProductId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");

@@ -1,5 +1,7 @@
-﻿using VeilleConcurrentielle.Infrastructure.Core.Models.Events;
+﻿using VeilleConcurrentielle.Infrastructure.Core.Models;
+using VeilleConcurrentielle.Infrastructure.Core.Models.Events;
 using VeilleConcurrentielle.Infrastructure.Framework;
+using VeilleConcurrentielle.ProductService.Lib.Servers.Models;
 using VeilleConcurrentielle.ProductService.WebApp.Core.Models;
 using VeilleConcurrentielle.ProductService.WebApp.Data.Entities;
 using VeilleConcurrentielle.ProductService.WebApp.Data.Repositories;
@@ -38,6 +40,7 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Core.Services
             productEntity.Quantity = request.Quantity;
             productEntity.IsActive = request.IsActive;
             productEntity.ImageUrl = request.ImageUrl;
+            productEntity.ShopProductId = request.ShopProductId;
             productEntity.Strategies = new List<StrategyEntity>();
             foreach (var strategy in request.Strategies)
             {
@@ -83,6 +86,32 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Core.Services
             });
             await _eventSenderService.SendProductAddedOrUpdatedEvent(refererEventId, productEntity, lastCompetitorPrices, recommendationResponse.Recommendations);
             await _eventSenderService.SendNewRecommendationPushedEvent(refererEventId, productEntity.Id, recommendationResponse.NewRecommendations);
+        }
+
+        public async Task<List<ProductToScrap>> GetProductsToScrap()
+        {
+            List<ProductToScrap> productsToScrap = new List<ProductToScrap>();
+            var products = await _productRepository.GetProductsToScrap();
+            foreach (var product in products)
+            {
+                foreach (var competitorConfig in product.CompetitorConfigs)
+                {
+                    var config = SerializationUtils.Deserialize<ConfigHolder>(competitorConfig.SerializedHolder);
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                    var urlConfig = config.Items.FirstOrDefault(e => e.Key == ConfigHolderKeys.ProductPageUrl.ToString());
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+                    if (urlConfig != null && !string.IsNullOrWhiteSpace(urlConfig.Value))
+                    {
+                        productsToScrap.Add(new ProductToScrap()
+                        {
+                            ProductId = product.Id,
+                            CompetitorId = EnumUtils.GetValueFromString<CompetitorIds>(competitorConfig.CompetitorId),
+                            ProductProfileUrl = urlConfig.Value
+                        });
+                    }
+                }
+            }
+            return productsToScrap;
         }
     }
 }

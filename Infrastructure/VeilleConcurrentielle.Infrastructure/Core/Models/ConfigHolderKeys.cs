@@ -2,13 +2,11 @@
 
 namespace VeilleConcurrentielle.Infrastructure.Core.Models
 {
-    public enum CompetitorConfigHolderKeys
+    public enum ConfigHolderKeys
     {
         [EnumMember(Value = "UniqueId")]
         UniqueId,
-        [EnumMember(Value = "EAN")]
-        EAN,
-        [EnumMember(Value = "ProfileUrl")]
-        ProfileUrl
+        [EnumMember(Value = "ProductPageUrl")]
+        ProductPageUrl
     }
 }

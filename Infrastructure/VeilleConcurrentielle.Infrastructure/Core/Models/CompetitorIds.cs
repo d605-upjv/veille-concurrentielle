@@ -7,6 +7,8 @@ namespace VeilleConcurrentielle.Infrastructure.Core.Models
         [EnumMember(Value = "ShopA")]
         ShopA,
         [EnumMember(Value = "ShopB")]
-        ShopB
+        ShopB,
+        [EnumMember(Value = "ShopC")]
+        ShopC
     }
 }

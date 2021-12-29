@@ -15,6 +15,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers.TestData
             {
                 ProductId = "Product1Id",
                 ProductName = "Product1Name",
+                ShopProductId = "1",
                 Price = 100,
                 Quantity = 10,
                 Strategies = new List<AddOrUPdateProductRequestedEventPayload.Strategy> {
@@ -31,7 +32,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers.TestData
                                     {
                                         new ConfigHolder.ConfigItem
                                         {
-                                            Key = CompetitorConfigHolderKeys.ProfileUrl.ToString(),
+                                            Key = ConfigHolderKeys.ProductPageUrl.ToString(),
                                             Value = "https://anyurl.com"
                                         }
                                     }

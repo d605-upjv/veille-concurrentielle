@@ -5,5 +5,6 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Data.Repositories
 {
     public interface IProductRepository : IRepository<ProductEntity>
     {
+        Task<List<ProductEntity>> GetProductsToScrap();
     }
 }

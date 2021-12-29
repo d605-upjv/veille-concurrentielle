@@ -61,7 +61,7 @@ namespace VeilleConcurrentielle.EventOrchestrator.Lib.Clients.ServiceClients
         public async Task<ConsumeEventClientResponse?> ConsumeEventAsync(ConsumeEventClientRequest request)
         {
             ConsumeEventServerRequest serverRequest = request;
-            var serverResponse = await PostAsync<ConsumeEventServerRequest, ConsumeEventServerResponse>(GetServiceUrl(ApplicationNames.EventOrchestrator), request, "consume" );
+            var serverResponse = await PostAsync<ConsumeEventServerRequest, ConsumeEventServerResponse>(GetServiceUrl(ApplicationNames.EventOrchestrator), serverRequest, "consume" );
             if (serverResponse != null)
             {
                 return new ConsumeEventClientResponse()

@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\EventOrchestrator\VeilleConcurrentielle.EventOrchestrator.Lib\VeilleConcurrentielle.EventOrchestrator.Lib.csproj" />
     <ProjectReference Include="..\..\Infrastructure\VeilleConcurrentielle.Infrastructure\VeilleConcurrentielle.Infrastructure.csproj" />
+    <ProjectReference Include="..\VeilleConcurrentielle.ProductService.Lib\VeilleConcurrentielle.ProductService.Lib.csproj" />
   </ItemGroup>
 
 </Project>

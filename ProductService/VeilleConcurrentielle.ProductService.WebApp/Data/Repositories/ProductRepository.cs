@@ -41,5 +41,14 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Data.Repositories
                             .AsSplitQuery()
                             .FirstOrDefaultAsync(e => e.Id == id);
         }
+
+        public async Task<List<ProductEntity>> GetProductsToScrap()
+        {
+            ProductDbContext dbContext = (ProductDbContext)_dbContext;
+            return await dbContext.Products.AsNoTracking()
+                                .Include(e => e.CompetitorConfigs)
+                                .AsSplitQuery()
+                                .ToListAsync();
+        }
     }
 }
