@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VeilleConcurrentielle.Aggregator.WebApp.Data;
 
@@ -10,9 +11,10 @@ using VeilleConcurrentielle.Aggregator.WebApp.Data;
 namespace VeilleConcurrentielle.Aggregator.WebApp.Migrations
 {
     [DbContext(typeof(AggregatorDbContext))]
-    partial class AggregatorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211229020713_RenameMaxQuantity")]
+    partial class RenameMaxQuantity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.1");
@@ -122,10 +124,6 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ShopProductId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ShopProductUrl")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

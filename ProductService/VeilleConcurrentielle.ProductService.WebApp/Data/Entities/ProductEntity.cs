@@ -12,6 +12,7 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Data.Entities
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public string ShopProductId { get; set; }
+        public string ShopProductUrl { get; set; }
 
         public ICollection<StrategyEntity> Strategies { get; set; }
         public ICollection<CompetitorConfigEntity> CompetitorConfigs { get; set; }

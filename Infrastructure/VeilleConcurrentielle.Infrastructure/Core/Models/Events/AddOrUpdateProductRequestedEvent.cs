@@ -29,6 +29,8 @@ namespace VeilleConcurrentielle.Infrastructure.Core.Models.Events
         public List<CompetitorConfig> CompetitorConfigs { get; set; }
         [Required]
         public string ShopProductId { get; set; }
+        [Required]
+        public string ShopProductUrl { get; set; }
 
         public class Strategy
         {

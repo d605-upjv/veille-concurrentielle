@@ -27,6 +27,7 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Core.Services
                 CreatedAt = productEntity.CreatedAt,
                 UpdatedAt = productEntity.UpdatedAt,
                 ShopProductId = productEntity.ShopProductId,
+                ShopProductUrl = productEntity.ShopProductUrl,
                 Strategies = productEntity.Strategies.Select(e => new ProductAddedOrUpdatedEventPayload.ProductStrategy()
                 {
                     Id = e.Id,

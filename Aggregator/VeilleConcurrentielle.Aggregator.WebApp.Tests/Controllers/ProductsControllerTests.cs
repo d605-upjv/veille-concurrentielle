@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using mywebapp::VeilleConcurrentielle.Aggregator.WebApp.Controllers;
+using mywebapp::VeilleConcurrentielle.Aggregator.WebApp.Core.Services;
 using mywebapp::VeilleConcurrentielle.Aggregator.WebApp.Models;
 using System.Net;
 using System.Net.Http.Json;
@@ -63,11 +64,35 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers
                                             .Returns((PushEventClientRequest<AddOrUpdateProductRequestedEvent, AddOrUPdateProductRequestedEventPayload> request) => {
                                                 return Task.FromResult(new PushEventClientResponse<AddOrUpdateProductRequestedEvent, AddOrUPdateProductRequestedEventPayload>() { Event = new AddOrUpdateProductRequestedEvent() { Id = $"{request.Name}EventUniqueId" } });
                                             });
-            ProductsController controller = new ProductsController(eventServiceClientMock.Object, _loggerMocker.Object);
+            var productAggregateServiceMock = new Mock<IProductAggregateService>();
+            ProductsController controller = new ProductsController(eventServiceClientMock.Object, _loggerMocker.Object, productAggregateServiceMock.Object);
             var request = PostAddOrEditProductValidRequests.GetStandardValidRequest();
             var response = await controller.PostAddOrEditProduct(request);
             eventServiceClientMock.Verify(s => s.PushEventAsync(It.IsAny<PushEventClientRequest<AddOrUpdateProductRequestedEvent, AddOrUPdateProductRequestedEventPayload>>()), Times.Once());
             Assert.IsType<OkObjectResult>(response);
+        }
+
+        [Fact]
+        public async Task GetAllProductsAsync_CallsAppropriateServices()
+        {
+            var eventServiceClientMock = new Mock<IEventServiceClient>();
+            var productAggregateServiceMock = new Mock<IProductAggregateService>();
+            ProductsController controller = new ProductsController(eventServiceClientMock.Object, _loggerMocker.Object, productAggregateServiceMock.Object);
+            var response = await controller.GetAllProductsAsync();
+            productAggregateServiceMock.Verify(s => s.GetAllProductsAsync(), Times.Once());
+            Assert.IsType<OkObjectResult>(response);
+        }
+
+        [Fact]
+        public async Task GetProductByIdAsync_CallsAppropriateServices()
+        {
+            string productId = "ProductId";
+            var eventServiceClientMock = new Mock<IEventServiceClient>();
+            var productAggregateServiceMock = new Mock<IProductAggregateService>();
+            ProductsController controller = new ProductsController(eventServiceClientMock.Object, _loggerMocker.Object, productAggregateServiceMock.Object);
+            var response = await controller.GetProductByIdAsync(productId);
+            productAggregateServiceMock.Verify(s => s.GetProductbyIdAsync(productId), Times.Once());
+            Assert.IsType<NotFoundResult>(response);
         }
     }
 }

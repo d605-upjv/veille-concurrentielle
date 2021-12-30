@@ -14,6 +14,9 @@ function LinkTab(props) {
     return (
         <Tab
             component="a"
+            onClick={(event) => {
+                event.preventDefault();
+            }}
             {...props}
         />
     );
@@ -39,7 +42,7 @@ const Header = () => {
                 </Toolbar>
             </AppBar>
             <Tabs value={menuIndex} onChange={handleMenuIndexChange} aria-label="Menu">
-                <LinkTab label="Produits" href="/products" />
+                <LinkTab label="Produits à observer" href="/products" />
             </Tabs>
         </Box>
     )

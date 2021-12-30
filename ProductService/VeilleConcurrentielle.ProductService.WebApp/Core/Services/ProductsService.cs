@@ -41,6 +41,7 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Core.Services
             productEntity.IsActive = request.IsActive;
             productEntity.ImageUrl = request.ImageUrl;
             productEntity.ShopProductId = request.ShopProductId;
+            productEntity.ShopProductUrl = request.ShopProductUrl;
             productEntity.Strategies = new List<StrategyEntity>();
             foreach (var strategy in request.Strategies)
             {

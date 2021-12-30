@@ -23,6 +23,8 @@ namespace VeilleConcurrentielle.Infrastructure.Core.Models.Events
         [Required]
         public string ShopProductId { get; set; }
         [Required]
+        public string ShopProductUrl { get; set; }
+        [Required]
         public List<ProductStrategy> Strategies { get; set; }
         [Required]
         public List<ProductCompetitorConfig> CompetitorConfigs { get; set; }

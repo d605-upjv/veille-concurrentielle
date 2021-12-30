@@ -1,0 +1,84 @@
+import { Alert, AlertTitle, Paper } from "@mui/material"
+import { useEffect } from "react";
+import { useState } from "react";
+import { Loader } from "../loader/loader";
+import * as api from "../../services/api";
+import { store } from "react-notifications-component";
+import { defaultNotification } from "../notifications/notifications";
+
+const ProductItemComponent = (props) => {
+    const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [product, setProduct] = useState(null);
+    const productId = props.match.params.id;
+
+    useEffect(() => {
+        async function loadProduct() {
+            try {
+                setIsLoading(true);
+                setErrorMessage('');
+                const response = await api.getProduct(productId);
+                if (response.product) {
+                    setProduct(response.product);
+                    store.addNotification({
+                        ...defaultNotification,
+                        type: 'success',
+                        message: 'Produit chargé avec succès!',
+                    });
+                }
+            } catch (ex) {
+                setErrorMessage(`Erreur pendant le chargement du produit: ${ex}`);
+                setProduct(null);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+        loadProduct();
+    }, [productId]);
+
+    return (
+        <Paper>
+            {isLoading && (
+                <Loader />
+            )}
+
+            <div className="container">
+
+                {!product && (
+                    <Alert severity="warning">
+                        <AlertTitle>Attention - Erreur 404</AlertTitle>
+                        <strong>La page demandée n'existe pas!</strong>
+                    </Alert>
+                )}
+
+                {errorMessage && (
+                    <div className="row">
+                        <div className="col">
+                            <Alert severity="error">{errorMessage}</Alert>
+                        </div>
+                    </div>
+                )}
+
+                {product && (
+                    <>
+                        <div className="row">
+                            <div className="col">
+                                <h1>{product.name}</h1>
+                            </div>
+                        </div>
+
+                        <div className="row">
+                            <div className="col">
+                                
+                            </div>
+                        </div>
+                    </>
+                )}
+
+            </div>
+
+        </Paper>
+    )
+}
+
+export { ProductItemComponent }

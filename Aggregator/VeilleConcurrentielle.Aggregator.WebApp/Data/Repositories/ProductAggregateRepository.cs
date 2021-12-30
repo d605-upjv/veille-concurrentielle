@@ -34,5 +34,29 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Data.Repositories
             dbContext.ProductRecommendations.AddRange(entity.Recommendations);
             await _dbContext.SaveChangesAsync();
         }
+
+        public override async Task<List<ProductAggregateEntity>> GetAllAsync()
+        {
+            AggregatorDbContext dbContext = (AggregatorDbContext)_dbContext;
+            return await dbContext.ProductAggregates.AsNoTracking()
+                                .Include(e => e.Strategies)
+                                .Include(e => e.CompetitorConfigs)
+                                .Include(e => e.LastPrices)
+                                .Include(e => e.Recommendations)
+                                .AsSplitQuery()
+                                .ToListAsync();
+        }
+
+        public override async Task<ProductAggregateEntity?> GetByIdAsync(string id)
+        {
+            AggregatorDbContext dbContext = (AggregatorDbContext)_dbContext;
+            return await dbContext.ProductAggregates.AsNoTracking()
+                                .Include(e => e.Strategies)
+                                .Include(e => e.CompetitorConfigs)
+                                .Include(e => e.LastPrices)
+                                .Include(e => e.Recommendations)
+                                .AsSplitQuery()
+                                .FirstOrDefaultAsync(e => e.Id == id);
+        }
     }
 }

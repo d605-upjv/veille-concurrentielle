@@ -14,10 +14,11 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Data.Entities
         public int? MinPriceQuantity { get; set; }
         public double? MaxPrice { get; set; }
         public string? MaxPriceCompetitorId { get; set; }
-        public int? MaxPriceQuantit { get; set; }
+        public int? MaxPriceQuantity { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public string ShopProductId { get; set; }
+        public string ShopProductUrl { get; set; }
 
         public List<ProductAggregateStrategyEntity> Strategies { get; set; }
         public List<ProductAggregateCompetitorConfigEntity> CompetitorConfigs { get; set; }
