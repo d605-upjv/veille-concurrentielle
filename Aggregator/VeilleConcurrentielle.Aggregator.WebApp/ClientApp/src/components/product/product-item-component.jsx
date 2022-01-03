@@ -8,6 +8,8 @@ import './product-item-component.css';
 import { getDatetimeToDisplay } from "../../services/utils";
 import { ShoppingBasket } from "@mui/icons-material";
 
+const waitTimeBeforeSettingRecoToSeenInSeconds = 5;
+
 const ProductItemComponent = (props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
@@ -27,6 +29,7 @@ const ProductItemComponent = (props) => {
                         type: 'success',
                         message: 'Produit chargé avec succès!',
                     });
+                    updateRecommendationToSeenForCurrentProduct();
                 }
             } catch (ex) {
                 setErrorMessage(`Erreur pendant le chargement du produit: ${ex}`);
@@ -37,6 +40,25 @@ const ProductItemComponent = (props) => {
         }
         loadProduct();
     }, [productId]);
+
+    function updateRecommendationToSeenForCurrentProduct() {
+        setTimeout(() => {
+            async function setRecommendationAlertsForProductToSync() {
+                if (productId) {
+                    try {
+                        await api.setRecommendationAlertsForProductToSeen(productId);
+                    } catch (ex) {
+                        store.addNotification({
+                            ...defaultNotification,
+                            type: 'danger',
+                            message: `Erreur pendant la mise à jour des notifications de récommendations: ${ex}`,
+                        });
+                    }
+                }
+            }
+            setRecommendationAlertsForProductToSync();
+        }, waitTimeBeforeSettingRecoToSeenInSeconds * 1000);
+    }
 
     return (
         <Paper>
@@ -214,7 +236,9 @@ const ProductItemComponent = (props) => {
                                             <TableBody>
                                                 {product.recommendations.map(recommendation => (
                                                     <TableRow key={`reco-${recommendation.strategyId}`} hover>
-                                                        <TableCell>{recommendation.strategyName}</TableCell>
+                                                        <TableCell>
+                                                            <span className="recommendation-strategy">{recommendation.strategyName}</span>
+                                                        </TableCell>
                                                         <TableCell>{recommendation.currentPrice} €</TableCell>
                                                         <TableCell>
                                                             <span className="recommendation-price">{recommendation.price} €</span>
@@ -252,7 +276,17 @@ const ProductItemComponent = (props) => {
                                                             <img src={lastPrice.competitorLogUrl} alt={lastPrice.competitorName} className="last-price-logo" />
                                                         </TableCell>
                                                         <TableCell>{lastPrice.competitorName}</TableCell>
-                                                        <TableCell>{lastPrice.price} €</TableCell>
+                                                        <TableCell>
+                                                            {lastPrice.price === product.minPrice && (
+                                                                <span className="last-price-min">{lastPrice.price} €</span>
+                                                            )}
+                                                            {lastPrice.price === product.maxPrice && lastPrice.price !== product.minPrice && (
+                                                                <span className="last-price-max">{lastPrice.price} €</span>
+                                                            )}
+                                                            {lastPrice.price !== product.minPrice && lastPrice.price !== product.maxPrice && (
+                                                                <span>{lastPrice.price} €</span>
+                                                            )}
+                                                        </TableCell>
                                                         <TableCell>{lastPrice.quantity}</TableCell>
                                                         <TableCell>{getDatetimeToDisplay(lastPrice.createdAt)}</TableCell>
                                                     </TableRow>

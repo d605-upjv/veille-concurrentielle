@@ -7,6 +7,9 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Core.Services
     {
         Task StoreNewRecommendationAlertAsync(string refererEventId, NewRecommendationPushedEventPayload request);
         Task<GetAllUnseenRecommendationAlertModels.GetAllUnseenRecommendationAlertResponse> GetAlUnseenAsync();
-        Task<SetSeenRecommendationAlertModels.SetSeenRecommendationAlertResponse?> SetToSeenAsync(string recommendationAlertId);
+        Task<SetRecommendationAlertToSeenModels.SetRecommendationAlertToSeenResponse?> SetToSeenAsync(string recommendationAlertId);
+        Task<GetAllUnseenRecommendationAlertCountModels.GetAllUnseenRecommendationAlertCountResponse> GetAllUnseenCountAsync();
+        Task<SetRecommendationAlertForProductToSeenModels.SetRecommendationAlertForProductToSeenResponse> SetToSeenForProductAsync(string productId);
+        Task<GetAllUnseenRecommendationAlertCountByProductModels.GetAllUnseenRecommendationAlertCountByProductResponse> GetAllUnseenCountByProductAsync();
     }
 }

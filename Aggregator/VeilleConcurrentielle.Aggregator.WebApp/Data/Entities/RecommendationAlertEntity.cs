@@ -3,7 +3,6 @@ using VeilleConcurrentielle.Infrastructure.Data;
 
 namespace VeilleConcurrentielle.Aggregator.WebApp.Data.Entities
 {
-    [Index(nameof(ProductId))]
     [Index(nameof(IsSeen))]
     public class RecommendationAlertEntity : EntityBase
     {
@@ -14,5 +13,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Data.Entities
         public double Price { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? SeenAt { get; set; }
+
+        public ProductAggregateEntity Product { get; set; }
     }
 }

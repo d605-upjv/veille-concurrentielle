@@ -24,5 +24,6 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Data.Entities
         public List<ProductAggregateCompetitorConfigEntity> CompetitorConfigs { get; set; }
         public List<ProductAggregatePriceEntity> LastPrices { get; set; }
         public List<ProductAggregateRecommendationEntity> Recommendations { get; set; }
+        public List<RecommendationAlertEntity> RecommendationAlerts { get; set; }
     }
 }

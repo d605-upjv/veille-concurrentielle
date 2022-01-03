@@ -52,6 +52,12 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Data
                             .WithOne(e => e.Product)
                             .OnDelete(DeleteBehavior.Cascade)
                             .HasForeignKey(e => e.ProductId);
+
+            modelBuilder.Entity<ProductAggregateEntity>()
+                            .HasMany(e => e.RecommendationAlerts)
+                            .WithOne(e => e.Product)
+                            .OnDelete(DeleteBehavior.Cascade)
+                            .HasForeignKey(e => e.ProductId);
         }
 
         private void SeedData(ModelBuilder modelBuilder)

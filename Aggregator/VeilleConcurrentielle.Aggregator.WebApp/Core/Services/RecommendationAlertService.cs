@@ -29,7 +29,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Core.Services
             await _recommedationAlertRepository.InsertAsync(alertEntity);
         }
 
-        public async Task<SetSeenRecommendationAlertModels.SetSeenRecommendationAlertResponse?> SetToSeenAsync(string recommendationAlertId)
+        public async Task<SetRecommendationAlertToSeenModels.SetRecommendationAlertToSeenResponse?> SetToSeenAsync(string recommendationAlertId)
         {
             var existing = await _recommedationAlertRepository.GetByIdAsync(recommendationAlertId);
             if (existing == null)
@@ -39,7 +39,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Core.Services
             existing.IsSeen = true;
             existing.SeenAt = DateTime.Now;
             await _recommedationAlertRepository.UpdateAsync(existing);
-            return new SetSeenRecommendationAlertModels.SetSeenRecommendationAlertResponse() { SeenAt = existing.SeenAt.Value };
+            return new SetRecommendationAlertToSeenModels.SetRecommendationAlertToSeenResponse() { SeenAt = existing.SeenAt.Value };
         }
 
         public async Task<GetAllUnseenRecommendationAlertModels.GetAllUnseenRecommendationAlertResponse> GetAlUnseenAsync()
@@ -58,6 +58,38 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Core.Services
             return new GetAllUnseenRecommendationAlertModels.GetAllUnseenRecommendationAlertResponse()
             {
                 Recommendations = items
+            };
+        }
+
+        public async Task<GetAllUnseenRecommendationAlertCountModels.GetAllUnseenRecommendationAlertCountResponse> GetAllUnseenCountAsync()
+        {
+            var count = await _recommedationAlertRepository.GetAllUnseenCountAsync();
+            return new GetAllUnseenRecommendationAlertCountModels.GetAllUnseenRecommendationAlertCountResponse()
+            {
+                Count = count
+            };
+        }
+
+        public async Task<SetRecommendationAlertForProductToSeenModels.SetRecommendationAlertForProductToSeenResponse> SetToSeenForProductAsync(string productId)
+        {
+            var affectedCount = await _recommedationAlertRepository.SetRecommendationAlertsForProductToSeenAsync(productId);
+            return new SetRecommendationAlertForProductToSeenModels.SetRecommendationAlertForProductToSeenResponse()
+            {
+                AffectedCount = affectedCount
+            };
+        }
+
+        public async Task<GetAllUnseenRecommendationAlertCountByProductModels.GetAllUnseenRecommendationAlertCountByProductResponse> GetAllUnseenCountByProductAsync()
+        {
+            var items = await _recommedationAlertRepository.GetAllUnseenCountByProductAsync();
+            return new GetAllUnseenRecommendationAlertCountByProductModels.GetAllUnseenRecommendationAlertCountByProductResponse()
+            {
+                Items = items.Select(e => new GetAllUnseenRecommendationAlertCountByProductModels.RecommendationAlertCountByProduct()
+                {
+                    ProductId = e.ProductId,
+                    ProductName = e.ProductName,
+                    Count = e.Count
+                }).ToList()
             };
         }
     }

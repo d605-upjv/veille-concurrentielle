@@ -2,9 +2,9 @@
 
 namespace VeilleConcurrentielle.Aggregator.WebApp.Models
 {
-    public class SetSeenRecommendationAlertModels
+    public class SetRecommendationAlertToSeenModels
     {
-        public class SetSeenRecommendationAlertResponse
+        public class SetRecommendationAlertToSeenResponse
         {
             public DateTime SeenAt { get; set; }
         }

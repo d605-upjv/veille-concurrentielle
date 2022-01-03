@@ -1,29 +1,56 @@
 import { useState } from 'react';
 import {
     AppBar,
+    Badge,
     Box,
     IconButton,
     Tab,
     Tabs,
     Toolbar,
-    Typography
+    Typography,
+    Tooltip
 } from "@mui/material";
-import { Menu } from "@mui/icons-material";
+import { Menu, Notifications } from "@mui/icons-material";
+import { useEffect } from 'react';
+import * as api from "../../services/api";
+import { store } from 'react-notifications-component';
+import { defaultNotification } from '../notifications/notifications';
 
 function LinkTab(props) {
     return (
         <Tab
             component="a"
-            onClick={(event) => {
-                event.preventDefault();
-            }}
             {...props}
         />
     );
 }
 
+const refreshTimeInSeconds = 30;
+
 const Header = () => {
     const [menuIndex, setMenuIndex] = useState(0);
+    const [alertCount, setAlertCount] = useState(0);
+
+    useEffect(() => {
+        refreshAlertCount();
+    }, []);
+
+    async function refreshAlertCount() {
+        setTimeout(() => {
+            api.getRecommendationAlertsCount()
+                .then(response => {
+                    setAlertCount(response.count);
+                    refreshAlertCount();
+                })
+                .catch(error => {
+                    store.addNotification({
+                        ...defaultNotification,
+                        type: 'error',
+                        message: `Erreur lors de la récupération du nombre total des récommendations: ${error}!`,
+                    });
+                });
+        }, refreshTimeInSeconds * 1000);
+    };
 
     const handleMenuIndexChange = (event, newValue) => {
         setMenuIndex(newValue);
@@ -39,10 +66,22 @@ const Header = () => {
                     <Typography variant="h6" color="inherit" component="div">
                         Veille Concurrentielle
                     </Typography>
+                    <Box sx={{ flexGrow: 1 }} />
+                    <Tooltip title={`${alertCount} récommendations`}>
+                        <IconButton
+                            size="large"
+                            aria-label={`Afficher les ${alertCount} récommendations`}
+                            color="inherit"
+                        >
+                            <Badge badgeContent={alertCount} color="error">
+                                <Notifications />
+                            </Badge>
+                        </IconButton>
+                    </Tooltip>
                 </Toolbar>
             </AppBar>
             <Tabs value={menuIndex} onChange={handleMenuIndexChange} aria-label="Menu">
-                <LinkTab label="Produits à observer" href="/products" />
+                <LinkTab label="Produits" href="/products" />
             </Tabs>
         </Box>
     )

@@ -91,7 +91,7 @@ const ProductListComponent = () => {
                                         <TableCell>Le moins cher</TableCell>
                                         <TableCell>Le plus cher</TableCell>
                                         {competitorColumns.map(competitorColumn => (
-                                            <TableCell>{competitorColumn}</TableCell>
+                                            <TableCell key={competitorColumn}>{competitorColumn}</TableCell>
                                         ))}
                                         <TableCell></TableCell>
                                     </TableRow>

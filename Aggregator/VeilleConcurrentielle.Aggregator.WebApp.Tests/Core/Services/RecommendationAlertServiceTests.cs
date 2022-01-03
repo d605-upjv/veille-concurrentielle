@@ -68,5 +68,48 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Core.Services
             Assert.NotNull(items);
             recommendationAlertRepositoryMock.Verify(s => s.GetAllUnseenAsync(), Times.Once());
         }
+
+        [Fact]
+        public async Task GetAlUnseenCountAsync_CallsCorrespondingRepositoryMethod()
+        {
+            int unseenCount = 5;
+            Mock<IRecommendationAlertRepository> recommendationAlertRepositoryMock = new Mock<IRecommendationAlertRepository>();
+            recommendationAlertRepositoryMock.Setup(s => s.GetAllUnseenCountAsync())
+                                                    .Returns(Task.FromResult(unseenCount));
+            IRecommendationAlertService recommendationService = new RecommendationAlertService(recommendationAlertRepositoryMock.Object);
+            var response = await recommendationService.GetAllUnseenCountAsync();
+            Assert.NotNull(response);
+            Assert.Equal(unseenCount, response.Count);
+            recommendationAlertRepositoryMock.Verify(s => s.GetAllUnseenCountAsync(), Times.Once());
+        }
+
+        [Fact]
+        public async Task GetAlUnseenCountByProductAsync_CallsCorrespondingRepositoryMethod()
+        {
+            Mock<IRecommendationAlertRepository> recommendationAlertRepositoryMock = new Mock<IRecommendationAlertRepository>();
+            recommendationAlertRepositoryMock.Setup(s => s.GetAllUnseenCountByProductAsync())
+                                                    .Returns(Task.FromResult(new List<(string ProductId, string ProductName, int Count)>()));
+            IRecommendationAlertService recommendationService = new RecommendationAlertService(recommendationAlertRepositoryMock.Object);
+            var response = await recommendationService.GetAllUnseenCountByProductAsync();
+            Assert.NotNull(response);
+            Assert.NotNull(response.Items);
+            Assert.Empty(response.Items);
+            recommendationAlertRepositoryMock.Verify(s => s.GetAllUnseenCountByProductAsync(), Times.Once());
+        }
+
+        [Fact]
+        public async Task SetToSeenForProductAsync_CallsCorrespondingRepositoryMethod()
+        {
+            string productId = "ProductId";
+            int affectedCount = 5;
+            Mock<IRecommendationAlertRepository> recommendationAlertRepositoryMock = new Mock<IRecommendationAlertRepository>();
+            recommendationAlertRepositoryMock.Setup(s => s.SetRecommendationAlertsForProductToSeenAsync(It.IsAny<string>()))
+                                                    .Returns(Task.FromResult(affectedCount));
+            IRecommendationAlertService recommendationService = new RecommendationAlertService(recommendationAlertRepositoryMock.Object);
+            var response = await recommendationService.SetToSeenForProductAsync(productId);
+            Assert.NotNull(response);
+            Assert.Equal(affectedCount, response.AffectedCount);
+            recommendationAlertRepositoryMock.Verify(s => s.SetRecommendationAlertsForProductToSeenAsync(productId), Times.Once());
+        }
     }
 }
