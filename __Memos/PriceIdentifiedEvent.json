@@ -1,0 +1,5 @@
+{
+	"eventName": "PriceIdentified",
+	"serializedPayload": "{\"productId\":\"some-fake-product-id\",\"price\":400,\"quantity\":10,\"competitorId\":\"ShopB\",\"source\":\"PriceApi\",\"createdAt\":\"2021-12-26T17:15:01.1629234+01:00\",\"refererEventId\":null}",
+	"source": "Test"
+}

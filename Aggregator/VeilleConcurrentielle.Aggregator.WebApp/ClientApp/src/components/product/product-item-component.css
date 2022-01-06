@@ -1,0 +1,85 @@
+.item-info-name {
+}
+
+.item-info-value {
+    font-weight: bold;
+}
+
+.product-image {
+    height: 5rem;
+    width: auto;
+}
+
+.price-title {
+    font-size: 1rem;
+    text-align: center;
+}
+
+.price-value {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+    .price-value.min {
+        color: blue;
+        font-size: 2rem;
+    }
+
+    .price-value.max {
+        color: green;
+        font-size: 2rem;
+    }
+
+.price-quantity {
+    font-size: 0.75rem;
+    text-align: right;
+}
+
+.price-competitor {
+    font-size: 0.75rem;
+    text-align: left;
+}
+
+    .price-competitor img {
+        height: 2rem;
+        width: auto;
+    }
+
+    .price-competitor .sold-by-competitor-name {
+        font-weight: bold;
+    }
+
+.price-my-shop-logo {
+    font-size: 2.1rem;
+}
+
+.recommendation-strategy {
+    font-weight: bold;
+    color: darkred;
+}
+
+.recommendation-price {
+    font-weight: bold;
+    color: red;
+}
+
+.last-price-logo {
+    height: 1.5rem;
+    width: auto;
+}
+
+.last-price-min{
+    color: blue;
+    font-weight: bold;
+}
+
+.last-price-max {
+    color: red;
+    font-weight: bold;
+}
+
+th {
+    font-weight: bold !important;
+    background-color: #f0f0ff !important;
+}

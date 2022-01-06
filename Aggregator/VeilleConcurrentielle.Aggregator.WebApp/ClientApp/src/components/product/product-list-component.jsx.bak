@@ -1,0 +1,116 @@
+﻿import {
+    Paper,
+    Table,
+    TableContainer,
+    TableHead,
+    TableRow,
+    TableCell,
+    TableBody,
+    Alert
+} from "@mui/material";
+import { Menu } from "@mui/icons-material";
+import React, { useEffect, useState } from "react";
+import { Loader } from "../loader/loader";
+import * as api from "../../services/api";
+import { store } from 'react-notifications-component';
+import { defaultNotification } from "../notifications/notifications";
+
+const ProductListComponent = () => {
+    const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        async function loadProducts() {
+            try {
+                setIsLoading(true);
+                setErrorMessage('');
+                const response = await api.getProducts();
+                setProducts(response.products);
+                store.addNotification({
+                    ...defaultNotification,
+                    type: 'success',
+                    message: 'Chargement des produits terminé',
+                });
+            } catch (ex) {
+                setErrorMessage(`Erreur pendant le chargement des produits: ${ex}`);
+                setProducts([]);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        loadProducts();
+    }, []);
+
+    return (
+        <Paper>
+            {isLoading && (
+                <Loader />
+            )}
+
+            <div className="container">
+                <div className="row">
+                    <div className="col">
+                        <h1>Produits à observer</h1>
+                    </div>
+                </div>
+
+                {errorMessage && (
+                    <div className="row">
+                        <div className="col">
+                            <Alert severity="error">{errorMessage}</Alert>
+                        </div>
+                    </div>
+                )}
+
+                <div className="row">
+                    <div className="col">
+                        <TableContainer>
+                            <Table stickyHeader>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell></TableCell>
+                                        <TableCell>Titre</TableCell>
+                                        <TableCell>Prix</TableCell>
+                                        <TableCell>Le moins cher</TableCell>
+                                        <TableCell>Le plus cher</TableCell>
+                                        <TableCell></TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {products.map(product => (
+                                        <React.Fragment key={product.productId}>
+                                            <TableRow hover>
+                                                <TableCell></TableCell>
+                                                <TableCell>{product.name}</TableCell>
+                                                <TableCell>{product.price}</TableCell>
+                                                <TableCell>
+                                                    {product.minPrice && (
+                                                        <>
+                                                            {product.minPrice} €
+                                                        </>
+                                                    )}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {product.maxPrice && (
+                                                        <>
+                                                            {product.maxPrice} €
+                                                        </>
+                                                    )}
+                                                </TableCell>
+                                                <TableCell></TableCell>
+                                            </TableRow>
+                                        </React.Fragment>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </div>
+                </div>
+            </div>
+        </Paper >
+    )
+}
+
+export { ProductListComponent }

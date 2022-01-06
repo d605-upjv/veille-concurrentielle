@@ -9,10 +9,18 @@ namespace VeilleConcurrentielle.Infrastructure.Framework
             // TODO: Use binary serializer for better performance
             return JsonSerializer.Serialize(obj, new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
         }
-        public static T Deserialize<T>(string serialized)
+        public static T? Deserialize<T>(string? serialized) where T : class
         {
             // TODO: Use binary serializer for better performance
-            return JsonSerializer.Deserialize<T>(serialized, new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+            return Deserialize(serialized, typeof(T)) as T;
+        }
+        public static object? Deserialize(string? serialized, Type type)
+        {
+            if (string.IsNullOrWhiteSpace(serialized))
+            {
+                return null;
+            }
+            return JsonSerializer.Deserialize(serialized, type, new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
         }
     }
 }

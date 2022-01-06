@@ -1,0 +1,12 @@
+.top-container{
+    padding: 30px;
+}
+
+.container .row{
+    margin-top: 10px;
+}
+
+.competitor-logo-url{
+    width: 3rem;
+    height: auto;
+}

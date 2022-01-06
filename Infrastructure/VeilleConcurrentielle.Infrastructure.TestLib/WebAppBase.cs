@@ -26,6 +26,11 @@ namespace VeilleConcurrentielle.Infrastructure.TestLib
                                 .UseApplicationServiceProvider(sp)
                                 .Options;
                 });
+                var sp = services.BuildServiceProvider();
+                using var scope = sp.CreateScope();
+                var scopedServices = scope.ServiceProvider;
+                var db = scopedServices.GetRequiredService<TDbContext>();
+                db.Database.EnsureCreated(); 
             });
             return base.CreateHost(builder);
         }

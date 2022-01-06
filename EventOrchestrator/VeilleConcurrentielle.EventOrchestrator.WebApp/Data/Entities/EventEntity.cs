@@ -1,8 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using VeilleConcurrentielle.Infrastructure.Data;
 
 namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Data.Entities
 {
+    [Index(nameof(Name))]
+    [Index(nameof(CreatedAt))]
     public class EventEntity : EntityBase
     {
         [Required]
@@ -11,5 +14,6 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Data.Entities
         public string SerializedPayload { get; set; }
         public DateTime CreatedAt { get; set; }
         public string Source { get; set; }
+        public bool IsConsumed { get; set; }
     }
 }

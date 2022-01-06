@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using VeilleConcurrentielle.Infrastructure.Core.Models;
 
 namespace VeilleConcurrentielle.EventOrchestrator.Lib.Clients.Models
 {

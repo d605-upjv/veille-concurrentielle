@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<prestashop xmlns:xlink="http://www.w3.org/1999/xlink">
+  <product>
+    <id>
+      <![CDATA[1]]>
+    </id>
+    <id_manufacturer xlink:href="http://main-shop.d605-shops.fr/api/manufacturers/1">
+      <![CDATA[1]]>
+    </id_manufacturer>
+    <id_supplier xlink:href="http://main-shop.d605-shops.fr/api/suppliers/1">
+      <![CDATA[1]]>
+    </id_supplier>
+    <id_category_default xlink:href="http://main-shop.d605-shops.fr/api/categories/4">
+      <![CDATA[4]]>
+    </id_category_default>
+    <new>
+      <![CDATA[]]>
+    </new>
+    <cache_default_attribute>
+      <![CDATA[1]]>
+    </cache_default_attribute>
+    <id_default_image xlink:href="http://main-shop.d605-shops.fr/api/images/products/1/1" notFilterable="true">
+      <![CDATA[1]]>
+    </id_default_image>
+    <id_default_combination xlink:href="http://main-shop.d605-shops.fr/api/combinations/1" notFilterable="true">
+      <![CDATA[1]]>
+    </id_default_combination>
+    <id_tax_rules_group xlink:href="http://main-shop.d605-shops.fr/api/tax_rule_groups/9">
+      <![CDATA[9]]>
+    </id_tax_rules_group>
+    <position_in_category notFilterable="true">
+      <![CDATA[1]]>
+    </position_in_category>
+    <manufacturer_name notFilterable="true">
+      <![CDATA[Studio Design]]>
+    </manufacturer_name>
+    <quantity notFilterable="true">
+      <![CDATA[2400]]>
+    </quantity>
+    <type notFilterable="true">
+      <![CDATA[simple]]>
+    </type>
+    <id_shop_default>
+      <![CDATA[1]]>
+    </id_shop_default>
+    <reference>
+      <![CDATA[demo_1]]>
+    </reference>
+    <supplier_reference>
+      <![CDATA[]]>
+    </supplier_reference>
+    <location>
+      <![CDATA[]]>
+    </location>
+    <width>
+      <![CDATA[0.000000]]>
+    </width>
+    <height>
+      <![CDATA[0.000000]]>
+    </height>
+    <depth>
+      <![CDATA[0.000000]]>
+    </depth>
+    <weight>
+      <![CDATA[0.300000]]>
+    </weight>
+    <quantity_discount>
+      <![CDATA[0]]>
+    </quantity_discount>
+    <ean13>
+      <![CDATA[]]>
+    </ean13>
+    <isbn>
+      <![CDATA[]]>
+    </isbn>
+    <upc>
+      <![CDATA[]]>
+    </upc>
+    <mpn>
+      <![CDATA[]]>
+    </mpn>
+    <cache_is_pack>
+      <![CDATA[0]]>
+    </cache_is_pack>
+    <cache_has_attachments>
+      <![CDATA[0]]>
+    </cache_has_attachments>
+    <is_virtual>
+      <![CDATA[0]]>
+    </is_virtual>
+    <state>
+      <![CDATA[1]]>
+    </state>
+    <additional_delivery_times>
+      <![CDATA[1]]>
+    </additional_delivery_times>
+    <delivery_in_stock>
+      <language id="2" xlink:href="http://main-shop.d605-shops.fr/api/languages/2">
+        <![CDATA[]]>
+      </language>
+    </delivery_in_stock>
+    <delivery_out_stock>
+      <language id="2" xlink:href="http://main-shop.d605-shops.fr/api/languages/2">
+        <![CDATA[]]>
+      </language>
+    </delivery_out_stock>
+    <product_type>
+      <![CDATA[combinations]]>
+    </product_type>
+    <on_sale>
+      <![CDATA[0]]>
+    </on_sale>
+    <online_only>
+      <![CDATA[0]]>
+    </online_only>
+    <ecotax>
+      <![CDATA[0.000000]]>
+    </ecotax>
+    <minimal_quantity>
+      <![CDATA[1]]>
+    </minimal_quantity>
+    <low_stock_threshold>
+      <![CDATA[0]]>
+    </low_stock_threshold>
+    <low_stock_alert>
+      <![CDATA[0]]>
+    </low_stock_alert>
+    <price>
+      <![CDATA[23.900000]]>
+    </price>
+    <wholesale_price>
+      <![CDATA[0.000000]]>
+    </wholesale_price>
+    <unity>
+      <![CDATA[]]>
+    </unity>
+    <unit_price_ratio>
+      <![CDATA[0.000000]]>
+    </unit_price_ratio>
+    <additional_shipping_cost>
+      <![CDATA[0.000000]]>
+    </additional_shipping_cost>
+    <customizable>
+      <![CDATA[0]]>
+    </customizable>
+    <text_fields>
+      <![CDATA[0]]>
+    </text_fields>
+    <uploadable_files>
+      <![CDATA[0]]>
+    </uploadable_files>
+    <active>
+      <![CDATA[1]]>
+    </active>
+    <redirect_type>
+      <![CDATA[301-category]]>
+    </redirect_type>
+    <id_type_redirected>
+      <![CDATA[0]]>
+    </id_type_redirected>
+    <available_for_order>
+      <![CDATA[1]]>
+    </available_for_order>
+    <available_date>
+      <![CDATA[0000-00-00]]>
+    </available_date>
+    <show_condition>
+      <![CDATA[0]]>
+    </show_condition>
+    <condition>
+      <![CDATA[new]]>
+    </condition>
+    <show_price>
+      <![CDATA[1]]>
+    </show_price>
+    <indexed>
+      <![CDATA[1]]>
+    </indexed>
+    <visibility>
+      <![CDATA[both]]>
+    </visibility>
+    <advanced_stock_management>
+      <![CDATA[0]]>
+    </advanced_stock_management>
+    <date_add>
+      <![CDATA[2021-12-11 16:06:49]]>
+    </date_add>
+    <date_upd>
+      <![CDATA[2022-01-04 02:02:21]]>
+    </date_upd>
+    <pack_stock_type>
+      <![CDATA[3]]>
+    </pack_stock_type>
+    <meta_description>
+      <language id="2" xlink:href="http://main-shop.d605-shops.fr/api/languages/2">
+        <![CDATA[]]>
+      </language>
+    </meta_description>
+    <meta_keywords>
+      <language id="2" xlink:href="http://main-shop.d605-shops.fr/api/languages/2">
+        <![CDATA[]]>
+      </language>
+    </meta_keywords>
+    <meta_title>
+      <language id="2" xlink:href="http://main-shop.d605-shops.fr/api/languages/2">
+        <![CDATA[]]>
+      </language>
+    </meta_title>
+    <link_rewrite>
+      <language id="2" xlink:href="http://main-shop.d605-shops.fr/api/languages/2">
+        <![CDATA[hummingbird-printed-t-shirt]]>
+      </language>
+    </link_rewrite>
+    <name>
+      <language id="2" xlink:href="http://main-shop.d605-shops.fr/api/languages/2">
+        <![CDATA[Hummingbird printed t-shirt]]>
+      </language>
+    </name>
+    <description>
+      <language id="2" xlink:href="http://main-shop.d605-shops.fr/api/languages/2">
+        <![CDATA[<p>Symbol of lightness and delicacy, the hummingbird evokes curiosity and joy. Studio Design' PolyFaune collection features classic products with colorful patterns, inspired by the traditional japanese origamis. To wear with a chino or jeans. The sublimation textile printing process provides an exceptional color rendering and a color, guaranteed overtime.</p>]]>
+      </language>
+    </description>
+    <description_short>
+      <language id="2" xlink:href="http://main-shop.d605-shops.fr/api/languages/2">
+        <![CDATA[<p>Regular fit, round neckline, short sleeves. Made of extra long staple pima cotton. </p><p></p>]]>
+      </language>
+    </description_short>
+    <available_now>
+      <language id="2" xlink:href="http://main-shop.d605-shops.fr/api/languages/2">
+        <![CDATA[]]>
+      </language>
+    </available_now>
+    <available_later>
+      <language id="2" xlink:href="http://main-shop.d605-shops.fr/api/languages/2">
+        <![CDATA[]]>
+      </language>
+    </available_later>
+    <associations>
+      <categories nodeType="category" api="categories">
+        <category xlink:href="http://main-shop.d605-shops.fr/api/categories/2">
+          <id>
+            <![CDATA[2]]>
+          </id>
+        </category>
+        <category xlink:href="http://main-shop.d605-shops.fr/api/categories/3">
+          <id>
+            <![CDATA[3]]>
+          </id>
+        </category>
+        <category xlink:href="http://main-shop.d605-shops.fr/api/categories/4">
+          <id>
+            <![CDATA[4]]>
+          </id>
+        </category>
+      </categories>
+      <images nodeType="image" api="images">
+        <image xlink:href="http://main-shop.d605-shops.fr/api/images/products/1/1">
+          <id>
+            <![CDATA[1]]>
+          </id>
+        </image>
+        <image xlink:href="http://main-shop.d605-shops.fr/api/images/products/1/2">
+          <id>
+            <![CDATA[2]]>
+          </id>
+        </image>
+      </images>
+      <combinations nodeType="combination" api="combinations">
+        <combination xlink:href="http://main-shop.d605-shops.fr/api/combinations/1">
+          <id>
+            <![CDATA[1]]>
+          </id>
+        </combination>
+        <combination xlink:href="http://main-shop.d605-shops.fr/api/combinations/2">
+          <id>
+            <![CDATA[2]]>
+          </id>
+        </combination>
+        <combination xlink:href="http://main-shop.d605-shops.fr/api/combinations/3">
+          <id>
+            <![CDATA[3]]>
+          </id>
+        </combination>
+        <combination xlink:href="http://main-shop.d605-shops.fr/api/combinations/4">
+          <id>
+            <![CDATA[4]]>
+          </id>
+        </combination>
+        <combination xlink:href="http://main-shop.d605-shops.fr/api/combinations/5">
+          <id>
+            <![CDATA[5]]>
+          </id>
+        </combination>
+        <combination xlink:href="http://main-shop.d605-shops.fr/api/combinations/6">
+          <id>
+            <![CDATA[6]]>
+          </id>
+        </combination>
+        <combination xlink:href="http://main-shop.d605-shops.fr/api/combinations/7">
+          <id>
+            <![CDATA[7]]>
+          </id>
+        </combination>
+        <combination xlink:href="http://main-shop.d605-shops.fr/api/combinations/8">
+          <id>
+            <![CDATA[8]]>
+          </id>
+        </combination>
+      </combinations>
+      <product_option_values nodeType="product_option_value" api="product_option_values">
+        <product_option_value xlink:href="http://main-shop.d605-shops.fr/api/product_option_values/1">
+          <id>
+            <![CDATA[1]]>
+          </id>
+        </product_option_value>
+        <product_option_value xlink:href="http://main-shop.d605-shops.fr/api/product_option_values/8">
+          <id>
+            <![CDATA[8]]>
+          </id>
+        </product_option_value>
+        <product_option_value xlink:href="http://main-shop.d605-shops.fr/api/product_option_values/11">
+          <id>
+            <![CDATA[11]]>
+          </id>
+        </product_option_value>
+        <product_option_value xlink:href="http://main-shop.d605-shops.fr/api/product_option_values/2">
+          <id>
+            <![CDATA[2]]>
+          </id>
+        </product_option_value>
+        <product_option_value xlink:href="http://main-shop.d605-shops.fr/api/product_option_values/3">
+          <id>
+            <![CDATA[3]]>
+          </id>
+        </product_option_value>
+        <product_option_value xlink:href="http://main-shop.d605-shops.fr/api/product_option_values/4">
+          <id>
+            <![CDATA[4]]>
+          </id>
+        </product_option_value>
+      </product_option_values>
+      <product_features nodeType="product_feature" api="product_features">
+        <product_feature xlink:href="http://main-shop.d605-shops.fr/api/product_features/1">
+          <id>
+            <![CDATA[1]]>
+          </id>
+          <id_feature_value xlink:href="http://main-shop.d605-shops.fr/api/product_feature_values/4">
+            <![CDATA[4]]>
+          </id_feature_value>
+        </product_feature>
+        <product_feature xlink:href="http://main-shop.d605-shops.fr/api/product_features/2">
+          <id>
+            <![CDATA[2]]>
+          </id>
+          <id_feature_value xlink:href="http://main-shop.d605-shops.fr/api/product_feature_values/8">
+            <![CDATA[8]]>
+          </id_feature_value>
+        </product_feature>
+      </product_features>
+      <tags nodeType="tag" api="tags"/>
+      <stock_availables nodeType="stock_available" api="stock_availables">
+        <stock_available xlink:href="http://main-shop.d605-shops.fr/api/stock_availables/1">
+          <id>
+            <![CDATA[1]]>
+          </id>
+          <id_product_attribute>
+            <![CDATA[0]]>
+          </id_product_attribute>
+        </stock_available>
+        <stock_available xlink:href="http://main-shop.d605-shops.fr/api/stock_availables/20">
+          <id>
+            <![CDATA[20]]>
+          </id>
+          <id_product_attribute>
+            <![CDATA[1]]>
+          </id_product_attribute>
+        </stock_available>
+        <stock_available xlink:href="http://main-shop.d605-shops.fr/api/stock_availables/21">
+          <id>
+            <![CDATA[21]]>
+          </id>
+          <id_product_attribute>
+            <![CDATA[2]]>
+          </id_product_attribute>
+        </stock_available>
+        <stock_available xlink:href="http://main-shop.d605-shops.fr/api/stock_availables/22">
+          <id>
+            <![CDATA[22]]>
+          </id>
+          <id_product_attribute>
+            <![CDATA[3]]>
+          </id_product_attribute>
+        </stock_available>
+        <stock_available xlink:href="http://main-shop.d605-shops.fr/api/stock_availables/23">
+          <id>
+            <![CDATA[23]]>
+          </id>
+          <id_product_attribute>
+            <![CDATA[4]]>
+          </id_product_attribute>
+        </stock_available>
+        <stock_available xlink:href="http://main-shop.d605-shops.fr/api/stock_availables/24">
+          <id>
+            <![CDATA[24]]>
+          </id>
+          <id_product_attribute>
+            <![CDATA[5]]>
+          </id_product_attribute>
+        </stock_available>
+        <stock_available xlink:href="http://main-shop.d605-shops.fr/api/stock_availables/25">
+          <id>
+            <![CDATA[25]]>
+          </id>
+          <id_product_attribute>
+            <![CDATA[6]]>
+          </id_product_attribute>
+        </stock_available>
+        <stock_available xlink:href="http://main-shop.d605-shops.fr/api/stock_availables/26">
+          <id>
+            <![CDATA[26]]>
+          </id>
+          <id_product_attribute>
+            <![CDATA[7]]>
+          </id_product_attribute>
+        </stock_available>
+        <stock_available xlink:href="http://main-shop.d605-shops.fr/api/stock_availables/27">
+          <id>
+            <![CDATA[27]]>
+          </id>
+          <id_product_attribute>
+            <![CDATA[8]]>
+          </id_product_attribute>
+        </stock_available>
+      </stock_availables>
+      <attachments nodeType="attachment" api="attachments"/>
+      <accessories nodeType="product" api="products"/>
+      <product_bundle nodeType="product" api="products"/>
+    </associations>
+  </product>
+</prestashop>

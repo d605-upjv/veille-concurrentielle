@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Text.Json;
 using VeilleConcurrentielle.Infrastructure.Framework;
+using VeilleConcurrentielle.Infrastructure.TestLib.TestData;
 using Xunit;
 
 namespace VeilleConcurrentielle.Infrastructure.Tests.Framework
@@ -42,6 +44,24 @@ namespace VeilleConcurrentielle.Infrastructure.Tests.Framework
             Assert.Equal(source.Child.GetType(), deserialized.Child.GetType());
             Assert.Equal(source.Child.ChildName, deserialized.Child.ChildName);
             Assert.Equal(source.Child.IntValue, deserialized.Child.IntValue);
+        }
+
+        [Fact]
+        public void Deserialize_WithMismatchType_ThrowsException()
+        {
+            var serialized = "Unknown type";
+            Assert.ThrowsAny<JsonException>(() =>
+            {
+                SerializationUtils.Deserialize(serialized, typeof(SimpleClass));
+            });
+        }
+
+        [Theory]
+        [ClassData(typeof(EmptyStringTestData))]
+        public void Deserialize_WithNullOrEmpty_ReturnsNull(string serialized)
+        {
+            var deserialized = SerializationUtils.Deserialize<SimpleClass>(serialized);
+            Assert.Null(deserialized);
         }
 
         class SimpleClass

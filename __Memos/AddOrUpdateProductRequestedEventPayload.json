@@ -1,0 +1,30 @@
+{
+  "productId": "some-fake-product-id",
+  "productName": "Product1Name",
+  "price": 100,
+  "quantity": 10,
+  "isActive": true,
+  "imageUrl": "https://www.google.com",
+  "strategies": [
+    {
+      "id": "OverallAveragePrice"
+    },
+    {
+      "id": "OverallCheaperPrice"
+    }
+  ],
+  "competitorConfigs": [
+    {
+      "competitorId": "ShopA",
+      "holder": {
+        "items": [
+          {
+            "key": "UniqueId",
+            "value": "ShopAProductUniqueId"
+          }
+        ]
+      }
+    }
+  ],
+  "refererEventId": null
+}

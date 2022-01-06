@@ -1,0 +1,177 @@
+import { Search } from "@mui/icons-material";
+import { Alert, IconButton, Input, InputAdornment, InputLabel, Paper, TextField } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Loader } from "../loader/loader";
+import * as api from "../../services/api";
+import { store } from "react-notifications-component";
+import { defaultNotification } from "../notifications/notifications";
+
+export const ProductEditItemComponent = (props) => {
+    const [product, setProduct] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    const productId = props.match.params.id;
+    const isEditMode = productId !== '';
+    const [formValues, setFormValues] = useState({
+        productUrl: '',
+        name: '',
+        price: 0,
+        quantity: 0
+    });
+
+    const handleSearchMainProduct = async () => {
+        await loadProduct(productId);
+    }
+
+    const handleChange = (prop) => (event) => {
+        setFormValues({ ...formValues, [prop]: event.target.value });
+    };
+
+    const handlePrice = (event) => {
+        const value = event.target.value;
+        if (!value || value.match(/^\d{1,}(\.\d{0,4})?$/)) {
+            setFormValues({ ...formValues, price: value });
+        }
+    }
+
+    const handleQuantity = (event) => {
+        const value = event.target.value;
+        if (!value || value.match(/\d/)) {
+            setFormValues({ ...formValues, quantity: value });
+        }
+    }
+
+    useEffect(() => {
+        if (isEditMode) {
+            loadProduct(productId);
+        }
+    }, [productId]);
+
+    const loadProduct = async (productId) => {
+        setIsLoading(true);
+        try {
+            setProduct(null);
+            const response = await api.getMainShopProduct(formValues.productUrl);
+            if (response && response.product) {
+                setProduct(response.product);
+                store.addNotification({
+                    ...defaultNotification,
+                    type: 'success',
+                    message: 'Produit chargé avec succès!',
+                });
+            }
+        } catch (ex) {
+            setErrorMessage(`Erreur pendant le chargement du produit: ${ex}`);
+            setProduct(null);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    return (
+        <Paper>
+            {isLoading && (
+                <Loader />
+            )}
+
+            <div className="container">
+                {errorMessage && (
+                    <div className="row">
+                        <div className="col">
+                            <Alert severity="error">{errorMessage}</Alert>
+                        </div>
+                    </div>
+                )}
+
+                <div className="row">
+                    <div className="col-8">
+                        <h3>
+                            {(isEditMode && product) && (
+                                <span>{product.name}</span>
+                            )}
+                            {(isEditMode && !product) && (
+                                <span>Chargement du produit...</span>
+                            )}
+                            {!isEditMode && (
+                                <span>Ajouter un nouveau produit</span>
+                            )}
+                        </h3>
+                    </div>
+                    <div className="col-4">
+                        {product && (
+                            <img src={product.imageUrl} className="product-image" alt={product.name} />
+                        )}
+                    </div>
+                </div>
+
+                <div className="row">
+                    <div className="col-4">
+                        <InputLabel htmlFor="productUrl">Url du produit</InputLabel>
+                    </div>
+                    <div className="col-8">
+                        <Input id="productUrl"
+                            fullWidth
+                            value={formValues.productUrl}
+                            onChange={handleChange('productUrl')}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="Charger le produit"
+                                        edge="end"
+                                        onClick={handleSearchMainProduct}
+                                    >
+                                        <Search />
+                                    </IconButton>
+                                </InputAdornment>
+                            }
+                        />
+                    </div>
+                </div>
+
+                {product && (
+                    <>
+                        <div className="row">
+                            <div className="col-4">
+                                <InputLabel htmlFor="name">Nom</InputLabel>
+                            </div>
+                            <div className="col-8">
+                                <Input id="name"
+                                    fullWidth
+                                    value={formValues.name}
+                                    onChange={handleChange('name')}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="row">
+                            <div className="col-4">
+                                <InputLabel htmlFor="price">Prix</InputLabel>
+                            </div>
+                            <div className="col-8">
+                                <Input id="price"
+                                    fullWidth
+                                    value={formValues.price}
+                                    onChange={handlePrice}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="row">
+                            <div className="col-4">
+                                <InputLabel htmlFor="quantity">Prix</InputLabel>
+                            </div>
+                            <div className="col-8">
+                                <Input id="quantity"
+                                    fullWidth
+                                    value={formValues.quantity}
+                                    onChange={handleQuantity}
+                                />
+                            </div>
+                        </div>
+                    </>
+                )}
+
+            </div>
+        </Paper>
+    )
+}
