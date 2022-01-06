@@ -20,7 +20,7 @@ import { useEffect } from 'react';
 import * as api from "../../services/api";
 import { store } from 'react-notifications-component';
 import { defaultNotification } from '../notifications/notifications';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 function LinkTab(props) {
     return (
@@ -35,6 +35,7 @@ const refreshTimeInSeconds = 10;
 
 const Header = () => {
     const history = useHistory();
+    const location = useLocation();
     const [menuIndex, setMenuIndex] = useState(0);
     const [alertCount, setAlertCount] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
@@ -73,6 +74,10 @@ const Header = () => {
 
     useEffect(() => {
         refreshAlertCount();
+        const currentPath = location.pathname;
+        if (currentPath && currentPath.includes("products")) {
+            setMenuIndex(1);
+        }
     });
 
     async function refreshAlertCount() {
@@ -124,6 +129,7 @@ const Header = () => {
                     </Toolbar>
                 </AppBar>
                 <Tabs value={menuIndex} onChange={handleMenuIndexChange} aria-label="Menu">
+                    <LinkTab label="Acceuil" href="/" />
                     <LinkTab label="Produits" href="/products" />
                 </Tabs>
             </Box>

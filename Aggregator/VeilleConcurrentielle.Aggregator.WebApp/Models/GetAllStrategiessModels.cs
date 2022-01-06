@@ -1,14 +1,14 @@
 ﻿namespace VeilleConcurrentielle.Aggregator.WebApp.Models
 {
-    public class GetAllStrategysModels
+    public class GetAllStrategiessModels
     {
-        public class GetAllStrategysResponse
+        public class GetAllStrategiesResponse
         {
-            public GetAllStrategysResponse(List<Strategy> strategys)
+            public GetAllStrategiesResponse(List<Strategy> strategies)
             {
-                Strategys = strategys;
+                Strategies = strategies;
             }
-            public List<Strategy> Strategys { get; set; }
+            public List<Strategy> Strategies { get; set; }
 
             public class Strategy
             {

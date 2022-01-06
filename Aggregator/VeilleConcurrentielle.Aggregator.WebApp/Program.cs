@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.HttpOverrides;
 using System.Text.Json.Serialization;
+using VeilleConcurrentielle.Aggregator.WebApp.Core.Configurations;
 using VeilleConcurrentielle.Aggregator.WebApp.Core.Services;
 using VeilleConcurrentielle.Aggregator.WebApp.Data;
 using VeilleConcurrentielle.Aggregator.WebApp.Data.Repositories;
@@ -24,6 +25,9 @@ builder.Services.AddScoped<IProductAggregateRepository, ProductAggregateReposito
 builder.Services.AddScoped<IProductAggregateService, ProductAggregateService>();
 builder.Services.AddScoped<IRecommendationAlertRepository, RecommendationAlertRepository>();
 builder.Services.AddScoped<IRecommendationAlertService, RecommendationAlertService>();
+builder.Services.AddScoped<IMainShopProductService, MainShopProductService>();
+builder.Services.Configure<MainShopOptions>(builder.Configuration.GetSection(MainShopOptions.MainShop));
+builder.Services.AddHttpClient<IMainShopWebService, MainShopWebService>();
 
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {

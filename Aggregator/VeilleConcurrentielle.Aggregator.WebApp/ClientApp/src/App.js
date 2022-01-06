@@ -10,6 +10,7 @@ import { ProductListComponent } from './components/product/product-list-componen
 import { ProductItemComponent } from './components/product/product-item-component';
 
 import './custom.css'
+import { ProductEditItemComponent } from './components/product/product-edit-item-component';
 
 export default class App extends Component {
     static displayName = App.name;
@@ -21,7 +22,9 @@ export default class App extends Component {
                     <Switch>
                         <Route exact path='/' component={Home} />
                         <Route exact path='/products' component={ProductListComponent} />
-                        <Route path='/products/:id' component={ProductItemComponent} />
+                        <Route exact path='/products/edit/:id' component={ProductEditItemComponent} />
+                        <Route exact  path='/products/new' component={ProductEditItemComponent} />
+                        <Route exact path='/products/:id' component={ProductItemComponent} />
                     </Switch>
                 </Layout>
             </Router>

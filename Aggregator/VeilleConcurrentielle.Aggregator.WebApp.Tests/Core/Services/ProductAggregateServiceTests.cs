@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using VeilleConcurrentielle.Infrastructure.Core.Models;
 using VeilleConcurrentielle.Infrastructure.Core.Models.Events;
+using VeilleConcurrentielle.Infrastructure.Framework;
 using Xunit;
 
 namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Core.Services
@@ -20,6 +21,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Core.Services
 
         private readonly Mock<ICompetitorRepository> _competitorRepository;
         private readonly Mock<IStrategyRepository> _strategyRepositoryMock;
+        private readonly Mock<IMainShopWebService> _mainShopWebServiceMock;
 
         public ProductAggregateServiceTests()
         {
@@ -48,6 +50,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Core.Services
                                             }).ToList();
                                             return Task.FromResult(strategies);
                                         });
+            _mainShopWebServiceMock = new Mock<IMainShopWebService>();
         }
 
         [Fact]
@@ -55,7 +58,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Core.Services
         {
             string productId = "ProductId";
             Mock<IProductAggregateRepository> productRepositoryMock = new Mock<IProductAggregateRepository>();
-            IProductAggregateService productsService = new ProductAggregateService(productRepositoryMock.Object, _competitorRepository.Object, _strategyRepositoryMock.Object);
+            IProductAggregateService productsService = new ProductAggregateService(productRepositoryMock.Object, _competitorRepository.Object, _strategyRepositoryMock.Object, _mainShopWebServiceMock.Object);
 
             productRepositoryMock.Setup(s => s.GetByIdAsync(productId))
                                                 .Returns(Task.FromResult<ProductAggregateEntity?>(null));
@@ -88,7 +91,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Core.Services
         {
             string productId = "ProductId";
             Mock<IProductAggregateRepository> productRepositoryMock = new Mock<IProductAggregateRepository>();
-            IProductAggregateService productsService = new ProductAggregateService(productRepositoryMock.Object, _competitorRepository.Object, _strategyRepositoryMock.Object);
+            IProductAggregateService productsService = new ProductAggregateService(productRepositoryMock.Object, _competitorRepository.Object, _strategyRepositoryMock.Object, _mainShopWebServiceMock.Object);
 
             productRepositoryMock.Setup(s => s.InsertAsync(It.IsAny<ProductAggregateEntity>()))
                                                 .Callback<ProductAggregateEntity>(entity =>
@@ -117,7 +120,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Core.Services
         {
             string productId = "ProductId";
             Mock<IProductAggregateRepository> productRepositoryMock = new Mock<IProductAggregateRepository>();
-            IProductAggregateService productsService = new ProductAggregateService(productRepositoryMock.Object, _competitorRepository.Object, _strategyRepositoryMock.Object);
+            IProductAggregateService productsService = new ProductAggregateService(productRepositoryMock.Object, _competitorRepository.Object, _strategyRepositoryMock.Object, _mainShopWebServiceMock.Object);
 
             productRepositoryMock.Setup(s => s.GetByIdAsync(It.IsAny<string>()))
                                                 .Returns(Task.FromResult<ProductAggregateEntity?>(new ProductAggregateEntity()
@@ -152,7 +155,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Core.Services
         public async Task GetAllProductsAsync_CallsAppropriateServices()
         {
             Mock<IProductAggregateRepository> productRepositoryMock = new Mock<IProductAggregateRepository>();
-            IProductAggregateService productsService = new ProductAggregateService(productRepositoryMock.Object, _competitorRepository.Object, _strategyRepositoryMock.Object);
+            IProductAggregateService productsService = new ProductAggregateService(productRepositoryMock.Object, _competitorRepository.Object, _strategyRepositoryMock.Object, _mainShopWebServiceMock.Object);
             productRepositoryMock.Setup(s => s.GetAllAsync())
                                     .Returns(Task.FromResult(new List<ProductAggregateEntity>()));
             var items = await productsService.GetAllProductsAsync();
@@ -166,7 +169,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Core.Services
         {
             string productId = "ProductId";
             Mock<IProductAggregateRepository> productRepositoryMock = new Mock<IProductAggregateRepository>();
-            IProductAggregateService productsService = new ProductAggregateService(productRepositoryMock.Object, _competitorRepository.Object, _strategyRepositoryMock.Object);
+            IProductAggregateService productsService = new ProductAggregateService(productRepositoryMock.Object, _competitorRepository.Object, _strategyRepositoryMock.Object, _mainShopWebServiceMock.Object);
             productRepositoryMock.Setup(s => s.GetByIdAsync(It.IsAny<string>()))
                                     .Returns(Task.FromResult<ProductAggregateEntity?>(new ProductAggregateEntity()
                                     {
@@ -180,6 +183,88 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Core.Services
             productRepositoryMock.Verify(s => s.GetByIdAsync(productId), Times.Once());
             Assert.NotNull(product);
             Assert.Equal(Enum.GetValues<CompetitorIds>().Length, product.LastPricesOfAlCompetitors.Count);
+        }
+
+        [Fact]
+        public async Task GetProductToAddAsync_CallsAppropriateServices()
+        {
+            Mock<IProductAggregateRepository> productRepositoryMock = new Mock<IProductAggregateRepository>();
+            IProductAggregateService productsService = new ProductAggregateService(productRepositoryMock.Object, _competitorRepository.Object, _strategyRepositoryMock.Object, _mainShopWebServiceMock.Object);
+            var product = await productsService.GetProductToAddAsync();
+
+            _strategyRepositoryMock.Verify(s => s.GetAllAsync(), Times.Once());
+            _competitorRepository.Verify(s => s.GetAllAsync(), Times.Once());
+            Assert.NotNull(product);
+            Assert.NotEmpty(product.AllStrategies);
+            Assert.NotEmpty(product.CompetitorConfigs);
+            Assert.NotNull(product.SelectedStrategies);
+        }
+
+        [Fact]
+        public async Task GetProductToEditAsync_CallsAppropriateServices()
+        {
+            string productId = "ProductId";
+            string mainShopProductId = "MainShopProductId";
+            string mainShopProductUrl = "https://mainshopurl";
+            string shopAProductUrl = "https://anyurl";
+            Mock<IProductAggregateRepository> productRepositoryMock = new Mock<IProductAggregateRepository>();
+            productRepositoryMock.Setup(s => s.GetByIdAsync(It.IsAny<string>()))
+                                                .Returns(Task.FromResult<ProductAggregateEntity?>(new ProductAggregateEntity()
+                                                {
+                                                    Id = productId,
+                                                    Strategies = new List<ProductAggregateStrategyEntity>
+                                                    {
+                                                        new ProductAggregateStrategyEntity()
+                                                        {
+                                                            Id = Guid.NewGuid().ToString(),
+                                                            ProductId = productId,
+                                                            StrategyId = StrategyIds.FivePercentAboveMeanPrice.ToString()
+                                                        }
+                                                    },
+                                                    CompetitorConfigs = new List<ProductAggregateCompetitorConfigEntity>
+                                                    {
+                                                        new ProductAggregateCompetitorConfigEntity()
+                                                        {
+                                                            Id = Guid.NewGuid().ToString(),
+                                                            ProductId = productId,
+                                                            CompetitorId = CompetitorIds.ShopA.ToString(),
+                                                            SerializedHolder = SerializationUtils.Serialize(new ConfigHolder()
+                                                            {
+                                                                Items = new List<ConfigHolder.ConfigItem>
+                                                                {
+                                                                    new ConfigHolder.ConfigItem()
+                                                                    {
+                                                                        Key = ConfigHolderKeys.ProductPageUrl.ToString(),
+                                                                        Value = shopAProductUrl
+                                                                    }
+                                                                }
+                                                            })
+                                                        }
+                                                    },
+                                                    ShopProductId = mainShopProductId,
+                                                    ShopProductUrl = mainShopProductUrl
+                                                }));
+            _mainShopWebServiceMock.Setup(s => s.GetProductAsync(It.IsAny<string>(), It.IsAny<string>()))
+                                                .Returns((string productId, string productUrl) =>
+                                                {
+                                                    return Task.FromResult<mywebapp.VeilleConcurrentielle.Aggregator.WebApp.Core.Models.MainShopProduct?>(new mywebapp.VeilleConcurrentielle.Aggregator.WebApp.Core.Models.MainShopProduct()
+                                                    {
+                                                        ShopProductId = mainShopProductId,
+                                                        ShopProductUrl = mainShopProductUrl
+                                                    });
+                                                });
+            IProductAggregateService productsService = new ProductAggregateService(productRepositoryMock.Object, _competitorRepository.Object, _strategyRepositoryMock.Object, _mainShopWebServiceMock.Object);
+            var product = await productsService.GetProductToEditAsync(productId);
+
+            _strategyRepositoryMock.Verify(s => s.GetAllAsync(), Times.Once());
+            _competitorRepository.Verify(s => s.GetAllAsync(), Times.Once());
+            _mainShopWebServiceMock.Verify(s => s.GetProductAsync(mainShopProductId, mainShopProductUrl));
+            Assert.NotNull(product);
+            Assert.NotNull(product.MainShopProduct);
+            Assert.NotEmpty(product.AllStrategies);
+            Assert.NotEmpty(product.CompetitorConfigs);
+            Assert.True(product.SelectedStrategies.Count == 1, "Selected strategy is provided");
+            Assert.True(product.CompetitorConfigs.First(e => e.CompetitorId == CompetitorIds.ShopA).ProductUrl == shopAProductUrl, "Competitor config contains configured product url");
         }
     }
 }

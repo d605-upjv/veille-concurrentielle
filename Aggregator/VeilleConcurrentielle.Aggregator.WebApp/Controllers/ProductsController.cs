@@ -77,5 +77,39 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [HttpGet("add")]
+        public async Task<IActionResult> GetProductToAddAsync()
+        {
+            try
+            {
+                var response = await _productAggregateService.GetProductToAddAsync();
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Failed to get product to add");
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("{productId}/edit")]
+        public async Task<IActionResult> GetProductToEditAsync(string productId)
+        {
+            try
+            {
+                var response = await _productAggregateService.GetProductToEditAsync(productId);
+                if (response == null)
+                {
+                    return NotFound();
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Failed to get product to edit");
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }

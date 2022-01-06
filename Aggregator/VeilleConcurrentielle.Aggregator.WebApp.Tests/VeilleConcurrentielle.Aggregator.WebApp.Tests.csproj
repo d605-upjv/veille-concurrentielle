@@ -30,4 +30,17 @@
     </ProjectReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Core\Services\TestData\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Core\Services\TestData\GET_image.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Core\Services\TestData\GET_Product_data.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

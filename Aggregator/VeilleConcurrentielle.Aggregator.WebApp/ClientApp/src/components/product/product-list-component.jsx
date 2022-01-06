@@ -6,7 +6,8 @@ import {
     TableRow,
     TableCell,
     TableBody,
-    Alert
+    Alert,
+    TableFooter
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Loader } from "../loader/loader";
@@ -131,13 +132,21 @@ const ProductListComponent = () => {
                                                         }
                                                     </TableCell>
                                                 ))}
-                                                <TableCell>
+                                                <TableCell style={{ display: 'flex', flexDirection: 'row', gap: '0.5rem' }}>
                                                     <a href={`/products/${product.productId}`} target="_blank" rel="noopener noreferrer">Voir</a>
+                                                    <a href={`/products/edit/${product.productId}`} target="_blank" rel="noopener noreferrer">Modifier</a>
                                                 </TableCell>
                                             </TableRow>
                                         </React.Fragment>
                                     ))}
                                 </TableBody>
+                                <TableFooter>
+                                    <TableRow>
+                                        <TableRow>
+                                            <a href='/products/new' target="_blank" rel="noopener noreferrer">Ajouter</a>
+                                        </TableRow>
+                                    </TableRow>
+                                </TableFooter>
                             </Table>
                         </TableContainer>
                     </div>

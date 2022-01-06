@@ -94,5 +94,28 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers
             productAggregateServiceMock.Verify(s => s.GetProductbyIdAsync(productId), Times.Once());
             Assert.IsType<NotFoundResult>(response);
         }
+
+        [Fact]
+        public async Task GetProductToEditAsync_CallsAppropriateServices()
+        {
+            string productId = "ProductId";
+            var eventServiceClientMock = new Mock<IEventServiceClient>();
+            var productAggregateServiceMock = new Mock<IProductAggregateService>();
+            ProductsController controller = new ProductsController(eventServiceClientMock.Object, _loggerMocker.Object, productAggregateServiceMock.Object);
+            var response = await controller.GetProductToEditAsync(productId);
+            productAggregateServiceMock.Verify(s => s.GetProductToEditAsync(productId), Times.Once());
+            Assert.IsType<NotFoundResult>(response);
+        }
+
+        [Fact]
+        public async Task GetProductToAddAsync_CallsAppropriateServices()
+        {
+            var eventServiceClientMock = new Mock<IEventServiceClient>();
+            var productAggregateServiceMock = new Mock<IProductAggregateService>();
+            ProductsController controller = new ProductsController(eventServiceClientMock.Object, _loggerMocker.Object, productAggregateServiceMock.Object);
+            var response = await controller.GetProductToAddAsync();
+            productAggregateServiceMock.Verify(s => s.GetProductToAddAsync(), Times.Once());
+            Assert.IsType<OkObjectResult>(response);
+        }
     }
 }

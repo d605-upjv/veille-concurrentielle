@@ -5,12 +5,12 @@ using VeilleConcurrentielle.Infrastructure.Web;
 
 namespace VeilleConcurrentielle.Aggregator.WebApp.Controllers
 {
-    public class StrategysController : ApiControllerBase
+    public class StrategiesController : ApiControllerBase
     {
         private readonly IStrategyRepository _strategyyRepository;
-        private readonly ILogger<StrategysController> _logger;
+        private readonly ILogger<StrategiesController> _logger;
 
-        public StrategysController(IStrategyRepository strategyRepository, ILogger<StrategysController> logger)
+        public StrategiesController(IStrategyRepository strategyRepository, ILogger<StrategiesController> logger)
         {
             _strategyyRepository = strategyRepository;
             _logger = logger;
@@ -22,9 +22,9 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Controllers
             try
             {
                 var items = (await _strategyyRepository.GetAllAsync())
-                                .Select(c => new GetAllStrategysModels.GetAllStrategysResponse.Strategy(c.Id, c.Name))
+                                .Select(c => new GetAllStrategiessModels.GetAllStrategiesResponse.Strategy(c.Id, c.Name))
                                 .ToList();
-                return Ok(new GetAllStrategysModels.GetAllStrategysResponse(items));
+                return Ok(new GetAllStrategiessModels.GetAllStrategiesResponse(items));
             }catch(Exception ex)
             {
                 _logger.LogError(ex, $"Failed to get strategies");

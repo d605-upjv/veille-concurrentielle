@@ -9,18 +9,18 @@ using VeilleConcurrentielle.Infrastructure.Core.Models;
 
 namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers
 {
-    public class StrategyControllerTests
+    public class StrategiesControllerTests
     {
         [Fact]
-        public async void GetAll()
+        public async void GetAll_Integration()
         {
             await using var application = new AggregatorWebApp();
             using var client = application.CreateClient();
-            var response = await client.GetFromJsonAsync<GetAllStrategysModels.GetAllStrategysResponse>("/api/Strategys");
+            var response = await client.GetFromJsonAsync<GetAllStrategiessModels.GetAllStrategiesResponse>("/api/Strategies");
             Assert.NotNull(response);
-            Assert.NotNull(response.Strategys);
+            Assert.NotNull(response.Strategies);
             var knownCompetitors = Enum.GetValues<StrategyIds>();
-            Assert.True(knownCompetitors.Length == response.Strategys.Count, $"Make sure that all strategies are seeded properly! (current: {response.Strategys.Count}, expected: {knownCompetitors.Length})");
+            Assert.True(knownCompetitors.Length == response.Strategies.Count, $"Make sure that all strategies are seeded properly! (current: {response.Strategies.Count}, expected: {knownCompetitors.Length})");
         }
     }
 }

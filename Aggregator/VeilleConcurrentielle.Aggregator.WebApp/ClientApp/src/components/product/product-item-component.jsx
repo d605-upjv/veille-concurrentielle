@@ -1,4 +1,4 @@
-import { Alert, AlertTitle, Card, CardContent, Grid, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
+import { Alert, AlertTitle, Card, CardContent, Grid, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from "@mui/material"
 import { useEffect, useState } from "react";
 import { Loader } from "../loader/loader";
 import * as api from "../../services/api";
@@ -13,6 +13,7 @@ const waitTimeBeforeSettingRecoToSeenInSeconds = 5;
 const ProductItemComponent = (props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [recommendationChangeMessage, setRecommendationChangeMessage] = useState('');
     const [product, setProduct] = useState(null);
     const productId = props.match.params.id;
 
@@ -60,13 +61,40 @@ const ProductItemComponent = (props) => {
         }, waitTimeBeforeSettingRecoToSeenInSeconds * 1000);
     }
 
+    const handleUpdateProductPrice = async (price) => {
+        setErrorMessage('');
+        setRecommendationChangeMessage('');
+        setIsLoading(true);
+        try {
+            const response = await api.updateMainShopPrice(product.shopProductId, price);
+            if (response) {
+                store.addNotification({
+                    ...defaultNotification,
+                    type: 'success',
+                    message: 'Le nouveau prix a été soumis à la boutique principale avec succès.',
+                });
+                setRecommendationChangeMessage('Veuillez mettre à jour le produit à surveiller pour prendre en compte les derniers prix appliqués à la boutique principale!');
+            } else {
+                throw new Error('La demande a été rejetée par la boutique principale!');
+            }
+        } catch (ex) {
+            store.addNotification({
+                ...defaultNotification,
+                type: 'danger',
+                message: `Erreur pendant la mise à jour du prix auprès de la boutique principale: ${ex}!`,
+            });
+            setErrorMessage(`Erreur pendant la mise à jour du prix auprès de la boutique principale: ${ex}!`);
+        }
+        setIsLoading(false);
+    }
+
     return (
         <Paper>
             {isLoading && (
                 <Loader />
             )}
 
-            <div className="container">
+            <div className="top-container">
 
                 {!product && (
                     <Alert severity="warning">
@@ -83,14 +111,32 @@ const ProductItemComponent = (props) => {
                     </div>
                 )}
 
+                {recommendationChangeMessage && (
+                    <div className="row">
+                        <div className="col">
+                            <Alert severity="warning">
+                                <p>
+                                    {recommendationChangeMessage}
+                                </p>
+                                <p>
+                                    <a href={`/products/edit/${productId}`}>Mettre à jour</a>
+                                </p>
+                            </Alert>
+                        </div>
+                    </div>
+                )}
+
                 {product && (
                     <>
                         <div className="row">
                             <div className="col-8">
                                 <h3>{product.name}</h3>
                             </div>
-                            <div className="col-4">
+                            <div className="col-3">
                                 <img src={product.imageUrl} className="product-image" alt={product.name} />
+                            </div>
+                            <div className="col-1">
+                                <a href={`/products/edit/${product.productId}`}>Modifier</a>
                             </div>
                         </div>
 
@@ -231,6 +277,7 @@ const ProductItemComponent = (props) => {
                                                     <TableCell>Prix actuel</TableCell>
                                                     <TableCell>Prix récommendé</TableCell>
                                                     <TableCell>Date</TableCell>
+                                                    <TableCell></TableCell>
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
@@ -244,6 +291,14 @@ const ProductItemComponent = (props) => {
                                                             <span className="recommendation-price">{recommendation.price} €</span>
                                                         </TableCell>
                                                         <TableCell>{getDatetimeToDisplay(recommendation.createdAt)}</TableCell>
+                                                        <TableCell>
+                                                            <Button
+                                                                variant="contained"
+                                                                onClick={async () => { await handleUpdateProductPrice(recommendation.price); }}
+                                                            >
+                                                                Appliquer
+                                                            </Button>
+                                                        </TableCell>
                                                     </TableRow>
                                                 ))}
                                             </TableBody>

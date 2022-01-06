@@ -12,7 +12,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers
     public class CompetitorControllerTests
     {
         [Fact]
-        public async void GetAll()
+        public async void GetAll_Integration()
         {
             await using var application = new AggregatorWebApp();
             using var client = application.CreateClient();

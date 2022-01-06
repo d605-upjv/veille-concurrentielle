@@ -1,6 +1,7 @@
 ﻿using VeilleConcurrentielle.Aggregator.WebApp.Core.Models;
 using VeilleConcurrentielle.Aggregator.WebApp.Data.Entities;
 using VeilleConcurrentielle.Aggregator.WebApp.Data.Repositories;
+using VeilleConcurrentielle.Aggregator.WebApp.Models;
 using VeilleConcurrentielle.Infrastructure.Core.Models;
 using VeilleConcurrentielle.Infrastructure.Core.Models.Events;
 using VeilleConcurrentielle.Infrastructure.Framework;
@@ -12,11 +13,16 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Core.Services
         private readonly IProductAggregateRepository _productAggregateRepository;
         private readonly ICompetitorRepository _competitorRepository;
         private readonly IStrategyRepository _strategyRepository;
-        public ProductAggregateService(IProductAggregateRepository productAggregateRepository, ICompetitorRepository competitorRepository, IStrategyRepository strategyRepository)
+        private readonly IMainShopWebService _mainShopWebService;
+        public ProductAggregateService(IProductAggregateRepository productAggregateRepository,
+            ICompetitorRepository competitorRepository,
+            IStrategyRepository strategyRepository,
+            IMainShopWebService mainShopWebService)
         {
             _productAggregateRepository = productAggregateRepository;
             _competitorRepository = competitorRepository;
             _strategyRepository = strategyRepository;
+            _mainShopWebService = mainShopWebService;
         }
 
         public async Task StoreProductAsync(string refererEventId, ProductAddedOrUpdatedEventPayload request)
@@ -133,6 +139,86 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Core.Services
                 return CreateProductFromEntity(item, competitors, strategies);
             }
             return null;
+        }
+
+        public async Task<GetProductToAddOrEditModels.GetProductToAddResponse> GetProductToAddAsync()
+        {
+            GetProductToAddOrEditModels.GetProductToAddResponse productToAdd = new GetProductToAddOrEditModels.GetProductToAddResponse();
+            var strategies = await _strategyRepository.GetAllAsync();
+            productToAdd.AllStrategies = strategies.Select(e => new ProductStrategy()
+            {
+                StrategyId = EnumUtils.GetValueFromString<StrategyIds>(e.Id),
+                StrategyName = e.Name
+            }).ToList();
+            var competitors = await _competitorRepository.GetAllAsync();
+            productToAdd.CompetitorConfigs = competitors.Select(e => new GetProductToAddOrEditModels.CompetitorConfig()
+            {
+                CompetitorId = EnumUtils.GetValueFromString<CompetitorIds>(e.Id),
+                CompetitorName = e.Name,
+                ProductUrl = String.Empty,
+                LogoUrl = e.LogoUrl
+            }).ToList();
+            productToAdd.SelectedStrategies = new List<ProductStrategy>();
+            return productToAdd;
+        }
+
+        public async Task<GetProductToAddOrEditModels.GetProductToEditResponse?> GetProductToEditAsync(string productId)
+        {
+            var product = await _productAggregateRepository.GetByIdAsync(productId);
+            if (product == null)
+            {
+                return null;
+            }
+            GetProductToAddOrEditModels.GetProductToEditResponse productToEdit = new GetProductToAddOrEditModels.GetProductToEditResponse()
+            {
+                AllStrategies = new List<ProductStrategy>(),
+                SelectedStrategies = new List<ProductStrategy>(),
+                CompetitorConfigs = new List<GetProductToAddOrEditModels.CompetitorConfig>()
+            };
+            var strategies = await _strategyRepository.GetAllAsync();
+            foreach (var strategy in strategies)
+            {
+                var productStrategy = new ProductStrategy()
+                {
+                    StrategyId = EnumUtils.GetValueFromString<StrategyIds>(strategy.Id),
+                    StrategyName = strategy.Name
+                };
+                if (product.Strategies.Exists(e => e.StrategyId == strategy.Id))
+                {
+                    productToEdit.SelectedStrategies.Add(productStrategy);
+                }
+                productToEdit.AllStrategies.Add(productStrategy);
+            }
+            var competitors = await _competitorRepository.GetAllAsync();
+            foreach(var competitor in competitors)
+            {
+                var competitorConfig = new GetProductToAddOrEditModels.CompetitorConfig()
+                {
+                    CompetitorId = EnumUtils.GetValueFromString<CompetitorIds>(competitor.Id),
+                    CompetitorName = competitor.Name,
+                    ProductUrl = String.Empty,
+                    LogoUrl = competitor.LogoUrl,
+                };
+                var existingCompetitorConfig = product.CompetitorConfigs.FirstOrDefault(e => e.CompetitorId == competitor.Id);
+                if (existingCompetitorConfig != null)
+                {
+                    var holder = SerializationUtils.Deserialize<ConfigHolder>(existingCompetitorConfig.SerializedHolder);
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                    var productUrlConfig = holder.Items.FirstOrDefault(e => e.Key == ConfigHolderKeys.ProductPageUrl.ToString());
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+                    if (productUrlConfig != null)
+                    {
+                        competitorConfig.ProductUrl = productUrlConfig.Value;
+                    }
+                }
+                productToEdit.CompetitorConfigs.Add(competitorConfig);
+            }
+            if (!string.IsNullOrWhiteSpace(product.ShopProductUrl) && !string.IsNullOrWhiteSpace(product.ShopProductId))
+            {
+                var mainShopProduct = await _mainShopWebService.GetProductAsync(product.ShopProductId, product.ShopProductUrl);
+                productToEdit.MainShopProduct = mainShopProduct;
+            }
+            return productToEdit;
         }
 
         private Product CreateProductFromEntity(ProductAggregateEntity entity, List<CompetitorEntity> competitors, List<StrategyEntity> strategies)
