@@ -1,5 +1,4 @@
-﻿using HtmlAgilityPack;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 
 namespace VeilleConcurrentielle.Scraper.ConsoleApp
 {

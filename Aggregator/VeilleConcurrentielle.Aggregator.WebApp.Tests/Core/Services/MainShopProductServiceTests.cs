@@ -46,7 +46,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Core.Services
                                         .Returns(Task.FromResult<MainShopProduct?>(new MainShopProduct()
                                         {
                                             ShopProductUrl = productUrl,
-                                            ShopProductId=productId
+                                            ShopProductId = productId
                                         }));
             IMainShopProductService productService = new MainShopProductService(_mainShopWebServiceMock.Object);
             var product = await productService.GetProductAsync(productUrl);

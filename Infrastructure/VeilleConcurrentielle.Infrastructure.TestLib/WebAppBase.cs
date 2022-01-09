@@ -30,7 +30,7 @@ namespace VeilleConcurrentielle.Infrastructure.TestLib
                 using var scope = sp.CreateScope();
                 var scopedServices = scope.ServiceProvider;
                 var db = scopedServices.GetRequiredService<TDbContext>();
-                db.Database.EnsureCreated(); 
+                db.Database.EnsureCreated();
             });
             return base.CreateHost(builder);
         }

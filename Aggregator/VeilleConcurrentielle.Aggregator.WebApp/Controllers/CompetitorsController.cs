@@ -25,7 +25,8 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Controllers
                                 .Select(c => new GetAllCompetitorsModels.GetAllCompetitorResponse.Competitor(c.Id, c.Name, c.LogoUrl))
                                 .ToList();
                 return Ok(new GetAllCompetitorsModels.GetAllCompetitorResponse(items));
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 _logger.LogError(ex, $"Failed to get competitors");
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);

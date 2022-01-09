@@ -16,7 +16,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers.TestData
                 ProductId = "Product1Id",
                 ProductName = "Product1Name",
                 ShopProductId = "1",
-                ShopProductUrl= "http://anyurl",
+                ShopProductUrl = "http://anyurl",
                 Price = 100,
                 Quantity = 10,
                 Strategies = new List<AddOrUPdateProductRequestedEventPayload.Strategy> {

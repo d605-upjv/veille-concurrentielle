@@ -19,7 +19,7 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Data.Repositories
                                                 .FirstOrDefaultAsync();
             if (lastPrice != null)
             {
-                return lastPrice.CreatedAt < createdAt 
+                return lastPrice.CreatedAt < createdAt
                     && !(lastPrice.ProductId == productId
                     && lastPrice.CompetitorId == competitorId
                     && lastPrice.Price == price

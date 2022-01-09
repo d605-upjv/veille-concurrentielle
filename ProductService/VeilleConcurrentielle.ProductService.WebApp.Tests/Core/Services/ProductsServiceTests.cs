@@ -5,7 +5,6 @@ using mywebapp::VeilleConcurrentielle.ProductService.WebApp.Core.Models;
 using mywebapp::VeilleConcurrentielle.ProductService.WebApp.Core.Services;
 using mywebapp::VeilleConcurrentielle.ProductService.WebApp.Data.Entities;
 using mywebapp::VeilleConcurrentielle.ProductService.WebApp.Data.Repositories;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using VeilleConcurrentielle.Infrastructure.Core.Models;

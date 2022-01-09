@@ -41,14 +41,14 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Data.Repositories
                                         ProductName = e.First().Product.Name,
                                         Count = e.Count()
                                     }).ToListAsync();
-            return items.ConvertAll(e=> (e.ProductId, e.ProductName, e.Count));
+            return items.ConvertAll(e => (e.ProductId, e.ProductName, e.Count));
         }
 
         public async Task<int> SetRecommendationAlertsForProductToSeenAsync(string productId)
         {
             AggregatorDbContext dbContext = (AggregatorDbContext)_dbContext;
             var items = await dbContext.RecommendationAlerts.Where(e => e.ProductId == productId && e.IsSeen == false).ToArrayAsync();
-            foreach(var item in items)
+            foreach (var item in items)
             {
                 item.IsSeen = true;
                 item.SeenAt = DateTime.Now;

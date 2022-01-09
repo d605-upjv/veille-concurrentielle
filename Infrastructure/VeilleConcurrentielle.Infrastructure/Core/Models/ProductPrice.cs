@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace VeilleConcurrentielle.Infrastructure.Core.Models
+﻿namespace VeilleConcurrentielle.Infrastructure.Core.Models
 {
     public class ProductPrice
     {

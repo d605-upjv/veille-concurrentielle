@@ -79,7 +79,7 @@ namespace VeilleConcurrentielle.Scraper.ConsoleApp
                         });
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     _logger.LogError(ex, $"Failed to scrap prices");
                 }

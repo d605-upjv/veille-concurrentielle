@@ -61,7 +61,8 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Tests.Controllers
         {
             var eventServiceClientMock = new Mock<IEventServiceClient>();
             eventServiceClientMock.Setup(s => s.PushEventAsync(It.IsAny<PushEventClientRequest<AddOrUpdateProductRequestedEvent, AddOrUPdateProductRequestedEventPayload>>()))
-                                            .Returns((PushEventClientRequest<AddOrUpdateProductRequestedEvent, AddOrUPdateProductRequestedEventPayload> request) => {
+                                            .Returns((PushEventClientRequest<AddOrUpdateProductRequestedEvent, AddOrUPdateProductRequestedEventPayload> request) =>
+                                            {
                                                 return Task.FromResult(new PushEventClientResponse<AddOrUpdateProductRequestedEvent, AddOrUPdateProductRequestedEventPayload>() { Event = new AddOrUpdateProductRequestedEvent() { Id = $"{request.Name}EventUniqueId" } });
                                             });
             var productAggregateServiceMock = new Mock<IProductAggregateService>();

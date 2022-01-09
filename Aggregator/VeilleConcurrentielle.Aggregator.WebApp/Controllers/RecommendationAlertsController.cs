@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using VeilleConcurrentielle.Infrastructure.Web;
-using VeilleConcurrentielle.Aggregator.WebApp.Models;
 using VeilleConcurrentielle.Aggregator.WebApp.Core.Services;
+using VeilleConcurrentielle.Infrastructure.Web;
 
 namespace VeilleConcurrentielle.Aggregator.WebApp.Controllers
 {
@@ -33,7 +32,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
-        
+
         [HttpGet("count")]
         public async Task<IActionResult> GetAllUnseenCountAsync()
         {
@@ -79,7 +78,8 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Controllers
                     return NotFound();
                 }
                 return Ok(response);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 _logger.LogError(ex, $"Failed to set recommendation alert as seen");
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);

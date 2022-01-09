@@ -5,7 +5,7 @@ using VeilleConcurrentielle.Infrastructure.Data;
 namespace VeilleConcurrentielle.Infrastructure.Core.Data.Repositories
 {
     public class ReceivedEventRepository<TDbContext> : RepositoryBase<ReceivedEventEntity>, IReceivedEventRepository
-        where TDbContext: DbContext
+        where TDbContext : DbContext
     {
         public ReceivedEventRepository(TDbContext dbContext) : base(dbContext)
         {

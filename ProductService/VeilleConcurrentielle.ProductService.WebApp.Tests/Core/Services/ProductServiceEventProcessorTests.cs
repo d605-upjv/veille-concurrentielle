@@ -37,7 +37,7 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Tests.Core.Services
         {
             string eventId = "EventId";
             EventNames eventName = EventNames.PriceIdentified;
-            var payload = new  PriceIdentifiedEventPayload();
+            var payload = new PriceIdentifiedEventPayload();
 
             await _eventProcessor.ProcessEventAsync(eventId, eventName, payload);
             _productPriceServiceMock.Verify(s => s.OnPriceIdentifedAsync(eventId, payload), Times.Once());

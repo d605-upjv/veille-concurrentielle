@@ -12,7 +12,7 @@ namespace VeilleConcurrentielle.EventOrchestrator.Lib.Clients.ServiceClients
 {
     public class EventServiceClient : ServiceClientBase, IEventServiceClient
     {
-        public EventServiceClient(HttpClient httpClient, IOptions<ServiceUrlsOptions> serviceUrlOptions, ILogger<EventServiceClient> logger) 
+        public EventServiceClient(HttpClient httpClient, IOptions<ServiceUrlsOptions> serviceUrlOptions, ILogger<EventServiceClient> logger)
             : base(httpClient, serviceUrlOptions, logger)
         {
         }
@@ -61,7 +61,7 @@ namespace VeilleConcurrentielle.EventOrchestrator.Lib.Clients.ServiceClients
         public async Task<ConsumeEventClientResponse?> ConsumeEventAsync(ConsumeEventClientRequest request)
         {
             ConsumeEventServerRequest serverRequest = request;
-            var serverResponse = await PostAsync<ConsumeEventServerRequest, ConsumeEventServerResponse>(GetServiceUrl(ApplicationNames.EventOrchestrator), serverRequest, "consume" );
+            var serverResponse = await PostAsync<ConsumeEventServerRequest, ConsumeEventServerResponse>(GetServiceUrl(ApplicationNames.EventOrchestrator), serverRequest, "consume");
             if (serverResponse != null)
             {
                 return new ConsumeEventClientResponse()

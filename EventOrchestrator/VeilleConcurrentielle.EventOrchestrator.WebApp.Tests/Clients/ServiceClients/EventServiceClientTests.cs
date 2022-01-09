@@ -59,7 +59,7 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Tests.Clients.ServiceCl
                 EventUrl = httpClient.BaseAddress.ToString()
             });
             IEventServiceClient eventServiceClient = new EventServiceClient(httpClient, serviceUrlOptions, _loggerMock.Object);
-            
+
             var response = await eventServiceClient.GetNextEventAsync();
 
             if (response != null)

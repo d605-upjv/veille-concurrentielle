@@ -12,7 +12,7 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Tests.Core.Services.Recomm
             lastCompetitorPrices.Prices = new List<CompetitorProductPrices.CompetitorItemProductPrices>();
             var competitorIds = Enum.GetValues<CompetitorIds>();
             Random random = new Random();
-            foreach(var price in priceByCompetitors)
+            foreach (var price in priceByCompetitors)
             {
                 lastCompetitorPrices.Prices.Add(new CompetitorProductPrices.CompetitorItemProductPrices()
                 {

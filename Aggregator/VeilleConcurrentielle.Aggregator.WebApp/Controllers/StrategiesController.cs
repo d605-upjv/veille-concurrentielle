@@ -25,7 +25,8 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Controllers
                                 .Select(c => new GetAllStrategiessModels.GetAllStrategiesResponse.Strategy(c.Id, c.Name))
                                 .ToList();
                 return Ok(new GetAllStrategiessModels.GetAllStrategiesResponse(items));
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 _logger.LogError(ex, $"Failed to get strategies");
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);

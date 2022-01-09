@@ -6,7 +6,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Models
     {
         public class AddOrEditProductRequest : AddOrUPdateProductRequestedEventPayload
         {
-            
+
         }
 
         public class AddOrEditProductResponse
