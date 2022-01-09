@@ -35,7 +35,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\EventOrchestrator\VeilleConcurrentielle.EventOrchestrator.Lib\VeilleConcurrentielle.EventOrchestrator.Lib.csproj" />
     <ProjectReference Include="..\..\Infrastructure\VeilleConcurrentielle.Infrastructure\VeilleConcurrentielle.Infrastructure.csproj" />
-    <ProjectReference Include="..\VeilleConcurrentielle.Aggregator.Lib\VeilleConcurrentielle.Aggregator.Lib.csproj" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

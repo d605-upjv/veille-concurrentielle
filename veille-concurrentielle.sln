@@ -25,8 +25,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ProductService", "ProductSe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeilleConcurrentielle.ProductService.Lib", "ProductService\VeilleConcurrentielle.ProductService.Lib\VeilleConcurrentielle.ProductService.Lib.csproj", "{0386C831-D1A2-4192-9043-58F387DBE3FC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeilleConcurrentielle.ProductService.Lib.Tests", "ProductService\VeilleConcurrentielle.ProductService.Lib.Tests\VeilleConcurrentielle.ProductService.Lib.Tests.csproj", "{2D017750-FFD6-4071-BF2F-7CAD2FA637AF}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeilleConcurrentielle.ProductService.WebApp.Tests", "ProductService\VeilleConcurrentielle.ProductService.WebApp.Tests\VeilleConcurrentielle.ProductService.WebApp.Tests.csproj", "{23C0C8B7-B078-49E2-9B30-CA0A3EAE2737}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Aggregator", "Aggregator", "{2A364519-E877-4842-B168-811375D04EF8}"
@@ -34,8 +32,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeilleConcurrentielle.Aggregator.WebApp", "Aggregator\VeilleConcurrentielle.Aggregator.WebApp\VeilleConcurrentielle.Aggregator.WebApp.csproj", "{DBFD11A7-AC71-477C-8C2A-C9B94F38BD1C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeilleConcurrentielle.Aggregator.WebApp.Tests", "Aggregator\VeilleConcurrentielle.Aggregator.WebApp.Tests\VeilleConcurrentielle.Aggregator.WebApp.Tests.csproj", "{7948C816-5C44-4805-A138-9FEC8046E7F1}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeilleConcurrentielle.Aggregator.Lib", "Aggregator\VeilleConcurrentielle.Aggregator.Lib\VeilleConcurrentielle.Aggregator.Lib.csproj", "{108F69D4-D53D-4F46-87BD-40A7E79F6587}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeilleConcurrentielle.ProductService.WebApp", "ProductService\VeilleConcurrentielle.ProductService.WebApp\VeilleConcurrentielle.ProductService.WebApp.csproj", "{C175D8D3-A525-453C-943C-3AF9068B3ED6}"
 EndProject
@@ -53,9 +49,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__Memos", "__Memos", "{D1BD
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scraper", "Scraper", "{25D38EF8-A7D9-4460-861A-A7A5C303712B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VeilleConcurrentielle.Scraper.ConsoleApp", "Scraper\VeilleConcurrentielle.Scraper.ConsoleApp\VeilleConcurrentielle.Scraper.ConsoleApp.csproj", "{F1F58DC9-E11C-4235-81A2-4C3A280D61FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeilleConcurrentielle.Scraper.ConsoleApp", "Scraper\VeilleConcurrentielle.Scraper.ConsoleApp\VeilleConcurrentielle.Scraper.ConsoleApp.csproj", "{F1F58DC9-E11C-4235-81A2-4C3A280D61FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VeilleConcurrentielle.Scraper.ConsoleApp.Tests", "Scraper\VeilleConcurrentielle.Scraper.ConsoleApp.Tests\VeilleConcurrentielle.Scraper.ConsoleApp.Tests.csproj", "{E1EFFA1F-1AC8-4B0C-B8CE-1671C1FA5E8B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeilleConcurrentielle.Scraper.ConsoleApp.Tests", "Scraper\VeilleConcurrentielle.Scraper.ConsoleApp.Tests\VeilleConcurrentielle.Scraper.ConsoleApp.Tests.csproj", "{E1EFFA1F-1AC8-4B0C-B8CE-1671C1FA5E8B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,10 +91,6 @@ Global
 		{0386C831-D1A2-4192-9043-58F387DBE3FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0386C831-D1A2-4192-9043-58F387DBE3FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0386C831-D1A2-4192-9043-58F387DBE3FC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2D017750-FFD6-4071-BF2F-7CAD2FA637AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2D017750-FFD6-4071-BF2F-7CAD2FA637AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2D017750-FFD6-4071-BF2F-7CAD2FA637AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2D017750-FFD6-4071-BF2F-7CAD2FA637AF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{23C0C8B7-B078-49E2-9B30-CA0A3EAE2737}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{23C0C8B7-B078-49E2-9B30-CA0A3EAE2737}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23C0C8B7-B078-49E2-9B30-CA0A3EAE2737}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -111,10 +103,6 @@ Global
 		{7948C816-5C44-4805-A138-9FEC8046E7F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7948C816-5C44-4805-A138-9FEC8046E7F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7948C816-5C44-4805-A138-9FEC8046E7F1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{108F69D4-D53D-4F46-87BD-40A7E79F6587}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{108F69D4-D53D-4F46-87BD-40A7E79F6587}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{108F69D4-D53D-4F46-87BD-40A7E79F6587}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{108F69D4-D53D-4F46-87BD-40A7E79F6587}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C175D8D3-A525-453C-943C-3AF9068B3ED6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C175D8D3-A525-453C-943C-3AF9068B3ED6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C175D8D3-A525-453C-943C-3AF9068B3ED6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -148,11 +136,9 @@ Global
 		{9564ACB9-6398-4748-9010-00747EAF38CF} = {640274C2-615C-4B72-8AE8-50252495AF32}
 		{DFF69D54-3E07-4BF4-81F8-AD0DFE79A454} = {640274C2-615C-4B72-8AE8-50252495AF32}
 		{0386C831-D1A2-4192-9043-58F387DBE3FC} = {413A70BB-BA21-400F-ACE5-EE8F180BC0C0}
-		{2D017750-FFD6-4071-BF2F-7CAD2FA637AF} = {413A70BB-BA21-400F-ACE5-EE8F180BC0C0}
 		{23C0C8B7-B078-49E2-9B30-CA0A3EAE2737} = {413A70BB-BA21-400F-ACE5-EE8F180BC0C0}
 		{DBFD11A7-AC71-477C-8C2A-C9B94F38BD1C} = {2A364519-E877-4842-B168-811375D04EF8}
 		{7948C816-5C44-4805-A138-9FEC8046E7F1} = {2A364519-E877-4842-B168-811375D04EF8}
-		{108F69D4-D53D-4F46-87BD-40A7E79F6587} = {2A364519-E877-4842-B168-811375D04EF8}
 		{C175D8D3-A525-453C-943C-3AF9068B3ED6} = {413A70BB-BA21-400F-ACE5-EE8F180BC0C0}
 		{8EAA73F3-418C-4BE5-A9CE-B90790A4045F} = {640274C2-615C-4B72-8AE8-50252495AF32}
 		{DD67DFB9-1990-426C-A139-A559173703C4} = {640274C2-615C-4B72-8AE8-50252495AF32}
