@@ -190,7 +190,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Core.Services
                 productToEdit.AllStrategies.Add(productStrategy);
             }
             var competitors = await _competitorRepository.GetAllAsync();
-            foreach(var competitor in competitors)
+            foreach (var competitor in competitors)
             {
                 var competitorConfig = new GetProductToAddOrEditModels.CompetitorConfig()
                 {

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace VeilleConcurrentielle.Aggregator.WebApp.Models
+﻿namespace VeilleConcurrentielle.Aggregator.WebApp.Models
 {
     public class SetRecommendationAlertToSeenModels
     {

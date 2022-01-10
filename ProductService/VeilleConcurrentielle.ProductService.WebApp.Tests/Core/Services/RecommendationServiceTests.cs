@@ -27,7 +27,7 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Tests.Core.Services
         {
             IRecommendationService recommendationService = new RecommendationService(_recommendationRepositoryMock.Object);
             StrategyIds[] strategies = Enum.GetValues<StrategyIds>();
-            foreach(var strategyId in strategies)
+            foreach (var strategyId in strategies)
             {
                 var engine = recommendationService.GetRecommendationEngine(strategyId);
                 Assert.NotNull(engine);

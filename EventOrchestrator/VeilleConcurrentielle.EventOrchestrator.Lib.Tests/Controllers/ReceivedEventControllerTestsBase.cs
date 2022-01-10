@@ -23,7 +23,7 @@ namespace VeilleConcurrentielle.Infrastructure.Tests.Core.Controllers
         where TWebApp : WebAppBase<TEntryPoint, TDbContext>, new()
         where TEntryPoint : class
         where TDbContext : DbContext
-        where TReceivedEventController: ApiControllerBase, IReceivedEventsController
+        where TReceivedEventController : ApiControllerBase, IReceivedEventsController
     {
         protected readonly Mock<ILogger<TReceivedEventController>> _loggerMock;
         protected readonly Mock<IReceivedEventRepository> _receivedEventRepositorMock;

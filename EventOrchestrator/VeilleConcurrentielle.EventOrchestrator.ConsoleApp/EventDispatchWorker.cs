@@ -121,7 +121,8 @@ namespace VeilleConcurrentielle.EventOrchestrator.ConsoleApp
                     });
                     _logger.LogInformation($"Successfully consumed event {event_.Name} ({event_.Id}) for application {applicationName} with reason: {dispatchErorMessage}");
                 });
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 _logger.LogCritical(ex, $"Failed to consume event {event_.Name} ({event_.Id}) for application {applicationName}");
                 _logger.LogCritical("Exit program due to fatal error");

@@ -12,7 +12,7 @@ namespace VeilleConcurrentielle.Aggregator.WebApp.Data.Repositories
 
         public override void ComputeNewIdBeforeInsert(ProductAggregateEntity entity)
         {
-            
+
         }
 
         public override async Task UpdateAsync(ProductAggregateEntity entity)

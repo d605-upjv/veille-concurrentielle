@@ -54,7 +54,7 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Core.Services
 
         public async Task SendNewRecommendationPushedEvent(string refererEventId, string productId, List<ProductRecommendation> newRecommendations)
         {
-            foreach(var recommendation in newRecommendations)
+            foreach (var recommendation in newRecommendations)
             {
                 NewRecommendationPushedEventPayload payload = new NewRecommendationPushedEventPayload()
                 {

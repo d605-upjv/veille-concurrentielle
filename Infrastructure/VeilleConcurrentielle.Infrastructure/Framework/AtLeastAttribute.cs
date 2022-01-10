@@ -13,7 +13,7 @@ namespace VeilleConcurrentielle.Infrastructure.Framework
         public override bool IsValid(object? value)
         {
             var list = value as IList;
-            if (list!=null && list.Count>= _minimum)
+            if (list != null && list.Count >= _minimum)
             {
                 return true;
             }

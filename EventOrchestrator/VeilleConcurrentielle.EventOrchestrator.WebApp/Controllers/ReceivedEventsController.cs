@@ -8,7 +8,7 @@ namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Controllers
 {
     public class ReceivedEventsController : ReceivedEventsControllerBase<ReceivedEventsController>
     {
-        public ReceivedEventsController(IReceivedEventRepository receivedEventRepository, ILogger<ReceivedEventsController> logger, IEventServiceClient eventServiceClient, IEventProcessor eventProcessor) 
+        public ReceivedEventsController(IReceivedEventRepository receivedEventRepository, ILogger<ReceivedEventsController> logger, IEventServiceClient eventServiceClient, IEventProcessor eventProcessor)
             : base(receivedEventRepository, logger, eventServiceClient, eventProcessor)
         {
         }

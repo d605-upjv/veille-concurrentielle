@@ -1,7 +1,6 @@
 ﻿extern alias mywebapp;
 
 using mywebapp::VeilleConcurrentielle.ProductService.WebApp.Core.Services.Recommendations;
-using System;
 using System.Collections.Generic;
 using VeilleConcurrentielle.Infrastructure.Core.Models;
 using Xunit;

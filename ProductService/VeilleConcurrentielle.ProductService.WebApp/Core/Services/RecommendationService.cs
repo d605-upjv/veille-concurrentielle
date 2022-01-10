@@ -31,7 +31,7 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Core.Services
                 Recommendations = new List<ProductRecommendation>(),
                 NewRecommendations = new List<ProductRecommendation>()
             };
-            foreach(var strategyId in request.Strategies)
+            foreach (var strategyId in request.Strategies)
             {
                 var latestRecommendation = await _recommendationRepository.GetLatestRecommendationAsync(request.ProductId, strategyId.ToString());
                 var strategyEngine = GetRecommendationEngine(strategyId);

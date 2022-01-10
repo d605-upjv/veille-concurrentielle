@@ -1,7 +1,4 @@
 ﻿extern alias mywebapp;
-
-using Moq;
-using mywebapp::VeilleConcurrentielle.ProductService.WebApp.Data;
 using mywebapp::VeilleConcurrentielle.ProductService.WebApp.Data.Entities;
 using mywebapp::VeilleConcurrentielle.ProductService.WebApp.Data.Repositories;
 using VeilleConcurrentielle.Infrastructure.TestLib.TestData;

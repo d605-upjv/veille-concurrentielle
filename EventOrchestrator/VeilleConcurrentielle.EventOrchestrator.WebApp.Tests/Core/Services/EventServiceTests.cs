@@ -12,7 +12,6 @@ using VeilleConcurrentielle.Infrastructure.Core.Models;
 using VeilleConcurrentielle.Infrastructure.Core.Models.Events;
 using VeilleConcurrentielle.Infrastructure.Framework;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace VeilleConcurrentielle.EventOrchestrator.WebApp.Tests.Core.Services
 {
