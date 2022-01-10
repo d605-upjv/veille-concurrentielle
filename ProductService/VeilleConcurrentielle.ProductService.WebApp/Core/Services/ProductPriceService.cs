@@ -11,6 +11,7 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Core.Services
 {
     public class ProductPriceService : IProductPriceService
     {
+        private static SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
         private readonly ICompetitorPriceRepository _competitorPriceRepository;
         private readonly IEventSenderService _eventSenderService;
         private readonly IProductRepository _productRepository;
@@ -32,37 +33,45 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Core.Services
         }
         public async Task OnPriceIdentifedAsync(string refererEventId, PriceIdentifiedEventPayload request)
         {
-            var productEntity = await _productRepository.GetByIdAsync(request.ProductId);
-            if (productEntity == null)
+            await _semaphore.WaitAsync();
+            try
             {
-                _logger.LogError($"Failed to load product {request.ProductId} to process identified price\nRequest: {SerializationUtils.Serialize(request)}");
-                return;
+                var productEntity = await _productRepository.GetByIdAsync(request.ProductId);
+                if (productEntity == null)
+                {
+                    _logger.LogError($"Failed to load product {request.ProductId} to process identified price\nRequest: {SerializationUtils.Serialize(request)}");
+                    return;
+                }
+                var isDifferntFromLastPrice = await _competitorPriceRepository.IsDifferentFromLastPriceAsync(request.ProductId, request.CompetitorId.ToString(), request.Price, request.Quantity, request.CreatedAt);
+                if (!isDifferntFromLastPrice)
+                {
+                    _logger.LogInformation($"Price is not different form the last one or is already outdated\nRequest: {SerializationUtils.Serialize(request)}");
+                    return;
+                }
+                CompetitorPriceEntity entity = new CompetitorPriceEntity();
+                entity.ProductId = request.ProductId;
+                entity.Price = request.Price;
+                entity.Quantity = request.Quantity;
+                entity.CompetitorId = request.CompetitorId.ToString();
+                entity.Source = request.Source.ToString();
+                entity.CreatedAt = request.CreatedAt;
+                await _competitorPriceRepository.InsertAsync(entity);
+                var lastCompetitorPrices = await GetLastPricesAsync(request.ProductId);
+                var recommendationResponse = await _recommendationService.GetRecommendationsAsync(new GetRecommendationRequest()
+                {
+                    ProductId = productEntity.Id,
+                    Price = productEntity.Price,
+                    Quantity = productEntity.Quantity,
+                    Strategies = productEntity.Strategies.Select(e => EnumUtils.GetValueFromString<StrategyIds>(e.StrategyId)).ToList(),
+                    LastCompetitorPrices = lastCompetitorPrices
+                });
+                await _eventSenderService.SendProductAddedOrUpdatedEvent(refererEventId, productEntity, lastCompetitorPrices, recommendationResponse.Recommendations);
+                await _eventSenderService.SendNewRecommendationPushedEvent(refererEventId, productEntity.Id, recommendationResponse.NewRecommendations);
             }
-            var isDifferntFromLastPrice = await _competitorPriceRepository.IsDifferentFromLastPriceAsync(request.ProductId, request.CompetitorId.ToString(), request.Price, request.Quantity, request.CreatedAt);
-            if (!isDifferntFromLastPrice)
+            finally
             {
-                _logger.LogInformation($"Price is not different form the last one or is already outdated\nRequest: {SerializationUtils.Serialize(request)}");
-                return;
+                _semaphore.Release();
             }
-            CompetitorPriceEntity entity = new CompetitorPriceEntity();
-            entity.ProductId = request.ProductId;
-            entity.Price = request.Price;
-            entity.Quantity = request.Quantity;
-            entity.CompetitorId = request.CompetitorId.ToString();
-            entity.Source = request.Source.ToString();
-            entity.CreatedAt = request.CreatedAt;
-            await _competitorPriceRepository.InsertAsync(entity);
-            var lastCompetitorPrices = await GetLastPricesAsync(request.ProductId);
-            var recommendationResponse = await _recommendationService.GetRecommendationsAsync(new GetRecommendationRequest()
-            {
-                ProductId = productEntity.Id,
-                Price = productEntity.Price,
-                Quantity = productEntity.Quantity,
-                Strategies = productEntity.Strategies.Select(e => EnumUtils.GetValueFromString<StrategyIds>(e.StrategyId)).ToList(),
-                LastCompetitorPrices = lastCompetitorPrices
-            });
-            await _eventSenderService.SendProductAddedOrUpdatedEvent(refererEventId, productEntity, lastCompetitorPrices, recommendationResponse.Recommendations);
-            await _eventSenderService.SendNewRecommendationPushedEvent(refererEventId, productEntity.Id, recommendationResponse.NewRecommendations);
         }
 
         public async Task<CompetitorProductPrices> GetLastPricesAsync(string productId)

@@ -28,6 +28,8 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Tests.Core.Services
         private readonly IOptions<ProductPriceOptions> _productPriceOptions;
         private readonly Mock<IRecommendationService> _recommendationServiceMock;
 
+        private volatile bool _isDifferentFromLastReco = false;
+
         public ProductPriceServiceTests()
         {
             _productRepositoryMock = new Mock<IProductRepository>();
@@ -129,6 +131,54 @@ namespace VeilleConcurrentielle.ProductService.WebApp.Tests.Core.Services
             _competitorPriceRepositoryMock.Verify(s => s.InsertAsync(It.IsAny<CompetitorPriceEntity>()), Times.Never());
             _eventSenderServiceMock.Verify(s => s.SendProductAddedOrUpdatedEvent(eventid, It.IsAny<ProductEntity>(), It.IsAny<CompetitorProductPrices>(), It.IsAny<List<ProductRecommendation>>()), Times.Never());
             _eventSenderServiceMock.Verify(s => s.SendNewRecommendationPushedEvent(eventid, productId, It.IsAny<List<ProductRecommendation>>()), Times.Never());
+        }
+
+        [Fact]
+        public async Task OnPriceIdentifiedAsync_NewRecommendationEventIsFiredOnlyOnceForSimilarPrices()
+        {
+            _isDifferentFromLastReco = true;
+            string[] productIds = { "1", "2", "3", "4", "5" };
+            string eventid = "PreviousEventid";
+
+            _productRepositoryMock.Setup(s => s.GetByIdAsync(It.IsAny<string>()))
+                                        .Returns((string productId) =>
+                                        {
+                                            return Task.FromResult<ProductEntity?>(new ProductEntity()
+                                            {
+                                                Id = productId,
+                                                Strategies = new List<StrategyEntity>()
+                                            });
+                                        });
+            _competitorPriceRepositoryMock.Setup(s => s.IsDifferentFromLastPriceAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<double>(), It.IsAny<int>(), It.IsAny<DateTime>()))
+                                            .Returns((string productId, string competitorId, double price, int quantity, DateTime createdAt) =>
+                                            {
+                                                bool value = _isDifferentFromLastReco;
+                                                if (_isDifferentFromLastReco)
+                                                {
+                                                    _isDifferentFromLastReco = false;
+                                                }
+                                                return Task.FromResult(value);
+                                            });
+            _competitorPriceRepositoryMock.Setup(s => s.GetLastPricesAsync(It.IsAny<string>(), It.IsAny<string>(), _productPriceOptions.Value.HistoryPriceCount))
+                                            .Returns(Task.FromResult(new List<CompetitorPriceEntity>()));
+
+            IProductPriceService productPriceService = new ProductPriceService(_competitorPriceRepositoryMock.Object, _eventSenderServiceMock.Object, _productRepositoryMock.Object, _logerMock.Object, _productPriceOptions, _recommendationServiceMock.Object);
+            await Parallel.ForEachAsync(productIds, async (productId, cancellationToken) =>
+            {
+                await productPriceService.OnPriceIdentifedAsync(eventid, new PriceIdentifiedEventPayload()
+                {
+                    ProductId = productId,
+                    RefererEventId = eventid
+                });
+            });
+
+            _productRepositoryMock.Verify(s => s.GetByIdAsync(It.IsAny<string>()), Times.Exactly(productIds.Length));
+            _competitorPriceRepositoryMock.Verify(s => s.IsDifferentFromLastPriceAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<double>(), It.IsAny<int>(), It.IsAny<DateTime>()), Times.Exactly(productIds.Length));
+            _competitorPriceRepositoryMock.Verify(s => s.InsertAsync(It.IsAny<CompetitorPriceEntity>()), Times.Once());
+            _competitorPriceRepositoryMock.Verify(s => s.GetLastPricesAsync(It.IsAny<string>(), It.IsAny<string>(), _productPriceOptions.Value.HistoryPriceCount), Times.Exactly(Enum.GetValues<CompetitorIds>().Length));
+            _recommendationServiceMock.Verify(s => s.GetRecommendationsAsync(It.IsAny<GetRecommendationRequest>()), Times.Once());
+            _eventSenderServiceMock.Verify(s => s.SendProductAddedOrUpdatedEvent(eventid, It.IsAny<ProductEntity>(), It.IsAny<CompetitorProductPrices>(), It.IsAny<List<ProductRecommendation>>()), Times.Once());
+            _eventSenderServiceMock.Verify(s => s.SendNewRecommendationPushedEvent(eventid, It.IsAny<string>(), It.IsAny<List<ProductRecommendation>>()), Times.Once());
         }
 
         [Fact]
