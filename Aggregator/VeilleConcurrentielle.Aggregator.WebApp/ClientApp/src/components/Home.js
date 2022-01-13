@@ -7,7 +7,7 @@ export class Home extends Component {
     return (
       <div>
         <h1>Veille concurrentielle!</h1>
-        <p>Surveille les prix des concurrents et propose des récommendations en conséquences.</p>
+        <p>Surveille les prix des concurrents et propose des recommandations en conséquences.</p>
       </div>
     );
   }

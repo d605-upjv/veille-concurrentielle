@@ -26,7 +26,7 @@ export const ProductEditItemComponent = (props) => {
             return;
         }
         if (selectedStrategies.length === 0) {
-            setErrorMessage('Veuillez choisir au moins une stratégie de récommendations.');
+            setErrorMessage('Veuillez choisir au moins une stratégie de recommandations.');
             return;
         }
         setIsLoading(true);
@@ -357,7 +357,7 @@ export const ProductEditItemComponent = (props) => {
                             <>
                                 <div className="row">
                                     <div className="col-4">
-                                        <InputLabel for="strategies">Stratégies de récommendations</InputLabel>
+                                        <InputLabel for="strategies">Stratégies de recommandations</InputLabel>
                                     </div>
                                     <div className="col-8">
                                         <Select id="strategies"

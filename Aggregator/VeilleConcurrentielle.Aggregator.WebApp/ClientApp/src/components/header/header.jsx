@@ -56,7 +56,7 @@ const Header = () => {
             store.addNotification({
                 ...defaultNotification,
                 type: 'danger',
-                message: `Erreur lors de la récupération des récommendations: ${error}!`,
+                message: `Erreur lors de la récupération des recommandations: ${error}!`,
             });
             setAlertCountByProduct([]);
         } finally {
@@ -90,7 +90,7 @@ const Header = () => {
                     store.addNotification({
                         ...defaultNotification,
                         type: 'danger',
-                        message: `Erreur lors de la récupération du nombre total des récommendations: ${error}!`,
+                        message: `Erreur lors de la récupération du nombre total des recommandations: ${error}!`,
                     });
                 }).finally(() => {
                     refreshAlertCount();
@@ -114,10 +114,10 @@ const Header = () => {
                             Veille Concurrentielle
                         </Typography>
                         <Box sx={{ flexGrow: 1 }} />
-                        <Tooltip title={`${alertCount} récommendations`}>
+                        <Tooltip title={`${alertCount} recommandations`}>
                             <IconButton
                                 size="large"
-                                aria-label={`Afficher les ${alertCount} récommendations`}
+                                aria-label={`Afficher les ${alertCount} recommandations`}
                                 color="inherit"
                                 onClick={alertCountOnClick}
                             >
@@ -175,7 +175,7 @@ const Header = () => {
                 )}
 
                 {alertCountByProduct.length === 0 && (
-                    <Alert severity="warning">Il n'y a pas encore de récommendations pour le moment!</Alert>
+                    <Alert severity="warning">Il n'y a pas encore de recommandations pour le moment!</Alert>
                 )}
 
                 {alertCountByProduct.map((alertCountByProduct, index) => (

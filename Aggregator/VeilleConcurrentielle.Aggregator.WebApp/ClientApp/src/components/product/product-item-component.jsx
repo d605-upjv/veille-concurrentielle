@@ -52,7 +52,7 @@ const ProductItemComponent = (props) => {
                         store.addNotification({
                             ...defaultNotification,
                             type: 'danger',
-                            message: `Erreur pendant la mise à jour des notifications de récommendations: ${ex}`,
+                            message: `Erreur pendant la mise à jour des notifications de recommandations: ${ex}`,
                         });
                     }
                 }
@@ -267,7 +267,7 @@ const ProductItemComponent = (props) => {
                             </Grid>
 
                             <Grid item xs={12}>
-                                <h5>Récommendations</h5>
+                                <h5>Recommandations</h5>
                                 {product.recommendations.length > 0 && (
                                     <TableContainer>
                                         <Table stickyHeader>
@@ -307,7 +307,7 @@ const ProductItemComponent = (props) => {
                                 )}
 
                                 {product.recommendations.length === 0 && (
-                                    <Alert severity="info">Il n'y a pas encore de récommendations à proposer pour le moment.</Alert>
+                                    <Alert severity="info">Il n'y a pas encore de recommandations à proposer pour le moment.</Alert>
                                 )}
                             </Grid>
 

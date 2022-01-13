@@ -103,7 +103,7 @@ const ProductListComponent = () => {
                                             <TableRow hover>
                                                 <TableCell></TableCell>
                                                 <TableCell>{product.name}</TableCell>
-                                                <TableCell>{product.price}</TableCell>
+                                                <TableCell>{product.price} €</TableCell>
                                                 <TableCell>
                                                     {product.minPrice && (
                                                         <>
@@ -122,7 +122,7 @@ const ProductListComponent = () => {
                                                     <TableCell key={`${product.productId}-${price.competitorId}`} >
                                                         {
                                                             price.price > 0 && (
-                                                                <span>{price.price}</span>
+                                                                <span>{price.price} €</span>
                                                             )
                                                         }
                                                         {
